@@ -1,1624 +1,1994 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>YourData – Secure Analytics Platform</title>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
-<style>
-/* ═══════════════════════════════════════════
-   ROOT & RESET
-═══════════════════════════════════════════ */
-:root {
-  --bg:        #06080f;
-  --surface:   #0d1117;
-  --surface2:  #161b27;
-  --surface3:  #1e2535;
-  --border:    rgba(56,189,248,0.10);
-  --border2:   rgba(56,189,248,0.20);
-  --cyan:      #38bdf8;
-  --cyan-dim:  rgba(56,189,248,0.15);
-  --emerald:   #34d399;
-  --violet:    #a78bfa;
-  --rose:      #fb7185;
-  --amber:     #fbbf24;
-  --text:      #e2e8f0;
-  --muted:     #64748b;
-  --muted2:    #94a3b8;
-  --ff:        'Outfit', sans-serif;
-  --mono:      'JetBrains Mono', monospace;
-  --radius:    12px;
-  --sidebar-w: 248px;
-  --topbar-h:  60px;
-}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html{scroll-behavior:smooth;}
-body{
-  background:var(--bg);color:var(--text);
-  font-family:var(--ff);min-height:100vh;
-  overflow-x:hidden;
-}
-a{text-decoration:none;color:inherit;}
-button,input,select{font-family:var(--ff);}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DataVault – Secure Analytics Platform</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="style.css">
 
-/* ═══════════════════════════════════════════
-   ANIMATED CANVAS BACKGROUND
-═══════════════════════════════════════════ */
-#bg-canvas{
-  position:fixed;inset:0;z-index:0;
-  pointer-events:none;opacity:0.55;
-}
-
-/* ═══════════════════════════════════════════
-   PAGE SYSTEM
-═══════════════════════════════════════════ */
-.page{display:none;min-height:100vh;position:relative;z-index:1;}
-.page.active{display:flex;}
-
-/* ═══════════════════════════════════════════
-   LOGIN PAGE
-═══════════════════════════════════════════ */
-#page-login{
-  align-items:center;justify-content:center;
-  flex-direction:column;padding:24px;
-}
-.login-card{
-  width:100%;max-width:420px;
-  background:rgba(13,17,23,0.85);
-  border:1px solid var(--border2);
-  border-radius:20px;padding:40px 36px;
-  backdrop-filter:blur(24px);
-  box-shadow:0 0 60px rgba(56,189,248,0.06),0 24px 48px rgba(0,0,0,0.5);
-  animation:cardIn 0.7s cubic-bezier(0.22,1,0.36,1) both;
-}
-@keyframes cardIn{
-  from{opacity:0;transform:translateY(30px) scale(0.97);}
-  to{opacity:1;transform:translateY(0) scale(1);}
-}
-.login-logo{
-  display:flex;align-items:center;gap:12px;
-  justify-content:center;margin-bottom:28px;
-}
-.login-logo-icon{
-  width:44px;height:44px;border-radius:12px;
-  background:linear-gradient(135deg,var(--cyan),var(--violet));
-  display:flex;align-items:center;justify-content:center;
-  font-size:22px;box-shadow:0 0 24px rgba(56,189,248,0.35);
-}
-.login-logo-text{font-size:24px;font-weight:800;letter-spacing:-0.5px;}
-.login-logo-text span{color:var(--cyan);}
-.login-tagline{
-  text-align:center;color:var(--muted2);font-size:13px;
-  margin-bottom:32px;
-}
-.form-group{margin-bottom:18px;}
-.form-label{
-  display:block;font-size:12px;font-weight:500;
-  color:var(--muted2);margin-bottom:7px;letter-spacing:0.5px;
-  text-transform:uppercase;
-}
-.form-input{
-  width:100%;background:var(--surface2);
-  border:1px solid var(--border2);border-radius:10px;
-  padding:12px 14px;color:var(--text);font-size:14px;
-  outline:none;transition:border-color 0.2s,box-shadow 0.2s;
-}
-.form-input::placeholder{color:var(--muted);}
-.form-input:focus{
-  border-color:var(--cyan);
-  box-shadow:0 0 0 3px rgba(56,189,248,0.12);
-}
-.form-input-wrap{position:relative;}
-.form-input-wrap .icon{
-  position:absolute;right:14px;top:50%;transform:translateY(-50%);
-  color:var(--muted);font-size:16px;cursor:pointer;
-}
-.btn-login{
-  width:100%;padding:13px;border:none;border-radius:10px;
-  background:linear-gradient(135deg,var(--cyan),#0ea5e9);
-  color:#06080f;font-size:15px;font-weight:700;
-  cursor:pointer;transition:all 0.2s;margin-top:6px;
-  box-shadow:0 4px 20px rgba(56,189,248,0.25);
-  letter-spacing:0.3px;
-}
-.btn-login:hover{
-  transform:translateY(-1px);
-  box-shadow:0 8px 28px rgba(56,189,248,0.35);
-}
-.btn-login:active{transform:translateY(0);}
-.login-divider{
-  display:flex;align-items:center;gap:12px;
-  color:var(--muted);font-size:12px;margin:20px 0;
-}
-.login-divider::before,.login-divider::after{
-  content:'';flex:1;height:1px;background:var(--border);
-}
-.login-footer{
-  text-align:center;font-size:13px;
-  color:var(--muted2);margin-top:20px;
-}
-.login-footer a{color:var(--cyan);font-weight:500;cursor:pointer;}
-.remember-row{
-  display:flex;align-items:center;justify-content:space-between;
-  margin-bottom:20px;
-}
-.remember-row label{
-  display:flex;align-items:center;gap:8px;
-  font-size:13px;color:var(--muted2);cursor:pointer;
-}
-.remember-row input[type=checkbox]{accent-color:var(--cyan);}
-.forgot-link{font-size:13px;color:var(--cyan);cursor:pointer;}
-
-/* ═══════════════════════════════════════════
-   APP SHELL (post-login)
-═══════════════════════════════════════════ */
-#page-app{flex-direction:row;}
-
-/* ── SIDEBAR ── */
-.sidebar{
-  width:var(--sidebar-w);min-height:100vh;
-  background:rgba(13,17,23,0.92);
-  border-right:1px solid var(--border);
-  display:flex;flex-direction:column;
-  position:fixed;top:0;left:0;z-index:100;
-  backdrop-filter:blur(20px);
-  transition:transform 0.3s cubic-bezier(0.22,1,0.36,1);
-}
-.sb-logo{
-  padding:22px 18px 18px;
-  border-bottom:1px solid var(--border);
-}
-.sb-logo-inner{
-  display:flex;align-items:center;gap:10px;
-}
-.sb-logo-icon{
-  width:36px;height:36px;border-radius:10px;
-  background:linear-gradient(135deg,var(--cyan),var(--violet));
-  display:flex;align-items:center;justify-content:center;
-  font-size:18px;flex-shrink:0;
-}
-.sb-logo-name{font-size:17px;font-weight:800;letter-spacing:-0.3px;}
-.sb-logo-name span{color:var(--cyan);}
-.sb-logo-sub{
-  font-size:9px;color:var(--muted);letter-spacing:1.5px;
-  text-transform:uppercase;margin-top:1px;
-}
-.sb-nav{flex:1;padding:14px 10px;overflow-y:auto;}
-.sb-section{
-  font-size:9.5px;color:var(--muted);
-  letter-spacing:1.2px;text-transform:uppercase;
-  font-weight:600;padding:14px 8px 6px;
-}
-.sb-item{
-  display:flex;align-items:center;gap:10px;
-  padding:10px 12px;border-radius:10px;cursor:pointer;
-  font-size:13.5px;color:var(--muted2);
-  transition:all 0.18s;border:1px solid transparent;
-  margin-bottom:2px;position:relative;
-}
-.sb-item:hover{
-  background:var(--surface2);color:var(--text);
-}
-.sb-item.active{
-  background:rgba(56,189,248,0.1);
-  color:var(--cyan);border-color:rgba(56,189,248,0.2);
-}
-.sb-item.active::before{
-  content:'';position:absolute;left:-1px;top:6px;bottom:6px;
-  width:3px;border-radius:0 3px 3px 0;
-  background:var(--cyan);
-}
-.sb-icon{font-size:17px;width:20px;text-align:center;flex-shrink:0;}
-.sb-badge{
-  margin-left:auto;background:var(--cyan);color:var(--bg);
-  font-size:10px;font-weight:700;padding:2px 7px;
-  border-radius:20px;
-}
-.sb-badge.amber{background:var(--amber);color:var(--bg);}
-.sb-footer{
-  padding:14px 10px;border-top:1px solid var(--border);
-}
-.sb-user{
-  display:flex;align-items:center;gap:10px;
-  padding:10px 12px;border-radius:10px;
-  background:var(--surface2);cursor:pointer;
-  border:1px solid var(--border);transition:border-color 0.2s;
-}
-.sb-user:hover{border-color:var(--border2);}
-.sb-avatar{
-  width:32px;height:32px;border-radius:50%;
-  background:linear-gradient(135deg,var(--cyan),var(--violet));
-  display:flex;align-items:center;justify-content:center;
-  font-size:12px;font-weight:700;color:var(--bg);flex-shrink:0;
-}
-.sb-user-name{font-size:13px;font-weight:600;}
-.sb-user-role{font-size:11px;color:var(--muted);}
-
-/* ── MAIN AREA ── */
-.main-area{
-  margin-left:var(--sidebar-w);flex:1;
-  display:flex;flex-direction:column;min-height:100vh;
-}
-
-/* ── TOPBAR ── */
-.topbar{
-  height:var(--topbar-h);
-  background:rgba(13,17,23,0.88);
-  border-bottom:1px solid var(--border);
-  display:flex;align-items:center;
-  justify-content:space-between;
-  padding:0 28px;position:sticky;top:0;z-index:50;
-  backdrop-filter:blur(16px);
-}
-.tb-left{display:flex;align-items:center;gap:14px;}
-.tb-page-title{font-size:17px;font-weight:700;letter-spacing:-0.3px;}
-.tb-breadcrumb{
-  font-size:11px;color:var(--muted);
-  font-family:var(--mono);
-}
-.tb-right{display:flex;align-items:center;gap:10px;}
-.tb-btn{
-  display:inline-flex;align-items:center;gap:6px;
-  padding:8px 16px;border-radius:8px;font-size:12.5px;
-  cursor:pointer;border:none;font-weight:600;
-  transition:all 0.18s;
-}
-.tb-btn.primary{
-  background:var(--cyan);color:var(--bg);
-}
-.tb-btn.primary:hover{
-  background:#7dd3fc;box-shadow:0 0 16px rgba(56,189,248,0.3);
-}
-.tb-btn.ghost{
-  background:transparent;color:var(--muted2);
-  border:1px solid var(--border);
-}
-.tb-btn.ghost:hover{background:var(--surface2);color:var(--text);}
-.tb-icon-btn{
-  width:36px;height:36px;border-radius:8px;
-  background:var(--surface2);border:1px solid var(--border);
-  display:flex;align-items:center;justify-content:center;
-  cursor:pointer;font-size:16px;transition:border-color 0.18s;
-  position:relative;
-}
-.tb-icon-btn:hover{border-color:var(--border2);}
-.notif-dot{
-  width:7px;height:7px;border-radius:50%;
-  background:var(--rose);position:absolute;
-  top:7px;right:7px;border:2px solid var(--surface);
-}
-
-/* ── CONTENT WRAPPER ── */
-.content{padding:28px;flex:1;}
-
-/* ═══════════════════════════════════════════
-   SHARED COMPONENTS
-═══════════════════════════════════════════ */
-.card{
-  background:rgba(13,17,23,0.8);
-  border:1px solid var(--border);border-radius:var(--radius);
-  padding:22px;backdrop-filter:blur(12px);
-  transition:border-color 0.2s;
-}
-.card:hover{border-color:var(--border2);}
-.card-header{
-  display:flex;align-items:center;justify-content:space-between;
-  margin-bottom:18px;
-}
-.card-title{font-size:14px;font-weight:700;letter-spacing:-0.2px;}
-.card-action{
-  font-size:12px;color:var(--cyan);cursor:pointer;
-  display:flex;align-items:center;gap:4px;
-}
-.grid{display:grid;gap:18px;}
-.g-4{grid-template-columns:repeat(4,1fr);}
-.g-3{grid-template-columns:repeat(3,1fr);}
-.g-2{grid-template-columns:1fr 1fr;}
-.g-2-1{grid-template-columns:2fr 1fr;}
-.g-1-2{grid-template-columns:1fr 2fr;}
-.span-2{grid-column:span 2;}
-.span-3{grid-column:span 3;}
-
-/* stat card */
-.stat-card{
-  background:rgba(13,17,23,0.8);
-  border:1px solid var(--border);border-radius:var(--radius);
-  padding:20px;position:relative;overflow:hidden;
-  transition:all 0.2s;cursor:default;
-}
-.stat-card:hover{border-color:var(--border2);transform:translateY(-2px);}
-.stat-card::after{
-  content:'';position:absolute;
-  top:0;left:0;right:0;height:2px;
-}
-.stat-card.c{--c:var(--cyan);}
-.stat-card.e{--c:var(--emerald);}
-.stat-card.v{--c:var(--violet);}
-.stat-card.a{--c:var(--amber);}
-.stat-card.r{--c:var(--rose);}
-.stat-card::after{background:var(--c);}
-.stat-icon{
-  width:40px;height:40px;border-radius:10px;
-  background:rgba(255,255,255,0.05);
-  display:flex;align-items:center;justify-content:center;
-  font-size:20px;margin-bottom:14px;
-  border:1px solid var(--border);
-}
-.stat-label{font-size:11px;color:var(--muted2);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px;}
-.stat-val{
-  font-size:28px;font-weight:800;letter-spacing:-1px;
-  font-family:var(--mono);color:var(--c);
-}
-.stat-change{
-  font-size:11.5px;margin-top:6px;display:flex;align-items:center;gap:4px;
-}
-.up{color:var(--emerald);}
-.down{color:var(--rose);}
-.neutral{color:var(--muted2);}
-
-/* badge */
-.badge{
-  display:inline-flex;align-items:center;gap:5px;
-  padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;
-}
-.badge.done{background:rgba(52,211,153,0.1);color:var(--emerald);}
-.badge.proc{background:rgba(251,191,36,0.1);color:var(--amber);}
-.badge.err {background:rgba(251,113,133,0.1);color:var(--rose);}
-.badge.info{background:rgba(56,189,248,0.1);color:var(--cyan);}
-.badge-dot{width:5px;height:5px;border-radius:50%;background:currentColor;}
-
-/* table */
-.tbl-wrap{overflow-x:auto;}
-table{width:100%;border-collapse:collapse;font-size:13px;}
-thead th{
-  text-align:left;padding:10px 14px;
-  font-size:10.5px;font-weight:600;color:var(--muted);
-  letter-spacing:0.6px;text-transform:uppercase;
-  border-bottom:1px solid var(--border);
-}
-tbody tr{border-bottom:1px solid var(--border);transition:background 0.15s;}
-tbody tr:last-child{border-bottom:none;}
-tbody tr:hover{background:rgba(56,189,248,0.04);}
-td{padding:12px 14px;vertical-align:middle;}
-
-/* progress bar */
-.prog{height:5px;background:var(--surface3);border-radius:10px;overflow:hidden;}
-.prog-fill{
-  height:100%;border-radius:10px;
-  background:linear-gradient(90deg,var(--cyan),var(--violet));
-  transition:width 0.6s ease;
-}
-.prog-fill.green{background:linear-gradient(90deg,var(--emerald),#6ee7b7);}
-.prog-fill.red{background:var(--rose);}
-
-/* icon button */
-.icon-btn{
-  width:28px;height:28px;border-radius:7px;
-  background:var(--surface3);border:1px solid var(--border);
-  display:inline-flex;align-items:center;justify-content:center;
-  cursor:pointer;font-size:13px;transition:all 0.15s;
-}
-.icon-btn:hover{border-color:var(--cyan);color:var(--cyan);}
-
-/* section fade-in */
-.fade-in{animation:fadeIn 0.4s ease both;}
-@keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
-
-/* page section heading */
-.section-head{
-  display:flex;align-items:center;gap:12px;margin-bottom:22px;
-}
-.section-head h2{font-size:20px;font-weight:800;letter-spacing:-0.5px;}
-.section-head p{font-size:13px;color:var(--muted2);margin-top:3px;}
-.section-tag{
-  padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600;
-  background:rgba(56,189,248,0.1);color:var(--cyan);border:1px solid rgba(56,189,248,0.2);
-}
-
-/* ═══════════════════════════════════════════
-   DASHBOARD PAGE
-═══════════════════════════════════════════ */
-/* bar chart */
-.bar-chart{
-  display:flex;align-items:flex-end;gap:5px;
-  padding:12px 8px 0;height:150px;
-}
-.bar-grp{flex:1;display:flex;gap:2px;align-items:flex-end;}
-.bar{
-  flex:1;border-radius:4px 4px 0 0;min-height:6px;
-  cursor:pointer;transition:filter 0.15s;
-}
-.bar:hover{filter:brightness(1.2);}
-.bar.b1{background:var(--cyan);}
-.bar.b2{background:rgba(167,139,250,0.6);}
-.chart-xlabels{
-  display:flex;padding:8px 8px 4px;gap:5px;
-}
-.chart-xlabels span{
-  flex:1;text-align:center;font-size:10px;color:var(--muted);
-}
-
-/* mini donut */
-.donut-wrap{display:flex;align-items:center;gap:20px;}
-.donut-svg{width:110px;height:110px;flex-shrink:0;}
-.donut-legend{display:flex;flex-direction:column;gap:9px;flex:1;}
-.dl-item{display:flex;align-items:center;gap:8px;font-size:12px;}
-.dl-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
-.dl-label{color:var(--muted2);flex:1;}
-.dl-val{font-weight:600;font-family:var(--mono);}
-
-/* kpi strip */
-.kpi-strip{display:flex;gap:12px;margin-top:16px;}
-.kpi{
-  flex:1;background:var(--surface3);border-radius:9px;
-  padding:12px 14px;border:1px solid var(--border);
-}
-.kpi-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;}
-.kpi-val{font-size:19px;font-weight:800;font-family:var(--mono);}
-.kpi-sub{font-size:11px;margin-top:3px;}
-
-/* activity */
-.activity-list{display:flex;flex-direction:column;}
-.act-item{
-  display:flex;gap:12px;padding:11px 0;
-  border-bottom:1px solid var(--border);
-}
-.act-item:last-child{border-bottom:none;}
-.act-dot-col{display:flex;flex-direction:column;align-items:center;}
-.act-dot{
-  width:9px;height:9px;border-radius:50%;
-  margin-top:4px;flex-shrink:0;
-}
-.act-line{width:1px;background:var(--border);flex:1;margin-top:4px;}
-.act-txt{font-size:13px;line-height:1.5;}
-.act-time{font-size:11px;color:var(--muted);margin-top:2px;}
-
-/* ═══════════════════════════════════════════
-   UPLOAD PAGE
-═══════════════════════════════════════════ */
-.upload-zone{
-  border:2px dashed rgba(56,189,248,0.3);
-  border-radius:16px;padding:48px 24px;
-  text-align:center;cursor:pointer;
-  transition:all 0.25s;
-  background:rgba(56,189,248,0.02);
-  position:relative;overflow:hidden;
-}
-.upload-zone:hover,
-.upload-zone.drag-over{
-  border-color:var(--cyan);
-  background:rgba(56,189,248,0.06);
-}
-.upload-zone::before{
-  content:'';position:absolute;inset:0;
-  background:radial-gradient(circle at 50% 50%,rgba(56,189,248,0.05),transparent 60%);
-  pointer-events:none;
-}
-.upload-icon{font-size:48px;margin-bottom:14px;display:block;}
-.upload-title{font-size:18px;font-weight:700;margin-bottom:6px;}
-.upload-sub{font-size:13px;color:var(--muted2);margin-bottom:20px;}
-.file-tags{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:24px;}
-.ftag{
-  padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;
-  border:1px solid;
-}
-.ftag.csv{color:var(--emerald);border-color:rgba(52,211,153,0.3);background:rgba(52,211,153,0.08);}
-.ftag.xlsx{color:var(--amber);border-color:rgba(251,191,36,0.3);background:rgba(251,191,36,0.08);}
-.ftag.json{color:var(--cyan);border-color:rgba(56,189,248,0.3);background:rgba(56,189,248,0.08);}
-.ftag.tsv{color:var(--violet);border-color:rgba(167,139,250,0.3);background:rgba(167,139,250,0.08);}
-.upload-btn-wrap{display:flex;gap:12px;justify-content:center;}
-.btn{
-  display:inline-flex;align-items:center;gap:7px;
-  padding:11px 22px;border-radius:10px;font-size:14px;
-  font-weight:600;cursor:pointer;border:none;
-  transition:all 0.18s;
-}
-.btn.primary{
-  background:linear-gradient(135deg,var(--cyan),#0ea5e9);
-  color:var(--bg);box-shadow:0 4px 18px rgba(56,189,248,0.2);
-}
-.btn.primary:hover{
-  transform:translateY(-1px);
-  box-shadow:0 8px 24px rgba(56,189,248,0.3);
-}
-.btn.outline{
-  background:transparent;color:var(--muted2);
-  border:1px solid var(--border);
-}
-.btn.outline:hover{background:var(--surface2);color:var(--text);}
-.btn.sm{padding:8px 16px;font-size:12.5px;}
-.btn.danger{background:rgba(251,113,133,0.15);color:var(--rose);border:1px solid rgba(251,113,133,0.3);}
-
-/* upload progress */
-.upload-progress{
-  background:var(--surface2);border:1px solid var(--border);
-  border-radius:12px;padding:18px 20px;margin-top:16px;
-}
-.up-file-row{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
-.up-file-icon{
-  width:36px;height:36px;border-radius:8px;
-  background:var(--surface3);display:flex;align-items:center;
-  justify-content:center;font-size:18px;flex-shrink:0;
-}
-.up-file-name{font-size:13px;font-weight:600;}
-.up-file-size{font-size:11px;color:var(--muted);}
-.up-pct{font-size:13px;font-weight:700;color:var(--cyan);font-family:var(--mono);}
-
-/* upload history table */
-.file-row-icon{
-  width:30px;height:30px;border-radius:7px;
-  background:var(--surface3);display:inline-flex;
-  align-items:center;justify-content:center;font-size:15px;
-  margin-right:10px;
-}
-
-/* ═══════════════════════════════════════════
-   CLEANING PAGE
-═══════════════════════════════════════════ */
-.cleaning-step{
-  background:var(--surface2);border:1px solid var(--border);
-  border-radius:12px;padding:18px 20px;
-  display:flex;align-items:flex-start;gap:16px;
-  transition:border-color 0.2s;
-}
-.cleaning-step:hover{border-color:var(--border2);}
-.step-num{
-  width:36px;height:36px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  font-size:14px;font-weight:800;flex-shrink:0;
-  font-family:var(--mono);
-}
-.step-num.done{background:rgba(52,211,153,0.15);color:var(--emerald);border:1px solid rgba(52,211,153,0.3);}
-.step-num.active{background:rgba(56,189,248,0.15);color:var(--cyan);border:1px solid rgba(56,189,248,0.3);}
-.step-num.pending{background:var(--surface3);color:var(--muted);border:1px solid var(--border);}
-.step-body{flex:1;}
-.step-title{font-size:14px;font-weight:600;margin-bottom:4px;}
-.step-desc{font-size:12px;color:var(--muted2);line-height:1.5;}
-.step-result{
-  margin-top:10px;display:flex;gap:10px;flex-wrap:wrap;
-}
-.step-pill{
-  padding:4px 12px;border-radius:20px;font-size:11px;font-weight:500;
-  background:rgba(52,211,153,0.08);color:var(--emerald);
-  border:1px solid rgba(52,211,153,0.2);
-}
-.step-status{
-  font-size:13px;font-weight:600;flex-shrink:0;margin-top:6px;
-}
-
-/* data quality meter */
-.quality-ring{position:relative;display:inline-block;}
-.quality-ring svg{width:130px;height:130px;}
-.quality-center{
-  position:absolute;inset:0;display:flex;
-  flex-direction:column;align-items:center;justify-content:center;
-}
-.quality-pct{font-size:24px;font-weight:800;font-family:var(--mono);}
-.quality-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;}
-.quality-stats{display:flex;flex-direction:column;gap:10px;}
-.qs-item{display:flex;align-items:center;gap:10px;}
-.qs-icon{font-size:16px;width:18px;text-align:center;}
-.qs-label{font-size:12.5px;color:var(--muted2);flex:1;}
-.qs-val{font-size:13px;font-weight:600;font-family:var(--mono);}
-
-/* ═══════════════════════════════════════════
-   ANALYTICS PAGE
-═══════════════════════════════════════════ */
-.chart-card{
-  background:rgba(13,17,23,0.8);border:1px solid var(--border);
-  border-radius:var(--radius);padding:20px;
-}
-.chart-card:hover{border-color:var(--border2);}
-.line-svg{width:100%;height:120px;overflow:visible;}
-.pie-svg{width:100%;max-width:200px;height:200px;display:block;margin:0 auto;}
-.chart-select{
-  background:var(--surface3);border:1px solid var(--border);
-  color:var(--muted2);padding:6px 10px;border-radius:7px;
-  font-size:12px;outline:none;cursor:pointer;
-}
-.chart-select:focus{border-color:var(--cyan);}
-.insight-box{
-  background:rgba(56,189,248,0.05);
-  border:1px solid rgba(56,189,248,0.15);
-  border-radius:10px;padding:14px 16px;margin-top:14px;
-}
-.insight-box p{font-size:12.5px;color:var(--muted2);line-height:1.6;}
-.insight-box strong{color:var(--cyan);}
-
-/* ═══════════════════════════════════════════
-   REPORTS PAGE
-═══════════════════════════════════════════ */
-.report-card{
-  background:rgba(13,17,23,0.8);border:1px solid var(--border);
-  border-radius:var(--radius);padding:22px;
-  display:flex;flex-direction:column;gap:14px;
-  transition:all 0.2s;
-}
-.report-card:hover{border-color:var(--border2);transform:translateY(-2px);}
-.report-icon{
-  width:44px;height:44px;border-radius:12px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:22px;
-}
-.report-icon.blue{background:rgba(56,189,248,0.1);}
-.report-icon.green{background:rgba(52,211,153,0.1);}
-.report-icon.violet{background:rgba(167,139,250,0.1);}
-.report-icon.amber{background:rgba(251,191,36,0.1);}
-.report-name{font-size:14px;font-weight:700;}
-.report-desc{font-size:12px;color:var(--muted2);line-height:1.5;}
-.report-meta{display:flex;gap:8px;flex-wrap:wrap;}
-.report-tag{
-  padding:3px 9px;border-radius:20px;font-size:10.5px;font-weight:500;
-  background:var(--surface3);color:var(--muted2);border:1px solid var(--border);
-}
-.report-actions{display:flex;gap:8px;}
-
-/* ═══════════════════════════════════════════
-   SECURITY PAGE
-═══════════════════════════════════════════ */
-.toggle-wrap{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:14px 18px;background:var(--surface2);
-  border:1px solid var(--border);border-radius:10px;
-  transition:border-color 0.2s;
-}
-.toggle-wrap:hover{border-color:var(--border2);}
-.toggle-left{display:flex;align-items:center;gap:12px;}
-.toggle-icon{font-size:20px;width:22px;text-align:center;}
-.toggle-name{font-size:13.5px;font-weight:600;}
-.toggle-desc{font-size:11.5px;color:var(--muted2);margin-top:2px;}
-.toggle-switch{
-  width:42px;height:22px;border-radius:11px;
-  border:none;cursor:pointer;position:relative;
-  transition:background 0.25s;flex-shrink:0;
-}
-.toggle-switch.on{background:var(--cyan);}
-.toggle-switch.off{background:var(--surface3);border:1px solid var(--border);}
-.toggle-switch::after{
-  content:'';position:absolute;
-  width:16px;height:16px;border-radius:50%;
-  background:#fff;top:3px;transition:left 0.25s;
-}
-.toggle-switch.on::after{left:23px;}
-.toggle-switch.off::after{left:3px;}
-.alert-row{
-  display:flex;align-items:center;gap:12px;
-  padding:12px 16px;border-radius:10px;
-  background:var(--surface2);border:1px solid var(--border);
-  margin-bottom:8px;transition:border-color 0.2s;
-}
-.alert-row:hover{border-color:var(--border2);}
-.alert-dot{
-  width:9px;height:9px;border-radius:50%;flex-shrink:0;
-}
-.alert-dot.red{background:var(--rose);}
-.alert-dot.amber{background:var(--amber);}
-.alert-dot.green{background:var(--emerald);}
-.alert-msg{font-size:13px;flex:1;}
-.alert-time{font-size:11px;color:var(--muted);}
-
-/* ═══════════════════════════════════════════
-   RESPONSIVE / SCROLLBAR
-═══════════════════════════════════════════ */
-::-webkit-scrollbar{width:5px;height:5px;}
-::-webkit-scrollbar-track{background:transparent;}
-::-webkit-scrollbar-thumb{background:var(--surface3);border-radius:3px;}
-@media(max-width:900px){
-  .sidebar{transform:translateX(-100%);}
-  .main-area{margin-left:0;}
-  .g-4{grid-template-columns:repeat(2,1fr);}
-  .g-3{grid-template-columns:1fr;}
-  .g-2-1,.g-1-2{grid-template-columns:1fr;}
-}
-</style>
 </head>
+
 <body>
 
-<!-- ANIMATED BACKGROUND -->
-<canvas id="bg-canvas"></canvas>
+  <!-- ANIMATED BACKGROUND -->
+  <canvas id="bg-canvas"></canvas>
 
-<!-- ════════════════════════════════
+  <!-- ════════════════════════════════
      LOGIN PAGE
 ════════════════════════════════ -->
-<div class="page active" id="page-login">
-  <div class="login-card">
-    <div class="login-logo">
-      <div class="login-logo-icon">🔐</div>
-      <div>
-        <div class="login-logo-text">Data<span>Vault</span></div>
-        <div style="font-size:10px;color:var(--muted);letter-spacing:1.2px;text-transform:uppercase;">Secure Analytics Platform</div>
+  <div class="page active" id="page-login">
+    <div class="login-card">
+      <div class="login-logo">
+        <div class="login-logo-icon">🔐</div>
+        <div>
+          <div class="login-logo-text">Data<span>Vault</span></div>
+          <div style="font-size:10px;color:var(--muted);letter-spacing:1.2px;text-transform:uppercase;">Secure Analytics
+            Platform</div>
+        </div>
+      </div>
+      <p class="login-tagline">Welcome back! Sign in to access your analytics workspace.</p>
+
+      <div class="form-group">
+        <label class="form-label">Email Address</label>
+        <div class="form-input-wrap">
+          <input class="form-input" type="email" placeholder="you@organization.com" id="login-email" />
+          <span class="icon">✉️</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <div class="form-input-wrap">
+          <input class="form-input" type="password" placeholder="••••••••••" id="login-pass"
+            style="padding-right:42px;" />
+          <span class="icon" onclick="togglePwd()">👁</span>
+        </div>
+      </div>
+
+      <div class="remember-row">
+        <label><input type="checkbox" checked /> Remember me</label>
+        <span class="forgot-link">Forgot password?</span>
+      </div>
+
+      <button class="btn-login" onclick="doLogin()">Sign In →</button>
+
+      <div class="login-divider">OR</div>
+
+      <button class="btn-login"
+        style="background:var(--surface2);color:var(--text);box-shadow:none;border:1px solid var(--border);">
+        🔑 Continue with SSO
+      </button>
+
+      <p class="login-footer">Don't have an account? <a onclick="showRegister()">Create one free</a></p>
+
+      <div id="login-error"
+        style="display:none;margin-top:14px;padding:10px 14px;background:rgba(251,113,133,0.1);border:1px solid rgba(251,113,133,0.3);border-radius:8px;font-size:13px;color:var(--rose);text-align:center;">
       </div>
     </div>
-    <p class="login-tagline">Welcome back! Sign in to access your analytics workspace.</p>
-
-    <div class="form-group">
-      <label class="form-label">Email Address</label>
-      <div class="form-input-wrap">
-        <input class="form-input" type="email" placeholder="you@organization.com" id="login-email"/>
-        <span class="icon">✉️</span>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label class="form-label">Password</label>
-      <div class="form-input-wrap">
-        <input class="form-input" type="password" placeholder="••••••••••" id="login-pass" style="padding-right:42px;"/>
-        <span class="icon" onclick="togglePwd()">👁</span>
-      </div>
-    </div>
-
-    <div class="remember-row">
-      <label><input type="checkbox" checked/> Remember me</label>
-      <span class="forgot-link">Forgot password?</span>
-    </div>
-
-    <button class="btn-login" onclick="doLogin()">Sign In →</button>
-
-    <div class="login-divider">OR</div>
-
-    <button class="btn-login" style="background:var(--surface2);color:var(--text);box-shadow:none;border:1px solid var(--border);">
-      🔑 Continue with SSO
-    </button>
-
-    <p class="login-footer">Don't have an account? <a onclick="showRegister()">Create one free</a></p>
-
-    <div id="login-error" style="display:none;margin-top:14px;padding:10px 14px;background:rgba(251,113,133,0.1);border:1px solid rgba(251,113,133,0.3);border-radius:8px;font-size:13px;color:var(--rose);text-align:center;"></div>
   </div>
-</div>
 
-<!-- ════════════════════════════════
+  <!-- ════════════════════════════════
      APP SHELL
 ════════════════════════════════ -->
-<div class="page" id="page-app">
+  <div class="page" id="page-app">
 
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
-    <div class="sb-logo">
-      <div class="sb-logo-inner">
-        <div class="sb-logo-icon">🔐</div>
-        <div>
-          <div class="sb-logo-name">Data<span>Vault</span></div>
-          <div class="sb-logo-sub">Analytics Platform</div>
-        </div>
-      </div>
-    </div>
-
-    <nav class="sb-nav">
-      <div class="sb-section">Main</div>
-      <div class="sb-item active" data-page="dashboard">
-        <span class="sb-icon">📊</span> Dashboard
-      </div>
-      <div class="sb-item" data-page="upload">
-        <span class="sb-icon">☁️</span> Upload Dataset
-        <span class="sb-badge amber">3</span>
-      </div>
-      <div class="sb-item" data-page="cleaning">
-        <span class="sb-icon">🧹</span> Data Cleaning
-      </div>
-      <div class="sb-item" data-page="analytics">
-        <span class="sb-icon">📈</span> Analytics
-      </div>
-      <div class="sb-item" data-page="reports">
-        <span class="sb-icon">📋</span> Reports
-        <span class="sb-badge">5</span>
-      </div>
-
-      <div class="sb-section">System</div>
-      <div class="sb-item" data-page="security">
-        <span class="sb-icon">🛡️</span> Security
-      </div>
-      <div class="sb-item" data-page="users">
-        <span class="sb-icon">👥</span> Users
-      </div>
-      <div class="sb-item" data-page="logs">
-        <span class="sb-icon">📝</span> Audit Logs
-      </div>
-    </nav>
-
-    <div class="sb-footer">
-      <div class="sb-user">
-        <div class="sb-avatar">BO</div>
-        <div>
-          <div class="sb-user-name">Bharathi O.</div>
-          <div class="sb-user-role">Admin · Free Plan</div>
-        </div>
-        <span style="color:var(--muted);font-size:13px;margin-left:auto;">⋯</span>
-      </div>
-      <button class="btn outline sm" style="width:100%;margin-top:10px;justify-content:center;" onclick="doLogout()">← Sign Out</button>
-    </div>
-  </aside>
-
-  <!-- MAIN AREA -->
-  <div class="main-area">
-
-    <!-- TOPBAR -->
-    <header class="topbar">
-      <div class="tb-left">
-        <div>
-          <div class="tb-page-title" id="tb-title">Dashboard</div>
-          <div class="tb-breadcrumb" id="tb-breadcrumb">DataVault / Dashboard</div>
-        </div>
-      </div>
-      <div class="tb-right">
-        <button class="tb-btn ghost" id="tb-secondary-btn">Export Report</button>
-        <button class="tb-btn primary" id="tb-primary-btn" onclick="navTo('upload')">+ Upload Dataset</button>
-        <div class="tb-icon-btn">🔔<div class="notif-dot"></div></div>
-        <div class="tb-icon-btn" onclick="doLogout()">⚙️</div>
-      </div>
-    </header>
-
-    <!-- CONTENT PAGES -->
-    <div class="content">
-
-      <!-- ── DASHBOARD ── -->
-      <div id="pg-dashboard" class="fade-in">
-        <div class="section-head" style="margin-bottom:22px;">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sb-logo">
+        <div class="sb-logo-inner">
+          <div class="sb-logo-icon">🔐</div>
           <div>
-            <h2>Good morning, Bharathi 👋</h2>
-            <p>Here's what's happening with your data platform today.</p>
-          </div>
-          <span class="section-tag">Live</span>
-        </div>
-
-        <!-- STATS -->
-        <div class="grid g-4" style="margin-bottom:20px;">
-          <div class="stat-card c">
-            <div class="stat-icon">📂</div>
-            <div class="stat-label">Total Datasets</div>
-            <div class="stat-val">1,248</div>
-            <div class="stat-change up">↑ 12.4% this month</div>
-          </div>
-          <div class="stat-card e">
-            <div class="stat-icon">✅</div>
-            <div class="stat-label">Records Processed</div>
-            <div class="stat-val">98.6K</div>
-            <div class="stat-change up">↑ 8.1% this week</div>
-          </div>
-          <div class="stat-card v">
-            <div class="stat-icon">📈</div>
-            <div class="stat-label">Reports Generated</div>
-            <div class="stat-val">342</div>
-            <div class="stat-change up">↑ 5.7% this week</div>
-          </div>
-          <div class="stat-card a">
-            <div class="stat-icon">👥</div>
-            <div class="stat-label">Active Users</div>
-            <div class="stat-val">64</div>
-            <div class="stat-change down">↓ 2.1% today</div>
+            <div class="sb-logo-name">Data<span>Vault</span></div>
+            <div class="sb-logo-sub">Analytics Platform</div>
           </div>
         </div>
+      </div>
 
-        <!-- CHART + DONUT -->
-        <div class="grid g-2-1" style="margin-bottom:20px;">
-          <div class="card">
-            <div class="card-header">
-              <div class="card-title">Weekly Processing Activity</div>
-              <span class="card-action">View details →</span>
+      <nav class="sb-nav">
+        <div class="sb-section">Main</div>
+        <div class="sb-item active" data-page="dashboard">
+          <span class="sb-icon">📊</span> Dashboard
+        </div>
+        <div class="sb-item" data-page="upload">
+          <span class="sb-icon">☁️</span> Upload Dataset
+          <span class="sb-badge amber">3</span>
+        </div>
+        <div class="sb-item" data-page="cleaning">
+          <span class="sb-icon">🧹</span> Data Cleaning
+        </div>
+        <div class="sb-item" data-page="analytics">
+          <span class="sb-icon">📈</span> Analytics
+        </div>
+        <div class="sb-item" data-page="reports">
+          <span class="sb-icon">📋</span> Reports
+          <span class="sb-badge">5</span>
+        </div>
+
+        <div class="sb-section">System</div>
+        <div class="sb-item" data-page="security">
+          <span class="sb-icon">🛡️</span> Security
+        </div>
+        <div class="sb-item" data-page="users">
+          <span class="sb-icon">👥</span> Users
+        </div>
+        <div class="sb-item" data-page="logs">
+          <span class="sb-icon">📝</span> Audit Logs
+        </div>
+      </nav>
+
+      <div class="sb-footer">
+        <div class="sb-user">
+          <div class="sb-avatar">BO</div>
+          <div>
+            <div class="sb-user-name">Bharathi O.</div>
+            <div class="sb-user-role">Admin · Free Plan</div>
+          </div>
+          <span style="color:var(--muted);font-size:13px;margin-left:auto;">⋯</span>
+        </div>
+        <button class="btn outline sm" style="width:100%;margin-top:10px;justify-content:center;" onclick="doLogout()">←
+          Sign Out</button>
+      </div>
+    </aside>
+
+    <!-- MAIN AREA -->
+    <div class="main-area">
+
+      <!-- TOPBAR -->
+      <header class="topbar">
+        <div class="tb-left">
+          <div>
+            <div class="tb-page-title" id="tb-title">Dashboard</div>
+            <div class="tb-breadcrumb" id="tb-breadcrumb">DataVault / Dashboard</div>
+          </div>
+        </div>
+        <div class="tb-right">
+          <button class="tb-btn ghost" id="tb-secondary-btn">Export Report</button>
+          <button class="tb-btn primary" id="tb-primary-btn" onclick="navTo('upload')">+ Upload Dataset</button>
+          <div class="tb-icon-btn">🔔<div class="notif-dot"></div>
+          </div>
+          <div class="tb-icon-btn" onclick="doLogout()">⚙️</div>
+        </div>
+      </header>
+
+      <!-- CONTENT PAGES -->
+      <div class="content">
+
+        <!-- ── DASHBOARD ── -->
+        <div id="pg-dashboard" class="fade-in">
+          <div class="section-head" style="margin-bottom:22px;">
+            <div>
+              <h2>Good morning, Bharathi 👋</h2>
+              <p>Here's what's happening with your data platform today.</p>
             </div>
-            <div style="background:var(--surface2);border-radius:10px;overflow:hidden;">
-              <div class="bar-chart">
-                <div class="bar-grp"><div class="bar b1" style="height:55%"></div><div class="bar b2" style="height:40%"></div></div>
-                <div class="bar-grp"><div class="bar b1" style="height:78%"></div><div class="bar b2" style="height:62%"></div></div>
-                <div class="bar-grp"><div class="bar b1" style="height:48%"></div><div class="bar b2" style="height:38%"></div></div>
-                <div class="bar-grp"><div class="bar b1" style="height:92%"></div><div class="bar b2" style="height:80%"></div></div>
-                <div class="bar-grp"><div class="bar b1" style="height:68%"></div><div class="bar b2" style="height:55%"></div></div>
-                <div class="bar-grp"><div class="bar b1" style="height:84%"></div><div class="bar b2" style="height:70%"></div></div>
-                <div class="bar-grp"><div class="bar b1" style="height:100%"></div><div class="bar b2" style="height:88%"></div></div>
-              </div>
-              <div class="chart-xlabels">
-                <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
-              </div>
+            <span class="section-tag">Live</span>
+          </div>
+
+          <!-- STATS -->
+          <div class="grid g-4" style="margin-bottom:20px;">
+            <div class="stat-card c">
+              <div class="stat-icon">📂</div>
+              <div class="stat-label">Total Datasets</div>
+              <div class="stat-val">1,248</div>
+              <div class="stat-change up">↑ 12.4% this month</div>
             </div>
-            <div class="kpi-strip">
-              <div class="kpi"><div class="kpi-label">Avg Quality</div><div class="kpi-val">94.2%</div><div class="kpi-sub up">↑ 2.1%</div></div>
-              <div class="kpi"><div class="kpi-label">Missing Fixed</div><div class="kpi-val">18.4K</div><div class="kpi-sub neutral">This week</div></div>
-              <div class="kpi"><div class="kpi-label">Duplicates</div><div class="kpi-val">3,221</div><div class="kpi-sub neutral">Removed</div></div>
+            <div class="stat-card e">
+              <div class="stat-icon">✅</div>
+              <div class="stat-label">Records Processed</div>
+              <div class="stat-val">98.6K</div>
+              <div class="stat-change up">↑ 8.1% this week</div>
+            </div>
+            <div class="stat-card v">
+              <div class="stat-icon">📈</div>
+              <div class="stat-label">Reports Generated</div>
+              <div class="stat-val">342</div>
+              <div class="stat-change up">↑ 5.7% this week</div>
+            </div>
+            <div class="stat-card a">
+              <div class="stat-icon">👥</div>
+              <div class="stat-label">Active Users</div>
+              <div class="stat-val">64</div>
+              <div class="stat-change down">↓ 2.1% today</div>
             </div>
           </div>
-          <div class="card">
-            <div class="card-header">
-              <div class="card-title">Dataset Formats</div>
+
+          <!-- CHART + DONUT -->
+          <div class="grid g-2-1" style="margin-bottom:20px;">
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">Weekly Processing Activity</div>
+                <span class="card-action">View details →</span>
+              </div>
+              <div style="background:var(--surface2);border-radius:10px;overflow:hidden;">
+                <div class="bar-chart">
+                  <div class="bar-grp">
+                    <div class="bar b1" style="height:55%"></div>
+                    <div class="bar b2" style="height:40%"></div>
+                  </div>
+                  <div class="bar-grp">
+                    <div class="bar b1" style="height:78%"></div>
+                    <div class="bar b2" style="height:62%"></div>
+                  </div>
+                  <div class="bar-grp">
+                    <div class="bar b1" style="height:48%"></div>
+                    <div class="bar b2" style="height:38%"></div>
+                  </div>
+                  <div class="bar-grp">
+                    <div class="bar b1" style="height:92%"></div>
+                    <div class="bar b2" style="height:80%"></div>
+                  </div>
+                  <div class="bar-grp">
+                    <div class="bar b1" style="height:68%"></div>
+                    <div class="bar b2" style="height:55%"></div>
+                  </div>
+                  <div class="bar-grp">
+                    <div class="bar b1" style="height:84%"></div>
+                    <div class="bar b2" style="height:70%"></div>
+                  </div>
+                  <div class="bar-grp">
+                    <div class="bar b1" style="height:100%"></div>
+                    <div class="bar b2" style="height:88%"></div>
+                  </div>
+                </div>
+                <div class="chart-xlabels">
+                  <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+                </div>
+              </div>
+              <div class="kpi-strip">
+                <div class="kpi">
+                  <div class="kpi-label">Avg Quality</div>
+                  <div class="kpi-val">94.2%</div>
+                  <div class="kpi-sub up">↑ 2.1%</div>
+                </div>
+                <div class="kpi">
+                  <div class="kpi-label">Missing Fixed</div>
+                  <div class="kpi-val">18.4K</div>
+                  <div class="kpi-sub neutral">This week</div>
+                </div>
+                <div class="kpi">
+                  <div class="kpi-label">Duplicates</div>
+                  <div class="kpi-val">3,221</div>
+                  <div class="kpi-sub neutral">Removed</div>
+                </div>
+              </div>
             </div>
-            <div class="donut-wrap" style="flex-direction:column;align-items:center;gap:16px;">
-              <svg class="donut-svg" viewBox="0 0 36 36">
-                <circle cx="18" cy="18" r="15.9" fill="none" stroke="#1e2535" stroke-width="3.8"/>
-                <circle cx="18" cy="18" r="15.9" fill="none" stroke="#38bdf8" stroke-width="3.8"
-                  stroke-dasharray="52 48" stroke-dashoffset="25" stroke-linecap="round"/>
-                <circle cx="18" cy="18" r="15.9" fill="none" stroke="#a78bfa" stroke-width="3.8"
-                  stroke-dasharray="24 76" stroke-dashoffset="-27" stroke-linecap="round"/>
-                <circle cx="18" cy="18" r="15.9" fill="none" stroke="#34d399" stroke-width="3.8"
-                  stroke-dasharray="16 84" stroke-dashoffset="-51" stroke-linecap="round"/>
-                <circle cx="18" cy="18" r="15.9" fill="none" stroke="#fbbf24" stroke-width="3.8"
-                  stroke-dasharray="8 92" stroke-dashoffset="-67" stroke-linecap="round"/>
-              </svg>
-              <div class="donut-legend" style="width:100%;">
-                <div class="dl-item"><div class="dl-dot" style="background:#38bdf8"></div><div class="dl-label">CSV</div><div class="dl-val">52%</div></div>
-                <div class="dl-item"><div class="dl-dot" style="background:#a78bfa"></div><div class="dl-label">XLSX</div><div class="dl-val">24%</div></div>
-                <div class="dl-item"><div class="dl-dot" style="background:#34d399"></div><div class="dl-label">JSON</div><div class="dl-val">16%</div></div>
-                <div class="dl-item"><div class="dl-dot" style="background:#fbbf24"></div><div class="dl-label">Other</div><div class="dl-val">8%</div></div>
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">Dataset Formats</div>
+              </div>
+              <div class="donut-wrap" style="flex-direction:column;align-items:center;gap:16px;">
+                <svg class="donut-svg" viewBox="0 0 36 36">
+                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="#1e2535" stroke-width="3.8" />
+                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="#38bdf8" stroke-width="3.8"
+                    stroke-dasharray="52 48" stroke-dashoffset="25" stroke-linecap="round" />
+                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="#a78bfa" stroke-width="3.8"
+                    stroke-dasharray="24 76" stroke-dashoffset="-27" stroke-linecap="round" />
+                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="#34d399" stroke-width="3.8"
+                    stroke-dasharray="16 84" stroke-dashoffset="-51" stroke-linecap="round" />
+                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="#fbbf24" stroke-width="3.8"
+                    stroke-dasharray="8 92" stroke-dashoffset="-67" stroke-linecap="round" />
+                </svg>
+                <div class="donut-legend" style="width:100%;">
+                  <div class="dl-item">
+                    <div class="dl-dot" style="background:#38bdf8"></div>
+                    <div class="dl-label">CSV</div>
+                    <div class="dl-val">52%</div>
+                  </div>
+                  <div class="dl-item">
+                    <div class="dl-dot" style="background:#a78bfa"></div>
+                    <div class="dl-label">XLSX</div>
+                    <div class="dl-val">24%</div>
+                  </div>
+                  <div class="dl-item">
+                    <div class="dl-dot" style="background:#34d399"></div>
+                    <div class="dl-label">JSON</div>
+                    <div class="dl-val">16%</div>
+                  </div>
+                  <div class="dl-item">
+                    <div class="dl-dot" style="background:#fbbf24"></div>
+                    <div class="dl-label">Other</div>
+                    <div class="dl-val">8%</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- RECENT + ACTIVITY -->
+          <div class="grid g-2-1">
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">Recent Datasets</div>
+                <span class="card-action" onclick="navTo('upload')">View all →</span>
+              </div>
+              <div class="tbl-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>File</th>
+                      <th>Records</th>
+                      <th>Status</th>
+                      <th>Quality</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><span class="file-row-icon">📄</span><b>sales_q1_2024.csv</b></td>
+                      <td style="color:var(--muted2)">14,280</td>
+                      <td><span class="badge done"><span class="badge-dot"></span>Done</span></td>
+                      <td>
+                        <div class="prog" style="width:80px">
+                          <div class="prog-fill" style="width:94%"></div>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><span class="file-row-icon">📊</span><b>inventory.xlsx</b></td>
+                      <td style="color:var(--muted2)">8,540</td>
+                      <td><span class="badge proc"><span class="badge-dot"></span>Processing</span></td>
+                      <td>
+                        <div class="prog" style="width:80px">
+                          <div class="prog-fill" style="width:62%"></div>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><span class="file-row-icon">📋</span><b>customer_logs.json</b></td>
+                      <td style="color:var(--muted2)">32,100</td>
+                      <td><span class="badge done"><span class="badge-dot"></span>Done</span></td>
+                      <td>
+                        <div class="prog" style="width:80px">
+                          <div class="prog-fill green" style="width:88%"></div>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><span class="file-row-icon">⚠️</span><b>hr_old.csv</b></td>
+                      <td style="color:var(--muted2)">4,200</td>
+                      <td><span class="badge err"><span class="badge-dot"></span>Error</span></td>
+                      <td>
+                        <div class="prog" style="width:80px">
+                          <div class="prog-fill red" style="width:23%"></div>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">Recent Activity</div>
+              </div>
+              <div class="activity-list">
+                <div class="act-item">
+                  <div class="act-dot-col">
+                    <div class="act-dot" style="background:var(--emerald)"></div>
+                    <div class="act-line"></div>
+                  </div>
+                  <div>
+                    <div class="act-txt"><b>sales_q1.csv</b> processed — 94% quality</div>
+                    <div class="act-time">2 min ago</div>
+                  </div>
+                </div>
+                <div class="act-item">
+                  <div class="act-dot-col">
+                    <div class="act-dot" style="background:var(--cyan)"></div>
+                    <div class="act-line"></div>
+                  </div>
+                  <div>
+                    <div class="act-txt"><b>Ravi K.</b> uploaded inventory.xlsx</div>
+                    <div class="act-time">5 hrs ago</div>
+                  </div>
+                </div>
+                <div class="act-item">
+                  <div class="act-dot-col">
+                    <div class="act-dot" style="background:var(--violet)"></div>
+                    <div class="act-line"></div>
+                  </div>
+                  <div>
+                    <div class="act-txt"><b>Meera S.</b> downloaded Q1 report PDF</div>
+                    <div class="act-time">1 day ago</div>
+                  </div>
+                </div>
+                <div class="act-item">
+                  <div class="act-dot-col">
+                    <div class="act-dot" style="background:var(--rose)"></div>
+                  </div>
+                  <div>
+                    <div class="act-txt"><b>Admin</b> blocked unauthorized access attempt</div>
+                    <div class="act-time">2 days ago</div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- RECENT + ACTIVITY -->
-        <div class="grid g-2-1">
+        <!-- ── UPLOAD ── -->
+        <div id="pg-upload" class="fade-in" style="display:none;">
+          <div class="section-head">
+            <div>
+              <h2>Upload Dataset</h2>
+              <p>Upload your raw data files — we'll clean and process them automatically.</p>
+            </div>
+          </div>
+          <div class="grid g-2" style="margin-bottom:20px;align-items:start;">
+            <div>
+              <!-- Hidden file input -->
+              <input type="file" id="file-input" accept=".csv,.xlsx,.xls,.json,.tsv,.txt" style="display:none;"
+                onchange="handleFileSelect(event)" />
+
+              <div class="upload-zone" id="dropzone" ondragover="onDrag(event)" ondragleave="onDragLeave(event)"
+                ondrop="onDrop(event)" onclick="document.getElementById('file-input').click()">
+                <span class="upload-icon">☁️</span>
+                <div class="upload-title">Drag & Drop your file here</div>
+                <div class="upload-sub">or click the button below to browse your computer</div>
+                <div class="file-tags">
+                  <span class="ftag csv">CSV</span>
+                  <span class="ftag xlsx">XLSX</span>
+                  <span class="ftag json">JSON</span>
+                  <span class="ftag tsv">TSV</span>
+                </div>
+                <div class="upload-btn-wrap">
+                  <button class="btn primary"
+                    onclick="event.stopPropagation(); document.getElementById('file-input').click();">📁 Browse
+                    Files</button>
+                  <button class="btn outline" onclick="event.stopPropagation(); openUrlModal();">🔗 From URL</button>
+                </div>
+                <div style="margin-top:16px;font-size:11px;color:var(--muted);">Max file size: 500 MB · Secure encrypted
+                  upload</div>
+              </div>
+
+              <div class="upload-progress card" id="upload-prog" style="display:none;margin-top:16px;">
+                <div class="up-file-row">
+                  <div class="up-file-icon">📄</div>
+                  <div style="flex:1;">
+                    <div class="up-file-name" id="up-file-name">sales_data_2024.csv</div>
+                    <div class="up-file-size" id="up-file-size">2.4 MB · Uploading…</div>
+                  </div>
+                  <div class="up-pct" id="up-pct-txt">0%</div>
+                </div>
+                <div class="prog">
+                  <div class="prog-fill" id="up-prog-bar" style="width:0%"></div>
+                </div>
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-top:10px;">
+                  <div style="font-size:12px;color:var(--muted);">🔒 End-to-end encrypted · Files stored on AWS S3</div>
+                  <button class="btn danger sm" onclick="cancelUpload()" style="padding:6px 14px;font-size:11px;">✕ Cancel</button>
+                </div>
+              </div>
+
+              <div class="card" id="upload-success"
+                style="display:none;margin-top:16px;border-color:rgba(52,211,153,0.3);">
+                <div style="display:flex;align-items:center;gap:12px;">
+                  <div style="font-size:32px;">✅</div>
+                  <div>
+                    <div style="font-size:14px;font-weight:700;color:var(--emerald);">Upload Successful!</div>
+                    <div style="font-size:12px;color:var(--muted2);margin-top:3px;" id="upload-success-msg">Your file is
+                      queued for automatic cleaning & analysis.</div>
+                  </div>
+                </div>
+                <div style="display:flex;gap:10px;margin-top:14px;">
+                  <button class="btn primary sm" onclick="navTo('cleaning')">🧹 Start Cleaning →</button>
+                  <button class="btn outline sm" onclick="navTo('analytics')">📈 View Analytics</button>
+                  <button class="btn danger sm" onclick="discardUpload()" style="margin-left:auto;">🗑 Discard</button>
+                </div>
+              </div>
+
+              <!-- File Data Preview -->
+              <div class="card" id="file-preview" style="display:none;margin-top:16px;">
+                <div class="card-header">
+                  <div class="card-title" id="preview-title">📄 File Preview</div>
+                  <div style="display:flex;gap:8px;align-items:center;">
+                    <span style="font-size:12px;color:var(--muted2);" id="preview-info"></span>
+                    <button class="btn outline sm" onclick="closePreview()">✕ Close</button>
+                  </div>
+                </div>
+                <div class="tbl-wrap" id="preview-table-wrap" style="max-height:400px;overflow:auto;">
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">Upload Guidelines</div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:12px;">
+                <div style="display:flex;gap:10px;align-items:flex-start;">
+                  <span style="font-size:18px;">📋</span>
+                  <div>
+                    <div style="font-size:13px;font-weight:600;">Supported Formats</div>
+                    <div style="font-size:12px;color:var(--muted2);margin-top:2px;">CSV, XLSX, XLS, JSON, TSV up to
+                      500MB</div>
+                  </div>
+                </div>
+                <div style="display:flex;gap:10px;align-items:flex-start;">
+                  <span style="font-size:18px;">🔤</span>
+                  <div>
+                    <div style="font-size:13px;font-weight:600;">First Row = Headers</div>
+                    <div style="font-size:12px;color:var(--muted2);margin-top:2px;">Ensure your file has column names in
+                      row 1</div>
+                  </div>
+                </div>
+                <div style="display:flex;gap:10px;align-items:flex-start;">
+                  <span style="font-size:18px;">🔒</span>
+                  <div>
+                    <div style="font-size:13px;font-weight:600;">Data Privacy</div>
+                    <div style="font-size:12px;color:var(--muted2);margin-top:2px;">Files are encrypted at rest
+                      (AES-256) and in transit (TLS)</div>
+                  </div>
+                </div>
+                <div style="display:flex;gap:10px;align-items:flex-start;">
+                  <span style="font-size:18px;">⚡</span>
+                  <div>
+                    <div style="font-size:13px;font-weight:600;">Auto Processing</div>
+                    <div style="font-size:12px;color:var(--muted2);margin-top:2px;">Cleaning starts automatically after
+                      upload completes</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div class="card">
             <div class="card-header">
-              <div class="card-title">Recent Datasets</div>
-              <span class="card-action" onclick="navTo('upload')">View all →</span>
+              <div class="card-title">Upload History</div><span class="card-action">Clear all</span>
             </div>
             <div class="tbl-wrap">
               <table>
-                <thead><tr><th>File</th><th>Records</th><th>Status</th><th>Quality</th></tr></thead>
+                <thead>
+                  <tr>
+                    <th>File Name</th>
+                    <th>Size</th>
+                    <th>Records</th>
+                    <th>Uploaded</th>
+                    <th>Status</th>
+                    <th>Quality</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
                 <tbody>
-                  <tr><td><span class="file-row-icon">📄</span><b>sales_q1_2024.csv</b></td><td style="color:var(--muted2)">14,280</td><td><span class="badge done"><span class="badge-dot"></span>Done</span></td><td><div class="prog" style="width:80px"><div class="prog-fill" style="width:94%"></div></div></td></tr>
-                  <tr><td><span class="file-row-icon">📊</span><b>inventory.xlsx</b></td><td style="color:var(--muted2)">8,540</td><td><span class="badge proc"><span class="badge-dot"></span>Processing</span></td><td><div class="prog" style="width:80px"><div class="prog-fill" style="width:62%"></div></div></td></tr>
-                  <tr><td><span class="file-row-icon">📋</span><b>customer_logs.json</b></td><td style="color:var(--muted2)">32,100</td><td><span class="badge done"><span class="badge-dot"></span>Done</span></td><td><div class="prog" style="width:80px"><div class="prog-fill green" style="width:88%"></div></div></td></tr>
-                  <tr><td><span class="file-row-icon">⚠️</span><b>hr_old.csv</b></td><td style="color:var(--muted2)">4,200</td><td><span class="badge err"><span class="badge-dot"></span>Error</span></td><td><div class="prog" style="width:80px"><div class="prog-fill red" style="width:23%"></div></div></td></tr>
+                  <tr>
+                    <td><span class="file-row-icon">📄</span><b>sales_q1_2024.csv</b></td>
+                    <td>2.4 MB</td>
+                    <td>14,280</td>
+                    <td style="color:var(--muted2)">2h ago</td>
+                    <td><span class="badge done"><span class="badge-dot"></span>Processed</span></td>
+                    <td>
+                      <div class="prog" style="width:90px">
+                        <div class="prog-fill" style="width:94%"></div>
+                      </div>
+                    </td>
+                    <td><span class="icon-btn">📊</span> <span class="icon-btn">⬇</span> <span
+                        class="icon-btn">🗑</span></td>
+                  </tr>
+                  <tr>
+                    <td><span class="file-row-icon">📊</span><b>inventory_data.xlsx</b></td>
+                    <td>1.1 MB</td>
+                    <td>8,540</td>
+                    <td style="color:var(--muted2)">5h ago</td>
+                    <td><span class="badge proc"><span class="badge-dot"></span>Processing</span></td>
+                    <td>
+                      <div class="prog" style="width:90px">
+                        <div class="prog-fill" style="width:62%"></div>
+                      </div>
+                    </td>
+                    <td><span class="icon-btn">👁</span> <span class="icon-btn">🗑</span></td>
+                  </tr>
+                  <tr>
+                    <td><span class="file-row-icon">📋</span><b>customer_logs.json</b></td>
+                    <td>5.8 MB</td>
+                    <td>32,100</td>
+                    <td style="color:var(--muted2)">1d ago</td>
+                    <td><span class="badge done"><span class="badge-dot"></span>Processed</span></td>
+                    <td>
+                      <div class="prog" style="width:90px">
+                        <div class="prog-fill green" style="width:88%"></div>
+                      </div>
+                    </td>
+                    <td><span class="icon-btn">📊</span> <span class="icon-btn">⬇</span> <span
+                        class="icon-btn">🗑</span></td>
+                  </tr>
+                  <tr>
+                    <td><span class="file-row-icon">⚠️</span><b>hr_records_old.csv</b></td>
+                    <td>890 KB</td>
+                    <td>4,200</td>
+                    <td style="color:var(--muted2)">2d ago</td>
+                    <td><span class="badge err"><span class="badge-dot"></span>Error</span></td>
+                    <td>
+                      <div class="prog" style="width:90px">
+                        <div class="prog-fill red" style="width:23%"></div>
+                      </div>
+                    </td>
+                    <td><span class="icon-btn">🔁</span> <span class="icon-btn">🗑</span></td>
+                  </tr>
                 </tbody>
               </table>
             </div>
           </div>
-          <div class="card">
-            <div class="card-header"><div class="card-title">Recent Activity</div></div>
-            <div class="activity-list">
-              <div class="act-item">
-                <div class="act-dot-col"><div class="act-dot" style="background:var(--emerald)"></div><div class="act-line"></div></div>
-                <div><div class="act-txt"><b>sales_q1.csv</b> processed — 94% quality</div><div class="act-time">2 min ago</div></div>
+        </div>
+
+        <!-- ── CLEANING ── -->
+        <div id="pg-cleaning" class="fade-in" style="display:none;">
+          <div class="section-head">
+            <div>
+              <h2>Data Cleaning</h2>
+              <p>Automatic preprocessing pipeline — reviewing <b>sales_q1_2024.csv</b></p>
+            </div>
+          </div>
+          <div class="grid g-2-1" style="align-items:start;">
+            <div>
+              <div class="card" style="margin-bottom:18px;">
+                <div class="card-header">
+                  <div class="card-title">Cleaning Pipeline</div><span class="badge info">4 of 5 complete</span>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:10px;">
+                  <div class="cleaning-step">
+                    <div class="step-num done">✓</div>
+                    <div class="step-body">
+                      <div class="step-title">Duplicate Row Removal</div>
+                      <div class="step-desc">Identified and removed identical rows based on all columns.</div>
+                      <div class="step-result"><span class="step-pill">342 duplicates removed</span><span
+                          class="step-pill">13,938 rows retained</span></div>
+                    </div>
+                    <div class="step-status" style="color:var(--emerald)">✅</div>
+                  </div>
+                  <div class="cleaning-step">
+                    <div class="step-num done">✓</div>
+                    <div class="step-body">
+                      <div class="step-title">Missing Value Handling</div>
+                      <div class="step-desc">Filled numeric columns with median, categorical with mode.</div>
+                      <div class="step-result"><span class="step-pill">1,204 cells filled</span><span
+                          class="step-pill">12 columns affected</span></div>
+                    </div>
+                    <div class="step-status" style="color:var(--emerald)">✅</div>
+                  </div>
+                  <div class="cleaning-step">
+                    <div class="step-num done">✓</div>
+                    <div class="step-body">
+                      <div class="step-title">Outlier Detection</div>
+                      <div class="step-desc">Z-score method used to cap extreme values in numeric columns.</div>
+                      <div class="step-result"><span class="step-pill">87 outliers capped</span><span
+                          class="step-pill">IQR method applied</span></div>
+                    </div>
+                    <div class="step-status" style="color:var(--emerald)">✅</div>
+                  </div>
+                  <div class="cleaning-step" style="border-color:rgba(56,189,248,0.3)">
+                    <div class="step-num active">4</div>
+                    <div class="step-body">
+                      <div class="step-title">Data Type Standardization</div>
+                      <div class="step-desc">Converting date strings to datetime, normalizing text case, fixing number
+                        formats.</div>
+                      <div style="margin-top:10px;">
+                        <div class="prog">
+                          <div class="prog-fill" style="width:72%"></div>
+                        </div>
+                        <div style="font-size:11px;color:var(--cyan);margin-top:6px;">72% complete…</div>
+                      </div>
+                    </div>
+                    <div class="step-status" style="color:var(--cyan)">⟳</div>
+                  </div>
+                  <div class="cleaning-step" style="opacity:0.5;">
+                    <div class="step-num pending">5</div>
+                    <div class="step-body">
+                      <div class="step-title">Feature Validation</div>
+                      <div class="step-desc">Cross-validate column relationships and flag inconsistencies.</div>
+                    </div>
+                    <div class="step-status" style="color:var(--muted)">○</div>
+                  </div>
+                </div>
               </div>
-              <div class="act-item">
-                <div class="act-dot-col"><div class="act-dot" style="background:var(--cyan)"></div><div class="act-line"></div></div>
-                <div><div class="act-txt"><b>Ravi K.</b> uploaded inventory.xlsx</div><div class="act-time">5 hrs ago</div></div>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:16px;">
+              <div class="card">
+                <div class="card-header">
+                  <div class="card-title">Data Quality Score</div>
+                </div>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:16px;">
+                  <div class="quality-ring">
+                    <svg viewBox="0 0 36 36" style="width:130px;height:130px;transform:rotate(-90deg);">
+                      <circle cx="18" cy="18" r="15.9" fill="none" stroke="#1e2535" stroke-width="3.5" />
+                      <circle cx="18" cy="18" r="15.9" fill="none" stroke="#38bdf8" stroke-width="3.5"
+                        stroke-dasharray="88.6 11.4" stroke-dashoffset="0" stroke-linecap="round" />
+                    </svg>
+                    <div class="quality-center">
+                      <div class="quality-pct" style="color:var(--cyan)">88%</div>
+                      <div class="quality-label">Quality</div>
+                    </div>
+                  </div>
+                  <div class="quality-stats" style="width:100%;">
+                    <div class="qs-item"><span class="qs-icon">✅</span><span class="qs-label">Valid Rows</span><span
+                        class="qs-val" style="color:var(--emerald)">12,247</span></div>
+                    <div class="qs-item"><span class="qs-icon">⚠️</span><span class="qs-label">Rows Fixed</span><span
+                        class="qs-val" style="color:var(--amber)">1,549</span></div>
+                    <div class="qs-item"><span class="qs-icon">❌</span><span class="qs-label">Removed</span><span
+                        class="qs-val" style="color:var(--rose)">484</span></div>
+                    <div class="qs-item"><span class="qs-icon">📊</span><span class="qs-label">Columns</span><span
+                        class="qs-val">18</span></div>
+                  </div>
+                </div>
               </div>
-              <div class="act-item">
-                <div class="act-dot-col"><div class="act-dot" style="background:var(--violet)"></div><div class="act-line"></div></div>
-                <div><div class="act-txt"><b>Meera S.</b> downloaded Q1 report PDF</div><div class="act-time">1 day ago</div></div>
-              </div>
-              <div class="act-item">
-                <div class="act-dot-col"><div class="act-dot" style="background:var(--rose)"></div></div>
-                <div><div class="act-txt"><b>Admin</b> blocked unauthorized access attempt</div><div class="act-time">2 days ago</div></div>
+
+              <div class="card">
+                <div class="card-header">
+                  <div class="card-title">After Cleaning</div>
+                </div>
+                <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                  <button class="btn primary sm" onclick="navTo('analytics')">📈 Run Analytics →</button>
+                  <button class="btn outline sm">⬇ Download Clean CSV</button>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- ── UPLOAD ── -->
-      <div id="pg-upload" class="fade-in" style="display:none;">
-        <div class="section-head"><div><h2>Upload Dataset</h2><p>Upload your raw data files — we'll clean and process them automatically.</p></div></div>
-        <div class="grid g-2" style="margin-bottom:20px;align-items:start;">
-          <div>
-            <div class="upload-zone" id="dropzone" ondragover="onDrag(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
-              <span class="upload-icon">☁️</span>
-              <div class="upload-title">Drag & Drop your file here</div>
-              <div class="upload-sub">or click the button below to browse your computer</div>
-              <div class="file-tags">
-                <span class="ftag csv">CSV</span>
-                <span class="ftag xlsx">XLSX</span>
-                <span class="ftag json">JSON</span>
-                <span class="ftag tsv">TSV</span>
+        <!-- ── ANALYTICS ── -->
+        <div id="pg-analytics" class="fade-in" style="display:none;">
+          <div class="section-head">
+            <div>
+              <h2>Analytics</h2>
+              <p>Interactive insights from your cleaned dataset.</p>
+            </div>
+            <div style="margin-left:auto;display:flex;gap:10px;align-items:center;">
+              <select class="chart-select">
+                <option>sales_q1_2024.csv</option>
+                <option>customer_logs.json</option>
+              </select>
+              <button class="tb-btn primary" style="height:36px;">Refresh</button>
+            </div>
+          </div>
+
+          <!-- KPI ROW -->
+          <div class="grid g-4" style="margin-bottom:20px;">
+            <div class="stat-card c">
+              <div class="stat-icon">💰</div>
+              <div class="stat-label">Total Revenue</div>
+              <div class="stat-val" style="font-size:22px;">₹48.2L</div>
+              <div class="stat-change up">↑ 14.3%</div>
+            </div>
+            <div class="stat-card e">
+              <div class="stat-icon">🛒</div>
+              <div class="stat-label">Avg Order Value</div>
+              <div class="stat-val" style="font-size:22px;">₹3,420</div>
+              <div class="stat-change up">↑ 6.8%</div>
+            </div>
+            <div class="stat-card v">
+              <div class="stat-icon">👤</div>
+              <div class="stat-label">Unique Customers</div>
+              <div class="stat-val" style="font-size:22px;">8,924</div>
+              <div class="stat-change up">↑ 11.2%</div>
+            </div>
+            <div class="stat-card a">
+              <div class="stat-icon">📦</div>
+              <div class="stat-label">Return Rate</div>
+              <div class="stat-val" style="font-size:22px;">4.1%</div>
+              <div class="stat-change down">↓ 0.8%</div>
+            </div>
+          </div>
+
+          <!-- CHARTS ROW 1 -->
+          <div class="grid g-2-1" style="margin-bottom:20px;">
+            <div class="chart-card">
+              <div class="card-header">
+                <div class="card-title">Monthly Revenue Trend</div><select class="chart-select">
+                  <option>Last 6 months</option>
+                  <option>Last year</option>
+                </select>
               </div>
-              <div class="upload-btn-wrap">
-                <button class="btn primary" onclick="simulateUpload()">📁 Browse Files</button>
-                <button class="btn outline">🔗 From URL</button>
+              <svg class="line-svg" viewBox="0 0 400 120" preserveAspectRatio="none">
+                <defs>
+                  <linearGradient id="lg1" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.3" />
+                    <stop offset="100%" stop-color="#38bdf8" stop-opacity="0" />
+                  </linearGradient>
+                </defs>
+                <path d="M0,90 L66,75 L133,60 L200,45 L266,30 L333,20 L400,10 L400,120 L0,120 Z" fill="url(#lg1)" />
+                <polyline points="0,90 66,75 133,60 200,45 266,30 333,20 400,10" fill="none" stroke="#38bdf8"
+                  stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+                <circle cx="400" cy="10" r="4" fill="#38bdf8" />
+                <circle cx="266" cy="30" r="3" fill="#38bdf8" opacity="0.7" />
+                <circle cx="133" cy="60" r="3" fill="#38bdf8" opacity="0.7" />
+              </svg>
+              <div
+                style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-top:4px;padding:0 2px;">
+                <span>Oct</span><span>Nov</span><span>Dec</span><span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span>
               </div>
-              <div style="margin-top:16px;font-size:11px;color:var(--muted);">Max file size: 500 MB · Secure encrypted upload</div>
+              <div class="insight-box">
+                <p>📌 <strong>Revenue grew 14.3%</strong> this quarter. March saw the highest monthly sales (₹9.8L).
+                  Consider boosting Q2 campaigns in the Electronics and Clothing categories.</p>
+              </div>
             </div>
 
-            <div class="upload-progress card" id="upload-prog" style="display:none;margin-top:16px;">
-              <div class="up-file-row">
-                <div class="up-file-icon">📄</div>
-                <div style="flex:1;">
-                  <div class="up-file-name">sales_data_2024.csv</div>
-                  <div class="up-file-size">2.4 MB · Uploading…</div>
-                </div>
-                <div class="up-pct" id="up-pct-txt">0%</div>
+            <div class="chart-card">
+              <div class="card-header">
+                <div class="card-title">Sales by Category</div>
               </div>
-              <div class="prog"><div class="prog-fill" id="up-prog-bar" style="width:0%"></div></div>
-              <div style="margin-top:10px;font-size:12px;color:var(--muted);">🔒 End-to-end encrypted · Files stored on AWS S3</div>
-            </div>
-
-            <div class="card" id="upload-success" style="display:none;margin-top:16px;border-color:rgba(52,211,153,0.3);">
-              <div style="display:flex;align-items:center;gap:12px;">
-                <div style="font-size:32px;">✅</div>
-                <div>
-                  <div style="font-size:14px;font-weight:700;color:var(--emerald);">Upload Successful!</div>
-                  <div style="font-size:12px;color:var(--muted2);margin-top:3px;">Your file is queued for automatic cleaning & analysis.</div>
+              <svg class="pie-svg" viewBox="0 0 42 42">
+                <circle cx="21" cy="21" r="15.9" fill="none" stroke="#1e2535" stroke-width="10" />
+                <circle cx="21" cy="21" r="15.9" fill="none" stroke="#38bdf8" stroke-width="10" stroke-dasharray="38 62"
+                  stroke-dashoffset="25" />
+                <circle cx="21" cy="21" r="15.9" fill="none" stroke="#a78bfa" stroke-width="10" stroke-dasharray="26 74"
+                  stroke-dashoffset="-13" />
+                <circle cx="21" cy="21" r="15.9" fill="none" stroke="#34d399" stroke-width="10" stroke-dasharray="22 78"
+                  stroke-dashoffset="-39" />
+                <circle cx="21" cy="21" r="15.9" fill="none" stroke="#fbbf24" stroke-width="10" stroke-dasharray="14 86"
+                  stroke-dashoffset="-61" />
+              </svg>
+              <div style="display:flex;flex-direction:column;gap:7px;margin-top:8px;">
+                <div class="dl-item">
+                  <div class="dl-dot" style="background:#38bdf8"></div>
+                  <div class="dl-label">Electronics</div>
+                  <div class="dl-val">38%</div>
                 </div>
-              </div>
-              <div style="display:flex;gap:10px;margin-top:14px;">
-                <button class="btn primary sm" onclick="navTo('cleaning')">🧹 Start Cleaning →</button>
-                <button class="btn outline sm" onclick="navTo('analytics')">📈 View Analytics</button>
+                <div class="dl-item">
+                  <div class="dl-dot" style="background:#a78bfa"></div>
+                  <div class="dl-label">Clothing</div>
+                  <div class="dl-val">26%</div>
+                </div>
+                <div class="dl-item">
+                  <div class="dl-dot" style="background:#34d399"></div>
+                  <div class="dl-label">Food</div>
+                  <div class="dl-val">22%</div>
+                </div>
+                <div class="dl-item">
+                  <div class="dl-dot" style="background:#fbbf24"></div>
+                  <div class="dl-label">Others</div>
+                  <div class="dl-val">14%</div>
+                </div>
               </div>
             </div>
           </div>
 
-          <div class="card">
-            <div class="card-header"><div class="card-title">Upload Guidelines</div></div>
-            <div style="display:flex;flex-direction:column;gap:12px;">
-              <div style="display:flex;gap:10px;align-items:flex-start;">
-                <span style="font-size:18px;">📋</span>
-                <div><div style="font-size:13px;font-weight:600;">Supported Formats</div><div style="font-size:12px;color:var(--muted2);margin-top:2px;">CSV, XLSX, XLS, JSON, TSV up to 500MB</div></div>
-              </div>
-              <div style="display:flex;gap:10px;align-items:flex-start;">
-                <span style="font-size:18px;">🔤</span>
-                <div><div style="font-size:13px;font-weight:600;">First Row = Headers</div><div style="font-size:12px;color:var(--muted2);margin-top:2px;">Ensure your file has column names in row 1</div></div>
-              </div>
-              <div style="display:flex;gap:10px;align-items:flex-start;">
-                <span style="font-size:18px;">🔒</span>
-                <div><div style="font-size:13px;font-weight:600;">Data Privacy</div><div style="font-size:12px;color:var(--muted2);margin-top:2px;">Files are encrypted at rest (AES-256) and in transit (TLS)</div></div>
-              </div>
-              <div style="display:flex;gap:10px;align-items:flex-start;">
-                <span style="font-size:18px;">⚡</span>
-                <div><div style="font-size:13px;font-weight:600;">Auto Processing</div><div style="font-size:12px;color:var(--muted2);margin-top:2px;">Cleaning starts automatically after upload completes</div></div>
-              </div>
+          <!-- TOP TABLE -->
+          <div class="chart-card">
+            <div class="card-header">
+              <div class="card-title">Top Performing Regions</div><span class="card-action">Export →</span>
             </div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-header"><div class="card-title">Upload History</div><span class="card-action">Clear all</span></div>
-          <div class="tbl-wrap">
             <table>
-              <thead><tr><th>File Name</th><th>Size</th><th>Records</th><th>Uploaded</th><th>Status</th><th>Quality</th><th>Actions</th></tr></thead>
+              <thead>
+                <tr>
+                  <th>Region</th>
+                  <th>Revenue</th>
+                  <th>Orders</th>
+                  <th>Avg Order</th>
+                  <th>Growth</th>
+                  <th>Share</th>
+                </tr>
+              </thead>
               <tbody>
-                <tr><td><span class="file-row-icon">📄</span><b>sales_q1_2024.csv</b></td><td>2.4 MB</td><td>14,280</td><td style="color:var(--muted2)">2h ago</td><td><span class="badge done"><span class="badge-dot"></span>Processed</span></td><td><div class="prog" style="width:90px"><div class="prog-fill" style="width:94%"></div></div></td><td><span class="icon-btn">📊</span> <span class="icon-btn">⬇</span> <span class="icon-btn">🗑</span></td></tr>
-                <tr><td><span class="file-row-icon">📊</span><b>inventory_data.xlsx</b></td><td>1.1 MB</td><td>8,540</td><td style="color:var(--muted2)">5h ago</td><td><span class="badge proc"><span class="badge-dot"></span>Processing</span></td><td><div class="prog" style="width:90px"><div class="prog-fill" style="width:62%"></div></div></td><td><span class="icon-btn">👁</span> <span class="icon-btn">🗑</span></td></tr>
-                <tr><td><span class="file-row-icon">📋</span><b>customer_logs.json</b></td><td>5.8 MB</td><td>32,100</td><td style="color:var(--muted2)">1d ago</td><td><span class="badge done"><span class="badge-dot"></span>Processed</span></td><td><div class="prog" style="width:90px"><div class="prog-fill green" style="width:88%"></div></div></td><td><span class="icon-btn">📊</span> <span class="icon-btn">⬇</span> <span class="icon-btn">🗑</span></td></tr>
-                <tr><td><span class="file-row-icon">⚠️</span><b>hr_records_old.csv</b></td><td>890 KB</td><td>4,200</td><td style="color:var(--muted2)">2d ago</td><td><span class="badge err"><span class="badge-dot"></span>Error</span></td><td><div class="prog" style="width:90px"><div class="prog-fill red" style="width:23%"></div></div></td><td><span class="icon-btn">🔁</span> <span class="icon-btn">🗑</span></td></tr>
+                <tr>
+                  <td><b>Mumbai</b></td>
+                  <td style="color:var(--cyan);font-family:var(--mono)">₹12.4L</td>
+                  <td>3,620</td>
+                  <td>₹3,426</td>
+                  <td><span class="up">↑ 18.2%</span></td>
+                  <td>
+                    <div class="prog" style="width:120px">
+                      <div class="prog-fill" style="width:85%"></div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td><b>Delhi</b></td>
+                  <td style="color:var(--cyan);font-family:var(--mono)">₹9.8L</td>
+                  <td>2,890</td>
+                  <td>₹3,391</td>
+                  <td><span class="up">↑ 12.1%</span></td>
+                  <td>
+                    <div class="prog" style="width:120px">
+                      <div class="prog-fill" style="width:70%"></div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td><b>Bangalore</b></td>
+                  <td style="color:var(--cyan);font-family:var(--mono)">₹8.2L</td>
+                  <td>2,410</td>
+                  <td>₹3,402</td>
+                  <td><span class="up">↑ 9.4%</span></td>
+                  <td>
+                    <div class="prog" style="width:120px">
+                      <div class="prog-fill" style="width:58%"></div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td><b>Chennai</b></td>
+                  <td style="color:var(--cyan);font-family:var(--mono)">₹6.1L</td>
+                  <td>1,780</td>
+                  <td>₹3,427</td>
+                  <td><span class="down">↓ 2.3%</span></td>
+                  <td>
+                    <div class="prog" style="width:120px">
+                      <div class="prog-fill" style="width:42%"></div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td><b>Hyderabad</b></td>
+                  <td style="color:var(--cyan);font-family:var(--mono)">₹5.4L</td>
+                  <td>1,560</td>
+                  <td>₹3,461</td>
+                  <td><span class="up">↑ 6.7%</span></td>
+                  <td>
+                    <div class="prog" style="width:120px">
+                      <div class="prog-fill" style="width:36%"></div>
+                    </div>
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>
         </div>
-      </div>
 
-      <!-- ── CLEANING ── -->
-      <div id="pg-cleaning" class="fade-in" style="display:none;">
-        <div class="section-head"><div><h2>Data Cleaning</h2><p>Automatic preprocessing pipeline — reviewing <b>sales_q1_2024.csv</b></p></div></div>
-        <div class="grid g-2-1" style="align-items:start;">
-          <div>
-            <div class="card" style="margin-bottom:18px;">
-              <div class="card-header"><div class="card-title">Cleaning Pipeline</div><span class="badge info">4 of 5 complete</span></div>
-              <div style="display:flex;flex-direction:column;gap:10px;">
-                <div class="cleaning-step">
-                  <div class="step-num done">✓</div>
-                  <div class="step-body">
-                    <div class="step-title">Duplicate Row Removal</div>
-                    <div class="step-desc">Identified and removed identical rows based on all columns.</div>
-                    <div class="step-result"><span class="step-pill">342 duplicates removed</span><span class="step-pill">13,938 rows retained</span></div>
-                  </div>
-                  <div class="step-status" style="color:var(--emerald)">✅</div>
-                </div>
-                <div class="cleaning-step">
-                  <div class="step-num done">✓</div>
-                  <div class="step-body">
-                    <div class="step-title">Missing Value Handling</div>
-                    <div class="step-desc">Filled numeric columns with median, categorical with mode.</div>
-                    <div class="step-result"><span class="step-pill">1,204 cells filled</span><span class="step-pill">12 columns affected</span></div>
-                  </div>
-                  <div class="step-status" style="color:var(--emerald)">✅</div>
-                </div>
-                <div class="cleaning-step">
-                  <div class="step-num done">✓</div>
-                  <div class="step-body">
-                    <div class="step-title">Outlier Detection</div>
-                    <div class="step-desc">Z-score method used to cap extreme values in numeric columns.</div>
-                    <div class="step-result"><span class="step-pill">87 outliers capped</span><span class="step-pill">IQR method applied</span></div>
-                  </div>
-                  <div class="step-status" style="color:var(--emerald)">✅</div>
-                </div>
-                <div class="cleaning-step" style="border-color:rgba(56,189,248,0.3)">
-                  <div class="step-num active">4</div>
-                  <div class="step-body">
-                    <div class="step-title">Data Type Standardization</div>
-                    <div class="step-desc">Converting date strings to datetime, normalizing text case, fixing number formats.</div>
-                    <div style="margin-top:10px;">
-                      <div class="prog"><div class="prog-fill" style="width:72%"></div></div>
-                      <div style="font-size:11px;color:var(--cyan);margin-top:6px;">72% complete…</div>
-                    </div>
-                  </div>
-                  <div class="step-status" style="color:var(--cyan)">⟳</div>
-                </div>
-                <div class="cleaning-step" style="opacity:0.5;">
-                  <div class="step-num pending">5</div>
-                  <div class="step-body">
-                    <div class="step-title">Feature Validation</div>
-                    <div class="step-desc">Cross-validate column relationships and flag inconsistencies.</div>
-                  </div>
-                  <div class="step-status" style="color:var(--muted)">○</div>
-                </div>
-              </div>
+        <!-- ── REPORTS ── -->
+        <div id="pg-reports" class="fade-in" style="display:none;">
+          <div class="section-head">
+            <div>
+              <h2>Reports</h2>
+              <p>Generate and download detailed insights from your data.</p>
             </div>
+            <button class="tb-btn primary">+ New Report</button>
           </div>
 
-          <div style="display:flex;flex-direction:column;gap:16px;">
-            <div class="card">
-              <div class="card-header"><div class="card-title">Data Quality Score</div></div>
-              <div style="display:flex;flex-direction:column;align-items:center;gap:16px;">
-                <div class="quality-ring">
-                  <svg viewBox="0 0 36 36" style="width:130px;height:130px;transform:rotate(-90deg);">
-                    <circle cx="18" cy="18" r="15.9" fill="none" stroke="#1e2535" stroke-width="3.5"/>
-                    <circle cx="18" cy="18" r="15.9" fill="none" stroke="#38bdf8" stroke-width="3.5"
-                      stroke-dasharray="88.6 11.4" stroke-dashoffset="0" stroke-linecap="round"/>
-                  </svg>
-                  <div class="quality-center">
-                    <div class="quality-pct" style="color:var(--cyan)">88%</div>
-                    <div class="quality-label">Quality</div>
-                  </div>
-                </div>
-                <div class="quality-stats" style="width:100%;">
-                  <div class="qs-item"><span class="qs-icon">✅</span><span class="qs-label">Valid Rows</span><span class="qs-val" style="color:var(--emerald)">12,247</span></div>
-                  <div class="qs-item"><span class="qs-icon">⚠️</span><span class="qs-label">Rows Fixed</span><span class="qs-val" style="color:var(--amber)">1,549</span></div>
-                  <div class="qs-item"><span class="qs-icon">❌</span><span class="qs-label">Removed</span><span class="qs-val" style="color:var(--rose)">484</span></div>
-                  <div class="qs-item"><span class="qs-icon">📊</span><span class="qs-label">Columns</span><span class="qs-val">18</span></div>
-                </div>
-              </div>
-            </div>
-
-            <div class="card">
-              <div class="card-header"><div class="card-title">After Cleaning</div></div>
-              <div style="display:flex;gap:10px;flex-wrap:wrap;">
-                <button class="btn primary sm" onclick="navTo('analytics')">📈 Run Analytics →</button>
-                <button class="btn outline sm">⬇ Download Clean CSV</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ── ANALYTICS ── -->
-      <div id="pg-analytics" class="fade-in" style="display:none;">
-        <div class="section-head"><div><h2>Analytics</h2><p>Interactive insights from your cleaned dataset.</p></div>
-          <div style="margin-left:auto;display:flex;gap:10px;align-items:center;">
-            <select class="chart-select"><option>sales_q1_2024.csv</option><option>customer_logs.json</option></select>
-            <button class="tb-btn primary" style="height:36px;">Refresh</button>
-          </div>
-        </div>
-
-        <!-- KPI ROW -->
-        <div class="grid g-4" style="margin-bottom:20px;">
-          <div class="stat-card c"><div class="stat-icon">💰</div><div class="stat-label">Total Revenue</div><div class="stat-val" style="font-size:22px;">₹48.2L</div><div class="stat-change up">↑ 14.3%</div></div>
-          <div class="stat-card e"><div class="stat-icon">🛒</div><div class="stat-label">Avg Order Value</div><div class="stat-val" style="font-size:22px;">₹3,420</div><div class="stat-change up">↑ 6.8%</div></div>
-          <div class="stat-card v"><div class="stat-icon">👤</div><div class="stat-label">Unique Customers</div><div class="stat-val" style="font-size:22px;">8,924</div><div class="stat-change up">↑ 11.2%</div></div>
-          <div class="stat-card a"><div class="stat-icon">📦</div><div class="stat-label">Return Rate</div><div class="stat-val" style="font-size:22px;">4.1%</div><div class="stat-change down">↓ 0.8%</div></div>
-        </div>
-
-        <!-- CHARTS ROW 1 -->
-        <div class="grid g-2-1" style="margin-bottom:20px;">
-          <div class="chart-card">
-            <div class="card-header"><div class="card-title">Monthly Revenue Trend</div><select class="chart-select"><option>Last 6 months</option><option>Last year</option></select></div>
-            <svg class="line-svg" viewBox="0 0 400 120" preserveAspectRatio="none">
-              <defs>
-                <linearGradient id="lg1" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.3"/>
-                  <stop offset="100%" stop-color="#38bdf8" stop-opacity="0"/>
-                </linearGradient>
-              </defs>
-              <path d="M0,90 L66,75 L133,60 L200,45 L266,30 L333,20 L400,10 L400,120 L0,120 Z" fill="url(#lg1)"/>
-              <polyline points="0,90 66,75 133,60 200,45 266,30 333,20 400,10" fill="none" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <circle cx="400" cy="10" r="4" fill="#38bdf8"/>
-              <circle cx="266" cy="30" r="3" fill="#38bdf8" opacity="0.7"/>
-              <circle cx="133" cy="60" r="3" fill="#38bdf8" opacity="0.7"/>
-            </svg>
-            <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-top:4px;padding:0 2px;">
-              <span>Oct</span><span>Nov</span><span>Dec</span><span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span>
-            </div>
-            <div class="insight-box">
-              <p>📌 <strong>Revenue grew 14.3%</strong> this quarter. March saw the highest monthly sales (₹9.8L). Consider boosting Q2 campaigns in the Electronics and Clothing categories.</p>
-            </div>
-          </div>
-
-          <div class="chart-card">
-            <div class="card-header"><div class="card-title">Sales by Category</div></div>
-            <svg class="pie-svg" viewBox="0 0 42 42">
-              <circle cx="21" cy="21" r="15.9" fill="none" stroke="#1e2535" stroke-width="10"/>
-              <circle cx="21" cy="21" r="15.9" fill="none" stroke="#38bdf8" stroke-width="10" stroke-dasharray="38 62" stroke-dashoffset="25"/>
-              <circle cx="21" cy="21" r="15.9" fill="none" stroke="#a78bfa" stroke-width="10" stroke-dasharray="26 74" stroke-dashoffset="-13"/>
-              <circle cx="21" cy="21" r="15.9" fill="none" stroke="#34d399" stroke-width="10" stroke-dasharray="22 78" stroke-dashoffset="-39"/>
-              <circle cx="21" cy="21" r="15.9" fill="none" stroke="#fbbf24" stroke-width="10" stroke-dasharray="14 86" stroke-dashoffset="-61"/>
-            </svg>
-            <div style="display:flex;flex-direction:column;gap:7px;margin-top:8px;">
-              <div class="dl-item"><div class="dl-dot" style="background:#38bdf8"></div><div class="dl-label">Electronics</div><div class="dl-val">38%</div></div>
-              <div class="dl-item"><div class="dl-dot" style="background:#a78bfa"></div><div class="dl-label">Clothing</div><div class="dl-val">26%</div></div>
-              <div class="dl-item"><div class="dl-dot" style="background:#34d399"></div><div class="dl-label">Food</div><div class="dl-val">22%</div></div>
-              <div class="dl-item"><div class="dl-dot" style="background:#fbbf24"></div><div class="dl-label">Others</div><div class="dl-val">14%</div></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- TOP TABLE -->
-        <div class="chart-card">
-          <div class="card-header"><div class="card-title">Top Performing Regions</div><span class="card-action">Export →</span></div>
-          <table>
-            <thead><tr><th>Region</th><th>Revenue</th><th>Orders</th><th>Avg Order</th><th>Growth</th><th>Share</th></tr></thead>
-            <tbody>
-              <tr><td><b>Mumbai</b></td><td style="color:var(--cyan);font-family:var(--mono)">₹12.4L</td><td>3,620</td><td>₹3,426</td><td><span class="up">↑ 18.2%</span></td><td><div class="prog" style="width:120px"><div class="prog-fill" style="width:85%"></div></div></td></tr>
-              <tr><td><b>Delhi</b></td><td style="color:var(--cyan);font-family:var(--mono)">₹9.8L</td><td>2,890</td><td>₹3,391</td><td><span class="up">↑ 12.1%</span></td><td><div class="prog" style="width:120px"><div class="prog-fill" style="width:70%"></div></div></td></tr>
-              <tr><td><b>Bangalore</b></td><td style="color:var(--cyan);font-family:var(--mono)">₹8.2L</td><td>2,410</td><td>₹3,402</td><td><span class="up">↑ 9.4%</span></td><td><div class="prog" style="width:120px"><div class="prog-fill" style="width:58%"></div></div></td></tr>
-              <tr><td><b>Chennai</b></td><td style="color:var(--cyan);font-family:var(--mono)">₹6.1L</td><td>1,780</td><td>₹3,427</td><td><span class="down">↓ 2.3%</span></td><td><div class="prog" style="width:120px"><div class="prog-fill" style="width:42%"></div></div></td></tr>
-              <tr><td><b>Hyderabad</b></td><td style="color:var(--cyan);font-family:var(--mono)">₹5.4L</td><td>1,560</td><td>₹3,461</td><td><span class="up">↑ 6.7%</span></td><td><div class="prog" style="width:120px"><div class="prog-fill" style="width:36%"></div></div></td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- ── REPORTS ── -->
-      <div id="pg-reports" class="fade-in" style="display:none;">
-        <div class="section-head"><div><h2>Reports</h2><p>Generate and download detailed insights from your data.</p></div>
-          <button class="tb-btn primary">+ New Report</button>
-        </div>
-
-        <div class="grid g-3" style="margin-bottom:24px;">
-          <div class="report-card">
-            <div class="report-icon blue">📊</div>
-            <div><div class="report-name">Sales Analytics Report</div><div class="report-desc">Full Q1 2024 sales breakdown — revenue, orders, categories, regional performance.</div></div>
-            <div class="report-meta"><span class="report-tag">PDF</span><span class="report-tag">XLSX</span><span class="report-tag">14 pages</span><span class="report-tag">Generated today</span></div>
-            <div class="report-actions">
-              <button class="btn primary sm">⬇ Download</button>
-              <button class="btn outline sm">👁 Preview</button>
-            </div>
-          </div>
-          <div class="report-card">
-            <div class="report-icon green">🧹</div>
-            <div><div class="report-name">Data Quality Report</div><div class="report-desc">Cleaning summary — missing values, duplicates, outliers, and data health score.</div></div>
-            <div class="report-meta"><span class="report-tag">PDF</span><span class="report-tag">6 pages</span><span class="report-tag">Yesterday</span></div>
-            <div class="report-actions">
-              <button class="btn primary sm">⬇ Download</button>
-              <button class="btn outline sm">👁 Preview</button>
-            </div>
-          </div>
-          <div class="report-card">
-            <div class="report-icon violet">📈</div>
-            <div><div class="report-name">Customer Insights Report</div><div class="report-desc">Customer segmentation, lifetime value, and churn rate analysis from CRM data.</div></div>
-            <div class="report-meta"><span class="report-tag">PDF</span><span class="report-tag">XLSX</span><span class="report-tag">22 pages</span><span class="report-tag">2 days ago</span></div>
-            <div class="report-actions">
-              <button class="btn primary sm">⬇ Download</button>
-              <button class="btn outline sm">👁 Preview</button>
-            </div>
-          </div>
-          <div class="report-card">
-            <div class="report-icon amber">⚙️</div>
-            <div><div class="report-name">System Usage Report</div><div class="report-desc">Admin report — user activity, dataset uploads, processing times, storage usage.</div></div>
-            <div class="report-meta"><span class="report-tag">PDF</span><span class="report-tag">9 pages</span><span class="report-tag">Weekly auto</span></div>
-            <div class="report-actions">
-              <button class="btn primary sm">⬇ Download</button>
-              <button class="btn outline sm">📧 Email</button>
-            </div>
-          </div>
-          <div class="report-card" style="border-style:dashed;cursor:pointer;" onclick="">
-            <div style="text-align:center;padding:20px 0;">
-              <div style="font-size:36px;margin-bottom:10px;">+</div>
-              <div style="font-size:14px;font-weight:700;">Generate Custom Report</div>
-              <div style="font-size:12px;color:var(--muted2);margin-top:6px;">Choose dataset, metrics, date range, and format</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-header"><div class="card-title">All Reports History</div><span class="card-action">Export list →</span></div>
-          <table>
-            <thead><tr><th>Report Name</th><th>Dataset</th><th>Format</th><th>Pages</th><th>Generated</th><th>Actions</th></tr></thead>
-            <tbody>
-              <tr><td><b>Sales Analytics Q1</b></td><td>sales_q1_2024.csv</td><td><span class="badge info">PDF+XLSX</span></td><td>14</td><td style="color:var(--muted2)">Today</td><td><span class="icon-btn">⬇</span><span class="icon-btn">📧</span><span class="icon-btn">🗑</span></td></tr>
-              <tr><td><b>Data Quality Summary</b></td><td>sales_q1_2024.csv</td><td><span class="badge done">PDF</span></td><td>6</td><td style="color:var(--muted2)">Yesterday</td><td><span class="icon-btn">⬇</span><span class="icon-btn">📧</span><span class="icon-btn">🗑</span></td></tr>
-              <tr><td><b>Customer Insights</b></td><td>customer_logs.json</td><td><span class="badge info">PDF+XLSX</span></td><td>22</td><td style="color:var(--muted2)">2 days ago</td><td><span class="icon-btn">⬇</span><span class="icon-btn">📧</span><span class="icon-btn">🗑</span></td></tr>
-              <tr><td><b>System Usage</b></td><td>—</td><td><span class="badge done">PDF</span></td><td>9</td><td style="color:var(--muted2)">1 week ago</td><td><span class="icon-btn">⬇</span><span class="icon-btn">📧</span><span class="icon-btn">🗑</span></td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- ── SECURITY ── -->
-      <div id="pg-security" class="fade-in" style="display:none;">
-        <div class="section-head"><div><h2>Security</h2><p>Manage authentication, access control, and data protection settings.</p></div></div>
-        <div class="grid g-2-1" style="align-items:start;">
-          <div style="display:flex;flex-direction:column;gap:18px;">
-            <div class="card">
-              <div class="card-header"><div class="card-title">Security Controls</div></div>
-              <div style="display:flex;flex-direction:column;gap:10px;">
-                <div class="toggle-wrap"><div class="toggle-left"><span class="toggle-icon">🔐</span><div><div class="toggle-name">Two-Factor Authentication</div><div class="toggle-desc">SMS + Authenticator App</div></div></div><button class="toggle-switch on" onclick="toggleSec(this)"></button></div>
-                <div class="toggle-wrap"><div class="toggle-left"><span class="toggle-icon">🔒</span><div><div class="toggle-name">Data Encryption (AES-256)</div><div class="toggle-desc">At rest and in transit (TLS 1.3)</div></div></div><button class="toggle-switch on" onclick="toggleSec(this)"></button></div>
-                <div class="toggle-wrap"><div class="toggle-left"><span class="toggle-icon">📝</span><div><div class="toggle-name">Audit Logging</div><div class="toggle-desc">All user actions are recorded</div></div></div><button class="toggle-switch on" onclick="toggleSec(this)"></button></div>
-                <div class="toggle-wrap"><div class="toggle-left"><span class="toggle-icon">👥</span><div><div class="toggle-name">Role-Based Access Control</div><div class="toggle-desc">Admin / Analyst / Viewer roles</div></div></div><button class="toggle-switch on" onclick="toggleSec(this)"></button></div>
-                <div class="toggle-wrap"><div class="toggle-left"><span class="toggle-icon">🌐</span><div><div class="toggle-name">IP Allowlisting</div><div class="toggle-desc">Restrict access to known IPs</div></div></div><button class="toggle-switch off" onclick="toggleSec(this)"></button></div>
-                <div class="toggle-wrap"><div class="toggle-left"><span class="toggle-icon">⚠️</span><div><div class="toggle-name">Anomaly Detection</div><div class="toggle-desc">Alert on unusual access patterns</div></div></div><button class="toggle-switch off" onclick="toggleSec(this)"></button></div>
-              </div>
-            </div>
-
-            <div class="card">
-              <div class="card-header"><div class="card-title">Session Management</div></div>
-              <div style="display:flex;gap:16px;flex-wrap:wrap;">
-                <div class="kpi" style="flex:1;min-width:100px;"><div class="kpi-label">Active Sessions</div><div class="kpi-val">4</div></div>
-                <div class="kpi" style="flex:1;min-width:100px;"><div class="kpi-label">Session Timeout</div><div class="kpi-val">30m</div></div>
-                <div class="kpi" style="flex:1;min-width:100px;"><div class="kpi-label">Failed Logins</div><div class="kpi-val" style="color:var(--rose)">12</div></div>
-              </div>
-              <button class="btn danger sm" style="margin-top:14px;">Terminate All Sessions</button>
-            </div>
-          </div>
-
-          <div style="display:flex;flex-direction:column;gap:16px;">
-            <div class="card">
-              <div class="card-header"><div class="card-title">Recent Security Alerts</div><span class="badge err">2 active</span></div>
+          <div class="grid g-3" style="margin-bottom:24px;">
+            <div class="report-card">
+              <div class="report-icon blue">📊</div>
               <div>
-                <div class="alert-row"><div class="alert-dot red"></div><div><div class="alert-msg"><b>Unauthorized login attempt</b> — IP 192.168.4.22</div><div class="alert-time">5 min ago · Blocked</div></div><span class="icon-btn">👁</span></div>
-                <div class="alert-row"><div class="alert-dot amber"></div><div><div class="alert-msg"><b>Unusual download volume</b> — user meera@org.com</div><div class="alert-time">2 hrs ago · Flagged</div></div><span class="icon-btn">👁</span></div>
-                <div class="alert-row"><div class="alert-dot green"></div><div><div class="alert-msg"><b>New device login</b> — admin Bharathi O.</div><div class="alert-time">1 day ago · Approved</div></div><span class="icon-btn">👁</span></div>
-                <div class="alert-row"><div class="alert-dot green"></div><div><div class="alert-msg"><b>Password changed</b> — user ravi@org.com</div><div class="alert-time">2 days ago · OK</div></div><span class="icon-btn">👁</span></div>
+                <div class="report-name">Sales Analytics Report</div>
+                <div class="report-desc">Full Q1 2024 sales breakdown — revenue, orders, categories, regional
+                  performance.</div>
+              </div>
+              <div class="report-meta"><span class="report-tag">PDF</span><span class="report-tag">XLSX</span><span
+                  class="report-tag">14 pages</span><span class="report-tag">Generated today</span></div>
+              <div class="report-actions">
+                <button class="btn primary sm">⬇ Download</button>
+                <button class="btn outline sm">👁 Preview</button>
               </div>
             </div>
-            <div class="card">
-              <div class="card-header"><div class="card-title">Compliance Status</div></div>
-              <div style="display:flex;flex-direction:column;gap:10px;">
-                <div class="qs-item"><span class="qs-icon">✅</span><span class="qs-label">Data Encrypted at Rest</span><span class="qs-val" style="color:var(--emerald)">Pass</span></div>
-                <div class="qs-item"><span class="qs-icon">✅</span><span class="qs-label">TLS in Transit</span><span class="qs-val" style="color:var(--emerald)">Pass</span></div>
-                <div class="qs-item"><span class="qs-icon">✅</span><span class="qs-label">Audit Logs Enabled</span><span class="qs-val" style="color:var(--emerald)">Pass</span></div>
-                <div class="qs-item"><span class="qs-icon">⚠️</span><span class="qs-label">IP Allowlisting</span><span class="qs-val" style="color:var(--amber)">Warn</span></div>
-                <div class="qs-item"><span class="qs-icon">❌</span><span class="qs-label">Anomaly Detection</span><span class="qs-val" style="color:var(--rose)">Off</span></div>
+            <div class="report-card">
+              <div class="report-icon green">🧹</div>
+              <div>
+                <div class="report-name">Data Quality Report</div>
+                <div class="report-desc">Cleaning summary — missing values, duplicates, outliers, and data health score.
+                </div>
+              </div>
+              <div class="report-meta"><span class="report-tag">PDF</span><span class="report-tag">6 pages</span><span
+                  class="report-tag">Yesterday</span></div>
+              <div class="report-actions">
+                <button class="btn primary sm">⬇ Download</button>
+                <button class="btn outline sm">👁 Preview</button>
+              </div>
+            </div>
+            <div class="report-card">
+              <div class="report-icon violet">📈</div>
+              <div>
+                <div class="report-name">Customer Insights Report</div>
+                <div class="report-desc">Customer segmentation, lifetime value, and churn rate analysis from CRM data.
+                </div>
+              </div>
+              <div class="report-meta"><span class="report-tag">PDF</span><span class="report-tag">XLSX</span><span
+                  class="report-tag">22 pages</span><span class="report-tag">2 days ago</span></div>
+              <div class="report-actions">
+                <button class="btn primary sm">⬇ Download</button>
+                <button class="btn outline sm">👁 Preview</button>
+              </div>
+            </div>
+            <div class="report-card">
+              <div class="report-icon amber">⚙️</div>
+              <div>
+                <div class="report-name">System Usage Report</div>
+                <div class="report-desc">Admin report — user activity, dataset uploads, processing times, storage usage.
+                </div>
+              </div>
+              <div class="report-meta"><span class="report-tag">PDF</span><span class="report-tag">9 pages</span><span
+                  class="report-tag">Weekly auto</span></div>
+              <div class="report-actions">
+                <button class="btn primary sm">⬇ Download</button>
+                <button class="btn outline sm">📧 Email</button>
+              </div>
+            </div>
+            <div class="report-card" style="border-style:dashed;cursor:pointer;" onclick="">
+              <div style="text-align:center;padding:20px 0;">
+                <div style="font-size:36px;margin-bottom:10px;">+</div>
+                <div style="font-size:14px;font-weight:700;">Generate Custom Report</div>
+                <div style="font-size:12px;color:var(--muted2);margin-top:6px;">Choose dataset, metrics, date range, and
+                  format</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">All Reports History</div><span class="card-action">Export list →</span>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>Report Name</th>
+                  <th>Dataset</th>
+                  <th>Format</th>
+                  <th>Pages</th>
+                  <th>Generated</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><b>Sales Analytics Q1</b></td>
+                  <td>sales_q1_2024.csv</td>
+                  <td><span class="badge info">PDF+XLSX</span></td>
+                  <td>14</td>
+                  <td style="color:var(--muted2)">Today</td>
+                  <td><span class="icon-btn">⬇</span><span class="icon-btn">📧</span><span class="icon-btn">🗑</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td><b>Data Quality Summary</b></td>
+                  <td>sales_q1_2024.csv</td>
+                  <td><span class="badge done">PDF</span></td>
+                  <td>6</td>
+                  <td style="color:var(--muted2)">Yesterday</td>
+                  <td><span class="icon-btn">⬇</span><span class="icon-btn">📧</span><span class="icon-btn">🗑</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td><b>Customer Insights</b></td>
+                  <td>customer_logs.json</td>
+                  <td><span class="badge info">PDF+XLSX</span></td>
+                  <td>22</td>
+                  <td style="color:var(--muted2)">2 days ago</td>
+                  <td><span class="icon-btn">⬇</span><span class="icon-btn">📧</span><span class="icon-btn">🗑</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td><b>System Usage</b></td>
+                  <td>—</td>
+                  <td><span class="badge done">PDF</span></td>
+                  <td>9</td>
+                  <td style="color:var(--muted2)">1 week ago</td>
+                  <td><span class="icon-btn">⬇</span><span class="icon-btn">📧</span><span class="icon-btn">🗑</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ── SECURITY ── -->
+        <div id="pg-security" class="fade-in" style="display:none;">
+          <div class="section-head">
+            <div>
+              <h2>Security</h2>
+              <p>Manage authentication, access control, and data protection settings.</p>
+            </div>
+          </div>
+          <div class="grid g-2-1" style="align-items:start;">
+            <div style="display:flex;flex-direction:column;gap:18px;">
+              <div class="card">
+                <div class="card-header">
+                  <div class="card-title">Security Controls</div>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:10px;">
+                  <div class="toggle-wrap">
+                    <div class="toggle-left"><span class="toggle-icon">🔐</span>
+                      <div>
+                        <div class="toggle-name">Two-Factor Authentication</div>
+                        <div class="toggle-desc">SMS + Authenticator App</div>
+                      </div>
+                    </div><button class="toggle-switch on" onclick="toggleSec(this)"></button>
+                  </div>
+                  <div class="toggle-wrap">
+                    <div class="toggle-left"><span class="toggle-icon">🔒</span>
+                      <div>
+                        <div class="toggle-name">Data Encryption (AES-256)</div>
+                        <div class="toggle-desc">At rest and in transit (TLS 1.3)</div>
+                      </div>
+                    </div><button class="toggle-switch on" onclick="toggleSec(this)"></button>
+                  </div>
+                  <div class="toggle-wrap">
+                    <div class="toggle-left"><span class="toggle-icon">📝</span>
+                      <div>
+                        <div class="toggle-name">Audit Logging</div>
+                        <div class="toggle-desc">All user actions are recorded</div>
+                      </div>
+                    </div><button class="toggle-switch on" onclick="toggleSec(this)"></button>
+                  </div>
+                  <div class="toggle-wrap">
+                    <div class="toggle-left"><span class="toggle-icon">👥</span>
+                      <div>
+                        <div class="toggle-name">Role-Based Access Control</div>
+                        <div class="toggle-desc">Admin / Analyst / Viewer roles</div>
+                      </div>
+                    </div><button class="toggle-switch on" onclick="toggleSec(this)"></button>
+                  </div>
+                  <div class="toggle-wrap">
+                    <div class="toggle-left"><span class="toggle-icon">🌐</span>
+                      <div>
+                        <div class="toggle-name">IP Allowlisting</div>
+                        <div class="toggle-desc">Restrict access to known IPs</div>
+                      </div>
+                    </div><button class="toggle-switch off" onclick="toggleSec(this)"></button>
+                  </div>
+                  <div class="toggle-wrap">
+                    <div class="toggle-left"><span class="toggle-icon">⚠️</span>
+                      <div>
+                        <div class="toggle-name">Anomaly Detection</div>
+                        <div class="toggle-desc">Alert on unusual access patterns</div>
+                      </div>
+                    </div><button class="toggle-switch off" onclick="toggleSec(this)"></button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="card-header">
+                  <div class="card-title">Session Management</div>
+                </div>
+                <div style="display:flex;gap:16px;flex-wrap:wrap;">
+                  <div class="kpi" style="flex:1;min-width:100px;">
+                    <div class="kpi-label">Active Sessions</div>
+                    <div class="kpi-val">4</div>
+                  </div>
+                  <div class="kpi" style="flex:1;min-width:100px;">
+                    <div class="kpi-label">Session Timeout</div>
+                    <div class="kpi-val">30m</div>
+                  </div>
+                  <div class="kpi" style="flex:1;min-width:100px;">
+                    <div class="kpi-label">Failed Logins</div>
+                    <div class="kpi-val" style="color:var(--rose)">12</div>
+                  </div>
+                </div>
+                <button class="btn danger sm" style="margin-top:14px;">Terminate All Sessions</button>
+              </div>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:16px;">
+              <div class="card">
+                <div class="card-header">
+                  <div class="card-title">Recent Security Alerts</div><span class="badge err">2 active</span>
+                </div>
+                <div>
+                  <div class="alert-row">
+                    <div class="alert-dot red"></div>
+                    <div>
+                      <div class="alert-msg"><b>Unauthorized login attempt</b> — IP 192.168.4.22</div>
+                      <div class="alert-time">5 min ago · Blocked</div>
+                    </div><span class="icon-btn">👁</span>
+                  </div>
+                  <div class="alert-row">
+                    <div class="alert-dot amber"></div>
+                    <div>
+                      <div class="alert-msg"><b>Unusual download volume</b> — user meera@org.com</div>
+                      <div class="alert-time">2 hrs ago · Flagged</div>
+                    </div><span class="icon-btn">👁</span>
+                  </div>
+                  <div class="alert-row">
+                    <div class="alert-dot green"></div>
+                    <div>
+                      <div class="alert-msg"><b>New device login</b> — admin Bharathi O.</div>
+                      <div class="alert-time">1 day ago · Approved</div>
+                    </div><span class="icon-btn">👁</span>
+                  </div>
+                  <div class="alert-row">
+                    <div class="alert-dot green"></div>
+                    <div>
+                      <div class="alert-msg"><b>Password changed</b> — user ravi@org.com</div>
+                      <div class="alert-time">2 days ago · OK</div>
+                    </div><span class="icon-btn">👁</span>
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-header">
+                  <div class="card-title">Compliance Status</div>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:10px;">
+                  <div class="qs-item"><span class="qs-icon">✅</span><span class="qs-label">Data Encrypted at
+                      Rest</span><span class="qs-val" style="color:var(--emerald)">Pass</span></div>
+                  <div class="qs-item"><span class="qs-icon">✅</span><span class="qs-label">TLS in Transit</span><span
+                      class="qs-val" style="color:var(--emerald)">Pass</span></div>
+                  <div class="qs-item"><span class="qs-icon">✅</span><span class="qs-label">Audit Logs
+                      Enabled</span><span class="qs-val" style="color:var(--emerald)">Pass</span></div>
+                  <div class="qs-item"><span class="qs-icon">⚠️</span><span class="qs-label">IP Allowlisting</span><span
+                      class="qs-val" style="color:var(--amber)">Warn</span></div>
+                  <div class="qs-item"><span class="qs-icon">❌</span><span class="qs-label">Anomaly
+                      Detection</span><span class="qs-val" style="color:var(--rose)">Off</span></div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- ── USERS ── -->
-      <div id="pg-users" class="fade-in" style="display:none;">
-        <div class="section-head"><div><h2>User Management</h2><p>Manage platform users, roles and permissions.</p></div><button class="tb-btn primary">+ Invite User</button></div>
-        <div class="grid g-4" style="margin-bottom:20px;">
-          <div class="stat-card c"><div class="stat-icon">👥</div><div class="stat-label">Total Users</div><div class="stat-val">64</div><div class="stat-change up">↑ 4 this month</div></div>
-          <div class="stat-card e"><div class="stat-icon">✅</div><div class="stat-label">Active Now</div><div class="stat-val">18</div><div class="stat-change neutral">Online</div></div>
-          <div class="stat-card v"><div class="stat-icon">🔑</div><div class="stat-label">Admins</div><div class="stat-val">3</div><div class="stat-change neutral">Superusers</div></div>
-          <div class="stat-card a"><div class="stat-icon">⏳</div><div class="stat-label">Pending Invites</div><div class="stat-val">7</div><div class="stat-change amber">Awaiting</div></div>
-        </div>
-        <div class="card">
-          <div class="card-header"><div class="card-title">All Users</div><input class="form-input" placeholder="Search users…" style="width:220px;padding:7px 12px;font-size:13px;"/></div>
-          <table>
-            <thead><tr><th>User</th><th>Role</th><th>Last Active</th><th>Datasets</th><th>Status</th><th>Actions</th></tr></thead>
-            <tbody>
-              <tr><td><div style="display:flex;align-items:center;gap:10px;"><div class="sb-avatar" style="width:30px;height:30px;font-size:11px;">BO</div><div><div style="font-weight:600;">Bharathi O.</div><div style="font-size:11px;color:var(--muted)">bharathi@org.com</div></div></div></td><td><span class="badge info">Admin</span></td><td>Now</td><td>48</td><td><span class="badge done"><span class="badge-dot"></span>Active</span></td><td><span class="icon-btn">✏️</span><span class="icon-btn">🔑</span></td></tr>
-              <tr><td><div style="display:flex;align-items:center;gap:10px;"><div class="sb-avatar" style="width:30px;height:30px;font-size:11px;background:linear-gradient(135deg,var(--emerald),#6ee7b7);">RK</div><div><div style="font-weight:600;">Ravi Kumar</div><div style="font-size:11px;color:var(--muted)">ravi@org.com</div></div></div></td><td><span class="badge done">Analyst</span></td><td>5h ago</td><td>12</td><td><span class="badge done"><span class="badge-dot"></span>Active</span></td><td><span class="icon-btn">✏️</span><span class="icon-btn">🗑</span></td></tr>
-              <tr><td><div style="display:flex;align-items:center;gap:10px;"><div class="sb-avatar" style="width:30px;height:30px;font-size:11px;background:linear-gradient(135deg,var(--violet),#c4b5fd);">MS</div><div><div style="font-weight:600;">Meera Sharma</div><div style="font-size:11px;color:var(--muted)">meera@org.com</div></div></div></td><td><span class="badge proc">Viewer</span></td><td>1d ago</td><td>3</td><td><span class="badge done"><span class="badge-dot"></span>Active</span></td><td><span class="icon-btn">✏️</span><span class="icon-btn">🗑</span></td></tr>
-              <tr><td><div style="display:flex;align-items:center;gap:10px;"><div class="sb-avatar" style="width:30px;height:30px;font-size:11px;background:linear-gradient(135deg,var(--amber),#fde68a);">AP</div><div><div style="font-weight:600;">Arjun P.</div><div style="font-size:11px;color:var(--muted)">arjun@org.com</div></div></div></td><td><span class="badge done">Analyst</span></td><td>3d ago</td><td>7</td><td><span class="badge err"><span class="badge-dot"></span>Suspended</span></td><td><span class="icon-btn">✏️</span><span class="icon-btn">🔓</span></td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- ── LOGS ── -->
-      <div id="pg-logs" class="fade-in" style="display:none;">
-        <div class="section-head"><div><h2>Audit Logs</h2><p>Complete activity trail for compliance and security review.</p></div>
-          <button class="tb-btn ghost" style="height:36px;">⬇ Export CSV</button>
-        </div>
-        <div class="card">
-          <div class="card-header">
-            <div class="card-title">All Events</div>
-            <div style="display:flex;gap:8px;">
-              <select class="chart-select"><option>All types</option><option>Login</option><option>Upload</option><option>Download</option><option>Security</option></select>
-              <select class="chart-select"><option>Last 7 days</option><option>Last 30 days</option></select>
+        <!-- ── USERS ── -->
+        <div id="pg-users" class="fade-in" style="display:none;">
+          <div class="section-head">
+            <div>
+              <h2>User Management</h2>
+              <p>Manage platform users, roles and permissions.</p>
+            </div><button class="tb-btn primary">+ Invite User</button>
+          </div>
+          <div class="grid g-4" style="margin-bottom:20px;">
+            <div class="stat-card c">
+              <div class="stat-icon">👥</div>
+              <div class="stat-label">Total Users</div>
+              <div class="stat-val">64</div>
+              <div class="stat-change up">↑ 4 this month</div>
+            </div>
+            <div class="stat-card e">
+              <div class="stat-icon">✅</div>
+              <div class="stat-label">Active Now</div>
+              <div class="stat-val">18</div>
+              <div class="stat-change neutral">Online</div>
+            </div>
+            <div class="stat-card v">
+              <div class="stat-icon">🔑</div>
+              <div class="stat-label">Admins</div>
+              <div class="stat-val">3</div>
+              <div class="stat-change neutral">Superusers</div>
+            </div>
+            <div class="stat-card a">
+              <div class="stat-icon">⏳</div>
+              <div class="stat-label">Pending Invites</div>
+              <div class="stat-val">7</div>
+              <div class="stat-change amber">Awaiting</div>
             </div>
           </div>
-          <table>
-            <thead><tr><th>Timestamp</th><th>User</th><th>Action</th><th>Resource</th><th>IP</th><th>Status</th></tr></thead>
-            <tbody>
-              <tr><td style="font-family:var(--mono);font-size:11px;color:var(--muted)">2024-04-09 09:14:22</td><td>bharathi@org.com</td><td>LOGIN</td><td>Web Dashboard</td><td style="font-family:var(--mono);font-size:11px;">103.21.44.10</td><td><span class="badge done"><span class="badge-dot"></span>Success</span></td></tr>
-              <tr><td style="font-family:var(--mono);font-size:11px;color:var(--muted)">2024-04-09 09:16:05</td><td>bharathi@org.com</td><td>UPLOAD</td><td>sales_q1_2024.csv</td><td style="font-family:var(--mono);font-size:11px;">103.21.44.10</td><td><span class="badge done"><span class="badge-dot"></span>Success</span></td></tr>
-              <tr><td style="font-family:var(--mono);font-size:11px;color:var(--muted)">2024-04-09 09:20:10</td><td>ravi@org.com</td><td>UPLOAD</td><td>inventory.xlsx</td><td style="font-family:var(--mono);font-size:11px;">182.74.22.8</td><td><span class="badge done"><span class="badge-dot"></span>Success</span></td></tr>
-              <tr><td style="font-family:var(--mono);font-size:11px;color:var(--muted)">2024-04-09 11:02:44</td><td>meera@org.com</td><td>DOWNLOAD</td><td>Q1_Sales_Report.pdf</td><td style="font-family:var(--mono);font-size:11px;">49.36.11.22</td><td><span class="badge proc"><span class="badge-dot"></span>Flagged</span></td></tr>
-              <tr><td style="font-family:var(--mono);font-size:11px;color:var(--muted)">2024-04-09 11:44:00</td><td>unknown</td><td>LOGIN_FAIL</td><td>Web Dashboard</td><td style="font-family:var(--mono);font-size:11px;">192.168.4.22</td><td><span class="badge err"><span class="badge-dot"></span>Blocked</span></td></tr>
-              <tr><td style="font-family:var(--mono);font-size:11px;color:var(--muted)">2024-04-08 15:30:18</td><td>bharathi@org.com</td><td>REPORT_GEN</td><td>Customer Insights</td><td style="font-family:var(--mono);font-size:11px;">103.21.44.10</td><td><span class="badge done"><span class="badge-dot"></span>Success</span></td></tr>
-              <tr><td style="font-family:var(--mono);font-size:11px;color:var(--muted)">2024-04-08 10:14:55</td><td>ravi@org.com</td><td>DELETE</td><td>hr_records_old.csv</td><td style="font-family:var(--mono);font-size:11px;">182.74.22.8</td><td><span class="badge done"><span class="badge-dot"></span>Success</span></td></tr>
-            </tbody>
-          </table>
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">All Users</div><input class="form-input" placeholder="Search users…"
+                style="width:220px;padding:7px 12px;font-size:13px;" />
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>User</th>
+                  <th>Role</th>
+                  <th>Last Active</th>
+                  <th>Datasets</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <div style="display:flex;align-items:center;gap:10px;">
+                      <div class="sb-avatar" style="width:30px;height:30px;font-size:11px;">BO</div>
+                      <div>
+                        <div style="font-weight:600;">Bharathi O.</div>
+                        <div style="font-size:11px;color:var(--muted)">bharathi@org.com</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td><span class="badge info">Admin</span></td>
+                  <td>Now</td>
+                  <td>48</td>
+                  <td><span class="badge done"><span class="badge-dot"></span>Active</span></td>
+                  <td><span class="icon-btn">✏️</span><span class="icon-btn">🔑</span></td>
+                </tr>
+                <tr>
+                  <td>
+                    <div style="display:flex;align-items:center;gap:10px;">
+                      <div class="sb-avatar"
+                        style="width:30px;height:30px;font-size:11px;background:linear-gradient(135deg,var(--emerald),#6ee7b7);">
+                        RK</div>
+                      <div>
+                        <div style="font-weight:600;">Ravi Kumar</div>
+                        <div style="font-size:11px;color:var(--muted)">ravi@org.com</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td><span class="badge done">Analyst</span></td>
+                  <td>5h ago</td>
+                  <td>12</td>
+                  <td><span class="badge done"><span class="badge-dot"></span>Active</span></td>
+                  <td><span class="icon-btn">✏️</span><span class="icon-btn">🗑</span></td>
+                </tr>
+                <tr>
+                  <td>
+                    <div style="display:flex;align-items:center;gap:10px;">
+                      <div class="sb-avatar"
+                        style="width:30px;height:30px;font-size:11px;background:linear-gradient(135deg,var(--violet),#c4b5fd);">
+                        MS</div>
+                      <div>
+                        <div style="font-weight:600;">Meera Sharma</div>
+                        <div style="font-size:11px;color:var(--muted)">meera@org.com</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td><span class="badge proc">Viewer</span></td>
+                  <td>1d ago</td>
+                  <td>3</td>
+                  <td><span class="badge done"><span class="badge-dot"></span>Active</span></td>
+                  <td><span class="icon-btn">✏️</span><span class="icon-btn">🗑</span></td>
+                </tr>
+                <tr>
+                  <td>
+                    <div style="display:flex;align-items:center;gap:10px;">
+                      <div class="sb-avatar"
+                        style="width:30px;height:30px;font-size:11px;background:linear-gradient(135deg,var(--amber),#fde68a);">
+                        AP</div>
+                      <div>
+                        <div style="font-weight:600;">Arjun P.</div>
+                        <div style="font-size:11px;color:var(--muted)">arjun@org.com</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td><span class="badge done">Analyst</span></td>
+                  <td>3d ago</td>
+                  <td>7</td>
+                  <td><span class="badge err"><span class="badge-dot"></span>Suspended</span></td>
+                  <td><span class="icon-btn">✏️</span><span class="icon-btn">🔓</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div>
 
-    </div><!-- /content -->
-  </div><!-- /main-area -->
-</div><!-- /page-app -->
+        <!-- ── LOGS ── -->
+        <div id="pg-logs" class="fade-in" style="display:none;">
+          <div class="section-head">
+            <div>
+              <h2>Audit Logs</h2>
+              <p>Complete activity trail for compliance and security review.</p>
+            </div>
+            <button class="tb-btn ghost" style="height:36px;">⬇ Export CSV</button>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">All Events</div>
+              <div style="display:flex;gap:8px;">
+                <select class="chart-select">
+                  <option>All types</option>
+                  <option>Login</option>
+                  <option>Upload</option>
+                  <option>Download</option>
+                  <option>Security</option>
+                </select>
+                <select class="chart-select">
+                  <option>Last 7 days</option>
+                  <option>Last 30 days</option>
+                </select>
+              </div>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>Timestamp</th>
+                  <th>User</th>
+                  <th>Action</th>
+                  <th>Resource</th>
+                  <th>IP</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="font-family:var(--mono);font-size:11px;color:var(--muted)">2024-04-09 09:14:22</td>
+                  <td>bharathi@org.com</td>
+                  <td>LOGIN</td>
+                  <td>Web Dashboard</td>
+                  <td style="font-family:var(--mono);font-size:11px;">103.21.44.10</td>
+                  <td><span class="badge done"><span class="badge-dot"></span>Success</span></td>
+                </tr>
+                <tr>
+                  <td style="font-family:var(--mono);font-size:11px;color:var(--muted)">2024-04-09 09:16:05</td>
+                  <td>bharathi@org.com</td>
+                  <td>UPLOAD</td>
+                  <td>sales_q1_2024.csv</td>
+                  <td style="font-family:var(--mono);font-size:11px;">103.21.44.10</td>
+                  <td><span class="badge done"><span class="badge-dot"></span>Success</span></td>
+                </tr>
+                <tr>
+                  <td style="font-family:var(--mono);font-size:11px;color:var(--muted)">2024-04-09 09:20:10</td>
+                  <td>ravi@org.com</td>
+                  <td>UPLOAD</td>
+                  <td>inventory.xlsx</td>
+                  <td style="font-family:var(--mono);font-size:11px;">182.74.22.8</td>
+                  <td><span class="badge done"><span class="badge-dot"></span>Success</span></td>
+                </tr>
+                <tr>
+                  <td style="font-family:var(--mono);font-size:11px;color:var(--muted)">2024-04-09 11:02:44</td>
+                  <td>meera@org.com</td>
+                  <td>DOWNLOAD</td>
+                  <td>Q1_Sales_Report.pdf</td>
+                  <td style="font-family:var(--mono);font-size:11px;">49.36.11.22</td>
+                  <td><span class="badge proc"><span class="badge-dot"></span>Flagged</span></td>
+                </tr>
+                <tr>
+                  <td style="font-family:var(--mono);font-size:11px;color:var(--muted)">2024-04-09 11:44:00</td>
+                  <td>unknown</td>
+                  <td>LOGIN_FAIL</td>
+                  <td>Web Dashboard</td>
+                  <td style="font-family:var(--mono);font-size:11px;">192.168.4.22</td>
+                  <td><span class="badge err"><span class="badge-dot"></span>Blocked</span></td>
+                </tr>
+                <tr>
+                  <td style="font-family:var(--mono);font-size:11px;color:var(--muted)">2024-04-08 15:30:18</td>
+                  <td>bharathi@org.com</td>
+                  <td>REPORT_GEN</td>
+                  <td>Customer Insights</td>
+                  <td style="font-family:var(--mono);font-size:11px;">103.21.44.10</td>
+                  <td><span class="badge done"><span class="badge-dot"></span>Success</span></td>
+                </tr>
+                <tr>
+                  <td style="font-family:var(--mono);font-size:11px;color:var(--muted)">2024-04-08 10:14:55</td>
+                  <td>ravi@org.com</td>
+                  <td>DELETE</td>
+                  <td>hr_records_old.csv</td>
+                  <td style="font-family:var(--mono);font-size:11px;">182.74.22.8</td>
+                  <td><span class="badge done"><span class="badge-dot"></span>Success</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
 
-<!-- ═══════════════════════════════════════════
+      </div><!-- /content -->
+    </div><!-- /main-area -->
+  </div><!-- /page-app -->
+
+  <!-- ═══════════════════════════════════════════
      JAVASCRIPT
 ═══════════════════════════════════════════ -->
-<script>
-/* ── ANIMATED BACKGROUND ── */
-const canvas = document.getElementById('bg-canvas');
-const ctx = canvas.getContext('2d');
-let W, H, particles = [], lines = [];
+  <script>
+    /* ── ANIMATED BACKGROUND ── */
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    let W, H, particles = [], lines = [];
 
-function resize(){
-  W = canvas.width  = window.innerWidth;
-  H = canvas.height = window.innerHeight;
-}
-resize();
-window.addEventListener('resize', resize);
+    function resize() {
+      W = canvas.width = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
 
-class Particle {
-  constructor(){this.reset();}
-  reset(){
-    this.x = Math.random()*W;
-    this.y = Math.random()*H;
-    this.vx = (Math.random()-0.5)*0.35;
-    this.vy = (Math.random()-0.5)*0.35;
-    this.r  = Math.random()*1.8+0.4;
-    this.alpha = Math.random()*0.5+0.2;
-    this.color = Math.random()>0.5 ? '#38bdf8' : '#a78bfa';
-  }
-  update(){
-    this.x+=this.vx; this.y+=this.vy;
-    if(this.x<0||this.x>W||this.y<0||this.y>H) this.reset();
-  }
-  draw(){
-    ctx.save();
-    ctx.globalAlpha = this.alpha;
-    ctx.beginPath();
-    ctx.arc(this.x,this.y,this.r,0,Math.PI*2);
-    ctx.fillStyle = this.color;
-    ctx.shadowColor = this.color;
-    ctx.shadowBlur = 8;
-    ctx.fill();
-    ctx.restore();
-  }
-}
-
-for(let i=0;i<120;i++) particles.push(new Particle());
-
-function drawGrid(){
-  ctx.save();
-  ctx.strokeStyle='rgba(56,189,248,0.035)';
-  ctx.lineWidth=0.7;
-  const gs=60;
-  for(let x=0;x<W;x+=gs){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
-  for(let y=0;y<H;y+=gs){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
-  ctx.restore();
-}
-
-function drawConnections(){
-  const maxDist=130;
-  for(let i=0;i<particles.length;i++){
-    for(let j=i+1;j<particles.length;j++){
-      const dx=particles[i].x-particles[j].x;
-      const dy=particles[i].y-particles[j].y;
-      const d=Math.sqrt(dx*dx+dy*dy);
-      if(d<maxDist){
+    class Particle {
+      constructor() { this.reset(); }
+      reset() {
+        this.x = Math.random() * W;
+        this.y = Math.random() * H;
+        this.vx = (Math.random() - 0.5) * 0.35;
+        this.vy = (Math.random() - 0.5) * 0.35;
+        this.r = Math.random() * 1.8 + 0.4;
+        this.alpha = Math.random() * 0.5 + 0.2;
+        this.color = Math.random() > 0.5 ? '#38bdf8' : '#a78bfa';
+      }
+      update() {
+        this.x += this.vx; this.y += this.vy;
+        if (this.x < 0 || this.x > W || this.y < 0 || this.y > H) this.reset();
+      }
+      draw() {
         ctx.save();
-        ctx.globalAlpha=(1-d/maxDist)*0.12;
-        ctx.strokeStyle='#38bdf8';
-        ctx.lineWidth=0.6;
+        ctx.globalAlpha = this.alpha;
         ctx.beginPath();
-        ctx.moveTo(particles[i].x,particles[i].y);
-        ctx.lineTo(particles[j].x,particles[j].y);
-        ctx.stroke();
+        ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
+        ctx.shadowColor = this.color;
+        ctx.shadowBlur = 8;
+        ctx.fill();
         ctx.restore();
       }
     }
-  }
-}
 
-let gradAngle=0;
-function animate(){
-  ctx.clearRect(0,0,W,H);
-  // Subtle radial gradient glow
-  gradAngle+=0.002;
-  const cx=W/2+Math.cos(gradAngle)*W*0.15;
-  const cy=H/2+Math.sin(gradAngle)*H*0.15;
-  const grd=ctx.createRadialGradient(cx,cy,0,cx,cy,W*0.55);
-  grd.addColorStop(0,'rgba(56,189,248,0.04)');
-  grd.addColorStop(0.5,'rgba(167,139,250,0.02)');
-  grd.addColorStop(1,'transparent');
-  ctx.fillStyle=grd;
-  ctx.fillRect(0,0,W,H);
-  drawGrid();
-  drawConnections();
-  particles.forEach(p=>{p.update();p.draw();});
-  requestAnimationFrame(animate);
-}
-animate();
+    for (let i = 0; i < 120; i++) particles.push(new Particle());
 
-/* ── PAGE ROUTING ── */
-const pages = {
-  dashboard: {title:'Dashboard',     breadcrumb:'DataVault / Dashboard',    btn1:'Export Report',    btn2:'+ Upload Dataset'},
-  upload:    {title:'Upload Dataset', breadcrumb:'DataVault / Upload',       btn1:'Clear History',    btn2:'+ New Upload'},
-  cleaning:  {title:'Data Cleaning',  breadcrumb:'DataVault / Cleaning',     btn1:'Download Clean CSV',btn2:'Run Analytics'},
-  analytics: {title:'Analytics',      breadcrumb:'DataVault / Analytics',    btn1:'Export Charts',    btn2:'Refresh Data'},
-  reports:   {title:'Reports',        breadcrumb:'DataVault / Reports',      btn1:'Schedule Report',  btn2:'+ New Report'},
-  security:  {title:'Security',       breadcrumb:'DataVault / Security',     btn1:'Run Security Scan',btn2:'Export Logs'},
-  users:     {title:'User Management',breadcrumb:'DataVault / Users',        btn1:'Roles & Permissions',btn2:'+ Invite User'},
-  logs:      {title:'Audit Logs',     breadcrumb:'DataVault / Audit Logs',   btn1:'Export CSV',       btn2:'Clear Logs'},
-};
-
-let currentPage = 'dashboard';
-
-function navTo(id){
-  // hide all pages
-  document.querySelectorAll('[id^="pg-"]').forEach(p=>p.style.display='none');
-  // show target
-  const el = document.getElementById('pg-'+id);
-  if(el){el.style.display='';el.classList.remove('fade-in');void el.offsetWidth;el.classList.add('fade-in');}
-  // sidebar
-  document.querySelectorAll('.sb-item').forEach(i=>i.classList.remove('active'));
-  const sbItem=document.querySelector('[data-page="'+id+'"]');
-  if(sbItem) sbItem.classList.add('active');
-  // topbar
-  const cfg=pages[id]||{title:id,breadcrumb:'DataVault / '+id,btn1:'',btn2:''};
-  document.getElementById('tb-title').textContent=cfg.title;
-  document.getElementById('tb-breadcrumb').textContent=cfg.breadcrumb;
-  document.getElementById('tb-secondary-btn').textContent=cfg.btn1;
-  document.getElementById('tb-primary-btn').textContent=cfg.btn2;
-  currentPage=id;
-}
-
-document.querySelectorAll('.sb-item').forEach(item=>{
-  item.addEventListener('click',()=>navTo(item.dataset.page));
-});
-
-/* ── LOGIN ── */
-function doLogin(){
-  const e=document.getElementById('login-email').value.trim();
-  const p=document.getElementById('login-pass').value;
-  const err=document.getElementById('login-error');
-  if(!e||!p){
-    err.style.display='block';
-    err.textContent='Please enter your email and password.';
-    return;
-  }
-  err.style.display='none';
-  document.getElementById('page-login').classList.remove('active');
-  document.getElementById('page-app').classList.add('active');
-  navTo('dashboard');
-}
-
-document.getElementById('login-pass').addEventListener('keydown',e=>{
-  if(e.key==='Enter') doLogin();
-});
-document.getElementById('login-email').addEventListener('keydown',e=>{
-  if(e.key==='Enter') doLogin();
-});
-
-function togglePwd(){
-  const f=document.getElementById('login-pass');
-  f.type=f.type==='password'?'text':'password';
-}
-function showRegister(){alert('Registration page — connect to your backend!');}
-
-function doLogout(){
-  document.getElementById('page-app').classList.remove('active');
-  document.getElementById('page-login').classList.add('active');
-  document.getElementById('login-email').value='';
-  document.getElementById('login-pass').value='';
-}
-
-/* ── UPLOAD SIMULATION ── */
-function simulateUpload(){
-  document.getElementById('upload-prog').style.display='';
-  document.getElementById('upload-success').style.display='none';
-  let pct=0;
-  const bar=document.getElementById('up-prog-bar');
-  const txt=document.getElementById('up-pct-txt');
-  const iv=setInterval(()=>{
-    pct+=Math.random()*8+2;
-    if(pct>=100){pct=100;clearInterval(iv);
-      setTimeout(()=>{
-        document.getElementById('upload-prog').style.display='none';
-        document.getElementById('upload-success').style.display='';
-      },400);
+    function drawGrid() {
+      ctx.save();
+      ctx.strokeStyle = 'rgba(56,189,248,0.035)';
+      ctx.lineWidth = 0.7;
+      const gs = 60;
+      for (let x = 0; x < W; x += gs) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); }
+      for (let y = 0; y < H; y += gs) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }
+      ctx.restore();
     }
-    bar.style.width=pct+'%';
-    txt.textContent=Math.min(100,Math.round(pct))+'%';
-  },140);
-}
 
-function onDrag(e){e.preventDefault();document.getElementById('dropzone').classList.add('drag-over');}
-function onDragLeave(e){document.getElementById('dropzone').classList.remove('drag-over');}
-function onDrop(e){e.preventDefault();document.getElementById('dropzone').classList.remove('drag-over');simulateUpload();}
+    function drawConnections() {
+      const maxDist = 130;
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const d = Math.sqrt(dx * dx + dy * dy);
+          if (d < maxDist) {
+            ctx.save();
+            ctx.globalAlpha = (1 - d / maxDist) * 0.12;
+            ctx.strokeStyle = '#38bdf8';
+            ctx.lineWidth = 0.6;
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.stroke();
+            ctx.restore();
+          }
+        }
+      }
+    }
 
-/* ── SECURITY TOGGLES ── */
-function toggleSec(btn){btn.classList.toggle('on');btn.classList.toggle('off');}
+    let gradAngle = 0;
+    function animate() {
+      ctx.clearRect(0, 0, W, H);
+      // Subtle radial gradient glow
+      gradAngle += 0.002;
+      const cx = W / 2 + Math.cos(gradAngle) * W * 0.15;
+      const cy = H / 2 + Math.sin(gradAngle) * H * 0.15;
+      const grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, W * 0.55);
+      grd.addColorStop(0, 'rgba(56,189,248,0.04)');
+      grd.addColorStop(0.5, 'rgba(167,139,250,0.02)');
+      grd.addColorStop(1, 'transparent');
+      ctx.fillStyle = grd;
+      ctx.fillRect(0, 0, W, H);
+      drawGrid();
+      drawConnections();
+      particles.forEach(p => { p.update(); p.draw(); });
+      requestAnimationFrame(animate);
+    }
+    animate();
 
-/* ── TOPBAR PRIMARY BTN ROUTING ── */
-document.getElementById('tb-primary-btn').addEventListener('click',()=>{
-  const routes={dashboard:'upload',upload:'upload',cleaning:'analytics',analytics:'reports',reports:'reports',security:'security',users:'users',logs:'logs'};
-  navTo(routes[currentPage]||currentPage);
-});
-</script>
+    /* ── PAGE ROUTING ── */
+    const pages = {
+      dashboard: { title: 'Dashboard', breadcrumb: 'DataVault / Dashboard', btn1: 'Export Report', btn2: '+ Upload Dataset' },
+      upload: { title: 'Upload Dataset', breadcrumb: 'DataVault / Upload', btn1: 'Clear History', btn2: '+ New Upload' },
+      cleaning: { title: 'Data Cleaning', breadcrumb: 'DataVault / Cleaning', btn1: 'Download Clean CSV', btn2: 'Run Analytics' },
+      analytics: { title: 'Analytics', breadcrumb: 'DataVault / Analytics', btn1: 'Export Charts', btn2: 'Refresh Data' },
+      reports: { title: 'Reports', breadcrumb: 'DataVault / Reports', btn1: 'Schedule Report', btn2: '+ New Report' },
+      security: { title: 'Security', breadcrumb: 'DataVault / Security', btn1: 'Run Security Scan', btn2: 'Export Logs' },
+      users: { title: 'User Management', breadcrumb: 'DataVault / Users', btn1: 'Roles & Permissions', btn2: '+ Invite User' },
+      logs: { title: 'Audit Logs', breadcrumb: 'DataVault / Audit Logs', btn1: 'Export CSV', btn2: 'Clear Logs' },
+    };
+
+    let currentPage = 'dashboard';
+
+    function navTo(id) {
+      // hide all pages
+      document.querySelectorAll('[id^="pg-"]').forEach(p => p.style.display = 'none');
+      // show target
+      const el = document.getElementById('pg-' + id);
+      if (el) { el.style.display = ''; el.classList.remove('fade-in'); void el.offsetWidth; el.classList.add('fade-in'); }
+      // sidebar
+      document.querySelectorAll('.sb-item').forEach(i => i.classList.remove('active'));
+      const sbItem = document.querySelector('[data-page="' + id + '"]');
+      if (sbItem) sbItem.classList.add('active');
+      // topbar
+      const cfg = pages[id] || { title: id, breadcrumb: 'DataVault / ' + id, btn1: '', btn2: '' };
+      document.getElementById('tb-title').textContent = cfg.title;
+      document.getElementById('tb-breadcrumb').textContent = cfg.breadcrumb;
+      document.getElementById('tb-secondary-btn').textContent = cfg.btn1;
+      document.getElementById('tb-primary-btn').textContent = cfg.btn2;
+      currentPage = id;
+    }
+
+    document.querySelectorAll('.sb-item').forEach(item => {
+      item.addEventListener('click', () => navTo(item.dataset.page));
+    });
+
+    /* ── LOGIN ── */
+    function doLogin() {
+      const e = document.getElementById('login-email').value.trim();
+      const p = document.getElementById('login-pass').value;
+      const err = document.getElementById('login-error');
+      if (!e || !p) {
+        err.style.display = 'block';
+        err.textContent = 'Please enter your email and password.';
+        return;
+      }
+      err.style.display = 'none';
+      document.getElementById('page-login').classList.remove('active');
+      document.getElementById('page-app').classList.add('active');
+      navTo('dashboard');
+    }
+
+    /* ── FILE UPLOAD & PARSING ── */
+    let uploadedFileData = null;
+
+    function formatFileSize(bytes) {
+      if (bytes < 1024) return bytes + ' B';
+      if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+      return (bytes / 1048576).toFixed(1) + ' MB';
+    }
+
+    function getFileIcon(name) {
+      const ext = name.split('.').pop().toLowerCase();
+      if (ext === 'csv' || ext === 'tsv' || ext === 'txt') return '📄';
+      if (ext === 'xlsx' || ext === 'xls') return '📊';
+      if (ext === 'json') return '📋';
+      return '📁';
+    }
+
+    function handleFileSelect(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      processFile(file);
+    }
+
+    // Track active upload for cancellation
+    let activeReader = null;
+    let activeInterval = null;
+
+    function cancelUpload() {
+      if (activeReader) { activeReader.abort(); activeReader = null; }
+      if (activeInterval) { clearInterval(activeInterval); activeInterval = null; }
+      document.getElementById('upload-prog').style.display = 'none';
+      document.getElementById('upload-success').style.display = 'none';
+      document.getElementById('file-preview').style.display = 'none';
+      document.getElementById('file-input').value = '';
+      uploadedFileData = null;
+    }
+
+    function discardUpload() {
+      document.getElementById('upload-success').style.display = 'none';
+      document.getElementById('file-preview').style.display = 'none';
+      document.getElementById('file-input').value = '';
+      uploadedFileData = null;
+    }
+
+    function processFile(file) {
+      // Cancel any previous upload in progress
+      if (activeReader) { activeReader.abort(); activeReader = null; }
+      if (activeInterval) { clearInterval(activeInterval); activeInterval = null; }
+
+      // Update the progress display with real file info
+      document.getElementById('up-file-name').textContent = file.name;
+      document.getElementById('up-file-size').textContent = formatFileSize(file.size) + ' · Uploading…';
+      document.getElementById('upload-prog').style.display = '';
+      document.getElementById('upload-success').style.display = 'none';
+      document.getElementById('file-preview').style.display = 'none';
+
+      // Simulate upload progress while reading file
+      let pct = 0;
+      const bar = document.getElementById('up-prog-bar');
+      const txt = document.getElementById('up-pct-txt');
+      bar.style.width = '0%';
+      txt.textContent = '0%';
+
+      const reader = new FileReader();
+      activeReader = reader;
+
+      reader.onprogress = function (e) {
+        if (e.lengthComputable) {
+          pct = (e.loaded / e.total) * 80;
+          bar.style.width = pct + '%';
+          txt.textContent = Math.round(pct) + '%';
+        }
+      };
+
+      reader.onload = function (e) {
+        // Finish progress animation
+        let current = pct;
+        const iv = setInterval(() => {
+          activeInterval = iv;
+          current += Math.random() * 8 + 3;
+          if (current >= 100) {
+            current = 100;
+            clearInterval(iv);
+            bar.style.width = '100%';
+            txt.textContent = '100%';
+            setTimeout(() => {
+              document.getElementById('upload-prog').style.display = 'none';
+              document.getElementById('upload-success').style.display = '';
+              document.getElementById('upload-success-msg').textContent =
+                file.name + ' (' + formatFileSize(file.size) + ') uploaded successfully!';
+              // Parse and preview the file
+              parseAndPreview(file.name, e.target.result);
+            }, 300);
+          }
+          bar.style.width = current + '%';
+          txt.textContent = Math.min(100, Math.round(current)) + '%';
+        }, 80);
+      };
+
+      reader.onerror = function () {
+        document.getElementById('upload-prog').style.display = 'none';
+        alert('Error reading file. Please try again.');
+      };
+
+      reader.readAsText(file);
+    }
+
+    function parseAndPreview(filename, content) {
+      const ext = filename.split('.').pop().toLowerCase();
+      let rows = [];
+      let headers = [];
+
+      try {
+        if (ext === 'json') {
+          let data = JSON.parse(content);
+          if (!Array.isArray(data)) {
+            // If it's an object with a data/results/records key, try to extract
+            const keys = Object.keys(data);
+            for (const k of keys) {
+              if (Array.isArray(data[k])) { data = data[k]; break; }
+            }
+            if (!Array.isArray(data)) data = [data];
+          }
+          if (data.length > 0) {
+            headers = Object.keys(data[0]);
+            rows = data.map(row => headers.map(h => row[h] !== undefined ? String(row[h]) : ''));
+          }
+        } else {
+          // CSV / TSV / TXT
+          const delimiter = ext === 'tsv' ? '\t' : ',';
+          const lines = content.split(/\r?\n/).filter(l => l.trim() !== '');
+          if (lines.length > 0) {
+            headers = parseCSVLine(lines[0], delimiter);
+            for (let i = 1; i < lines.length; i++) {
+              rows.push(parseCSVLine(lines[i], delimiter));
+            }
+          }
+        }
+      } catch (err) {
+        console.error('Parse error:', err);
+      }
+
+      if (headers.length === 0) return;
+
+      uploadedFileData = { headers, rows, filename };
+      renderPreview(headers, rows, filename);
+    }
+
+    function parseCSVLine(line, delimiter) {
+      const result = [];
+      let current = '';
+      let inQuotes = false;
+      for (let i = 0; i < line.length; i++) {
+        const c = line[i];
+        if (inQuotes) {
+          if (c === '"' && line[i + 1] === '"') { current += '"'; i++; }
+          else if (c === '"') { inQuotes = false; }
+          else { current += c; }
+        } else {
+          if (c === '"') { inQuotes = true; }
+          else if (c === delimiter) { result.push(current.trim()); current = ''; }
+          else { current += c; }
+        }
+      }
+      result.push(current.trim());
+      return result;
+    }
+
+    function renderPreview(headers, rows, filename) {
+      const maxRows = 50;
+      const displayRows = rows.slice(0, maxRows);
+      const totalRows = rows.length;
+
+      document.getElementById('preview-title').textContent = getFileIcon(filename) + ' ' + filename;
+      document.getElementById('preview-info').textContent =
+        'Showing ' + displayRows.length + ' of ' + totalRows + ' rows · ' + headers.length + ' columns';
+
+      let html = '<table><thead><tr><th style="color:var(--cyan);width:50px;">#</th>';
+      headers.forEach(h => {
+        html += '<th>' + escapeHtml(h) + '</th>';
+      });
+      html += '</tr></thead><tbody>';
+
+      displayRows.forEach((row, idx) => {
+        html += '<tr><td style="color:var(--muted);font-family:var(--mono);font-size:11px;">' + (idx + 1) + '</td>';
+        headers.forEach((_, ci) => {
+          const val = row[ci] !== undefined ? row[ci] : '';
+          html += '<td style="white-space:nowrap;max-width:200px;overflow:hidden;text-overflow:ellipsis;">' + escapeHtml(val) + '</td>';
+        });
+        html += '</tr>';
+      });
+
+      if (totalRows > maxRows) {
+        html += '<tr><td colspan="' + (headers.length + 1) + '" style="text-align:center;color:var(--muted);font-size:12px;padding:14px;">… and ' + (totalRows - maxRows) + ' more rows</td></tr>';
+      }
+
+      html += '</tbody></table>';
+      document.getElementById('preview-table-wrap').innerHTML = html;
+      document.getElementById('file-preview').style.display = '';
+      document.getElementById('file-preview').classList.remove('fade-in');
+      void document.getElementById('file-preview').offsetWidth;
+      document.getElementById('file-preview').classList.add('fade-in');
+    }
+
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.appendChild(document.createTextNode(str));
+      return div.innerHTML;
+    }
+
+    function closePreview() {
+      document.getElementById('file-preview').style.display = 'none';
+    }
+
+    function onDrag(e) { e.preventDefault(); document.getElementById('dropzone').classList.add('drag-over'); }
+    function onDragLeave(e) { document.getElementById('dropzone').classList.remove('drag-over'); }
+    function onDrop(e) {
+      e.preventDefault();
+      document.getElementById('dropzone').classList.remove('drag-over');
+      const file = e.dataTransfer.files[0];
+      if (file) processFile(file);
+    }
+
+    document.getElementById('login-pass').addEventListener('keydown', e => {
+      if (e.key === 'Enter') doLogin();
+    });
+    document.getElementById('login-email').addEventListener('keydown', e => {
+      if (e.key === 'Enter') doLogin();
+    });
+
+    function togglePwd() {
+      const f = document.getElementById('login-pass');
+      f.type = f.type === 'password' ? 'text' : 'password';
+    }
+    function showRegister() { alert('Registration page — connect to your backend!'); }
+
+    function doLogout() {
+      document.getElementById('page-app').classList.remove('active');
+      document.getElementById('page-login').classList.add('active');
+      document.getElementById('login-email').value = '';
+      document.getElementById('login-pass').value = '';
+    }
+
+    /* ── SECURITY TOGGLES ── */
+    function toggleSec(btn) { btn.classList.toggle('on'); btn.classList.toggle('off'); }
+
+    /* ── TOPBAR PRIMARY BTN ROUTING ── */
+    document.getElementById('tb-primary-btn').addEventListener('click', () => {
+      const routes = { dashboard: 'upload', upload: 'upload', cleaning: 'analytics', analytics: 'reports', reports: 'reports', security: 'security', users: 'users', logs: 'logs' };
+      navTo(routes[currentPage] || currentPage);
+    });
+    /* ── URL UPLOAD MODAL ── */
+    function openUrlModal() {
+      document.getElementById('url-modal').style.display = 'flex';
+      document.getElementById('url-input').value = '';
+      document.getElementById('url-error').style.display = 'none';
+      document.getElementById('url-loading').style.display = 'none';
+      setTimeout(() => document.getElementById('url-input').focus(), 100);
+    }
+
+    function closeUrlModal() {
+      document.getElementById('url-modal').style.display = 'none';
+    }
+
+    function fetchFromUrl() {
+      const url = document.getElementById('url-input').value.trim();
+      const errEl = document.getElementById('url-error');
+      const loadEl = document.getElementById('url-loading');
+
+      if (!url) {
+        errEl.textContent = 'Please enter a valid URL.';
+        errEl.style.display = 'block';
+        return;
+      }
+
+      // Basic URL validation
+      try { new URL(url); } catch {
+        errEl.textContent = 'Invalid URL format. Please enter a full URL (e.g. https://...)';
+        errEl.style.display = 'block';
+        return;
+      }
+
+      errEl.style.display = 'none';
+      loadEl.style.display = 'flex';
+
+      fetch(url)
+        .then(response => {
+          if (!response.ok) throw new Error('HTTP ' + response.status + ': ' + response.statusText);
+          return response.text();
+        })
+        .then(content => {
+          loadEl.style.display = 'none';
+          closeUrlModal();
+
+          // Guess filename from URL
+          let filename = url.split('/').pop().split('?')[0] || 'data';
+          if (!filename.includes('.')) filename += '.csv';
+
+          // Show upload success
+          const size = new Blob([content]).size;
+          document.getElementById('upload-prog').style.display = 'none';
+          document.getElementById('upload-success').style.display = '';
+          document.getElementById('upload-success-msg').textContent =
+            filename + ' (' + formatFileSize(size) + ') fetched from URL successfully!';
+
+          // Parse and preview
+          parseAndPreview(filename, content);
+
+          // Navigate to upload page if not already there
+          if (currentPage !== 'upload') navTo('upload');
+        })
+        .catch(err => {
+          loadEl.style.display = 'none';
+          errEl.textContent = 'Failed to fetch: ' + err.message + '. Check the URL or CORS settings.';
+          errEl.style.display = 'block';
+        });
+    }
+
+    // Close modal on Escape key
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeUrlModal();
+    });
+
+    // Enter key to submit URL
+    document.getElementById('url-input').addEventListener('keydown', e => {
+      if (e.key === 'Enter') fetchFromUrl();
+    });
+  </script>
+
+  <!-- URL UPLOAD MODAL -->
+  <div id="url-modal"
+    style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.65);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:24px;">
+    <div
+      style="width:100%;max-width:520px;background:rgba(13,17,23,0.95);border:1px solid rgba(56,189,248,0.2);border-radius:20px;padding:36px 32px;box-shadow:0 0 60px rgba(56,189,248,0.08),0 24px 48px rgba(0,0,0,0.6);animation:cardIn 0.4s cubic-bezier(0.22,1,0.36,1) both;">
+
+      <!-- Header -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div
+            style="width:42px;height:42px;border-radius:12px;background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.2);display:flex;align-items:center;justify-content:center;font-size:20px;">
+            🔗</div>
+          <div>
+            <div style="font-size:16px;font-weight:700;letter-spacing:-0.3px;">Import from URL</div>
+            <div style="font-size:12px;color:#64748b;margin-top:2px;">Paste a link to a CSV, JSON, or TSV file</div>
+          </div>
+        </div>
+        <button onclick="closeUrlModal()"
+          style="background:none;border:none;color:#64748b;font-size:20px;cursor:pointer;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;transition:all 0.15s;"
+          onmouseover="this.style.background='#1e2535';this.style.color='#e2e8f0'"
+          onmouseout="this.style.background='none';this.style.color='#64748b'">✕</button>
+      </div>
+
+      <!-- URL Input -->
+      <div style="margin-bottom:16px;">
+        <label
+          style="display:block;font-size:12px;font-weight:500;color:#94a3b8;margin-bottom:7px;letter-spacing:0.5px;text-transform:uppercase;">File
+          URL</label>
+        <input id="url-input" type="url" placeholder="https://example.com/data.csv"
+          style="width:100%;background:#161b27;border:1px solid rgba(56,189,248,0.2);border-radius:10px;padding:13px 14px;color:#e2e8f0;font-size:14px;font-family:'Outfit',sans-serif;outline:none;transition:border-color 0.2s,box-shadow 0.2s;"
+          onfocus="this.style.borderColor='#38bdf8';this.style.boxShadow='0 0 0 3px rgba(56,189,248,0.12)'"
+          onblur="this.style.borderColor='rgba(56,189,248,0.2)';this.style.boxShadow='none'" />
+      </div>
+
+      <!-- Supported formats hint -->
+      <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;">
+        <span
+          style="padding:3px 10px;border-radius:20px;font-size:10.5px;font-weight:600;color:#34d399;border:1px solid rgba(52,211,153,0.3);background:rgba(52,211,153,0.08);">CSV</span>
+        <span
+          style="padding:3px 10px;border-radius:20px;font-size:10.5px;font-weight:600;color:#38bdf8;border:1px solid rgba(56,189,248,0.3);background:rgba(56,189,248,0.08);">JSON</span>
+        <span
+          style="padding:3px 10px;border-radius:20px;font-size:10.5px;font-weight:600;color:#a78bfa;border:1px solid rgba(167,139,250,0.3);background:rgba(167,139,250,0.08);">TSV</span>
+        <span
+          style="padding:3px 10px;border-radius:20px;font-size:10.5px;font-weight:600;color:#fbbf24;border:1px solid rgba(251,191,36,0.3);background:rgba(251,191,36,0.08);">TXT</span>
+        <span style="margin-left:auto;font-size:11px;color:#64748b;">Public URLs only (CORS enabled)</span>
+      </div>
+
+      <!-- Error message -->
+      <div id="url-error"
+        style="display:none;margin-bottom:14px;padding:10px 14px;background:rgba(251,113,133,0.1);border:1px solid rgba(251,113,133,0.3);border-radius:8px;font-size:13px;color:#fb7185;">
+      </div>
+
+      <!-- Loading spinner -->
+      <div id="url-loading"
+        style="display:none;align-items:center;gap:10px;margin-bottom:14px;padding:12px 14px;background:rgba(56,189,248,0.05);border:1px solid rgba(56,189,248,0.15);border-radius:10px;">
+        <div
+          style="width:18px;height:18px;border:2px solid rgba(56,189,248,0.3);border-top-color:#38bdf8;border-radius:50%;animation:spin 0.8s linear infinite;">
+        </div>
+        <span style="font-size:13px;color:#94a3b8;">Fetching file from URL…</span>
+      </div>
+
+      <!-- Action Buttons -->
+      <div style="display:flex;gap:10px;justify-content:flex-end;">
+        <button onclick="closeUrlModal()"
+          style="display:inline-flex;align-items:center;gap:7px;padding:11px 22px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;border:1px solid rgba(56,189,248,0.1);background:transparent;color:#94a3b8;font-family:'Outfit',sans-serif;transition:all 0.18s;"
+          onmouseover="this.style.background='#161b27';this.style.color='#e2e8f0'"
+          onmouseout="this.style.background='transparent';this.style.color='#94a3b8'">Cancel</button>
+        <button onclick="fetchFromUrl()"
+          style="display:inline-flex;align-items:center;gap:7px;padding:11px 22px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;border:none;background:linear-gradient(135deg,#38bdf8,#0ea5e9);color:#06080f;font-family:'Outfit',sans-serif;box-shadow:0 4px 18px rgba(56,189,248,0.2);transition:all 0.18s;"
+          onmouseover="this.style.transform='translateY(-1px)';this.style.boxShadow='0 8px 24px rgba(56,189,248,0.3)'"
+          onmouseout="this.style.transform='none';this.style.boxShadow='0 4px 18px rgba(56,189,248,0.2)'">🔗 Fetch &
+          Preview</button>
+      </div>
+    </div>
+  </div>
+
 </body>
+
 </html>

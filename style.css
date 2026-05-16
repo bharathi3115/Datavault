@@ -200,27 +200,40 @@ select {
 }
 
 .login-brand {
-  font-weight: 800;
-  font-size: 14px;
-  color: #1e293b;
   margin-bottom: 80px;
-  letter-spacing: 0.5px;
   display: flex;
   align-items: center;
   gap: 12px;
 }
 
 .login-soft-logo {
-  width: 32px;
-  height: 32px;
+  width: 38px;
+  height: 38px;
   background: linear-gradient(135deg, #60a5fa, #818cf8);
-  border-radius: 8px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 16px;
+  font-size: 18px;
   box-shadow: 0 4px 12px rgba(96, 165, 250, 0.3);
   color: white;
+  flex-shrink: 0;
+}
+
+.brand-name {
+  font-weight: 800;
+  font-size: 16px;
+  color: #1e293b;
+  line-height: 1.2;
+}
+
+.brand-sub {
+  font-size: 9px;
+  color: #94a3b8;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-top: 2px;
 }
 
 .login-title-soft {

@@ -825,6 +825,7 @@
             </div>
           </div>
 
+
           <!-- TOP TABLE -->
           <div class="chart-card">
             <div class="card-header">
@@ -837,6 +838,8 @@
                 <div>No analysis data yet. Click "Run Analytics" to process the dataset.</div>
               </div>
             </div>
+          </div>
+
           </div>
         </div>
 
@@ -851,6 +854,24 @@
           </div>
 
           <div class="grid g-3" style="margin-bottom:24px;">
+            <!-- DYNAMIC CLEANED DATA REPORT -->
+            <div class="report-card" id="dynamic-clean-report" style="display:none;border:1px solid var(--emerald-glow);">
+              <div class="report-icon green">✨</div>
+              <div>
+                <div class="report-name" id="dynamic-report-name">Cleaned Dataset Export</div>
+                <div class="report-desc">Fully processed and validated dataset ready for download.</div>
+              </div>
+              <div class="report-meta">
+                <span class="report-tag">CSV</span>
+                <span class="report-tag" id="dynamic-report-time">Just Now</span>
+                <span class="report-tag" style="background:var(--emerald-glow);color:#fff;">READY</span>
+              </div>
+              <div class="report-actions">
+                <button class="btn primary sm" onclick="downloadCleanCSV()">⬇ Download CSV</button>
+                <button class="btn outline sm" onclick="navTo('analytics')">👁 Analytics</button>
+              </div>
+            </div>
+
             <div class="report-card">
               <div class="report-icon blue">📊</div>
               <div>
@@ -2026,6 +2047,14 @@
       updateQuality(q, curRows.length, fixed, removed, headers.length);
       cleanedData = { headers, rows: curRows, filename };
       isCleaning = false;
+
+      // Update Reports tab with the dynamic card
+      const repCard = document.getElementById('dynamic-clean-report');
+      if (repCard) {
+        repCard.style.display = 'flex';
+        document.getElementById('dynamic-report-name').textContent = 'Cleaned: ' + filename;
+        document.getElementById('dynamic-report-time').textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      }
     }
 
     /* ═══ DATA ANALYTICS ENGINE ═══ */
@@ -2159,6 +2188,7 @@
         points.push(sum);
       }
       drawTrend(points);
+
       if (currentPage !== 'analytics') navTo('analytics');
     }
 

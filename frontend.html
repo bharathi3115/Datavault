@@ -110,14 +110,8 @@
         </div>
 
         <div class="sb-section">System</div>
-        <div class="sb-item" data-page="security">
-          <span class="sb-icon">🛡️</span> Security
-        </div>
         <div class="sb-item" data-page="users">
           <span class="sb-icon">👥</span> Users
-        </div>
-        <div class="sb-item" data-page="logs">
-          <span class="sb-icon">📝</span> Audit Logs
         </div>
       </nav>
 
@@ -995,150 +989,7 @@
           </div>
         </div>
 
-        <!-- ── SECURITY ── -->
-        <div id="pg-security" class="fade-in" style="display:none;">
-          <div class="section-head">
-            <div>
-              <h2>Security</h2>
-              <p>Manage authentication, access control, and data protection settings.</p>
-            </div>
-          </div>
-          <div class="grid g-2-1" style="align-items:start;">
-            <div style="display:flex;flex-direction:column;gap:18px;">
-              <div class="card">
-                <div class="card-header">
-                  <div class="card-title">Security Controls</div>
-                </div>
-                <div style="display:flex;flex-direction:column;gap:10px;">
-                  <div class="toggle-wrap">
-                    <div class="toggle-left"><span class="toggle-icon">🔐</span>
-                      <div>
-                        <div class="toggle-name">Two-Factor Authentication</div>
-                        <div class="toggle-desc">SMS + Authenticator App</div>
-                      </div>
-                    </div><button class="toggle-switch on" onclick="toggleSec(this)"></button>
-                  </div>
-                  <div class="toggle-wrap">
-                    <div class="toggle-left"><span class="toggle-icon">🔒</span>
-                      <div>
-                        <div class="toggle-name">Data Encryption (AES-256)</div>
-                        <div class="toggle-desc">At rest and in transit (TLS 1.3)</div>
-                      </div>
-                    </div><button class="toggle-switch on" onclick="toggleSec(this)"></button>
-                  </div>
-                  <div class="toggle-wrap">
-                    <div class="toggle-left"><span class="toggle-icon">📝</span>
-                      <div>
-                        <div class="toggle-name">Audit Logging</div>
-                        <div class="toggle-desc">All user actions are recorded</div>
-                      </div>
-                    </div><button class="toggle-switch on" onclick="toggleSec(this)"></button>
-                  </div>
-                  <div class="toggle-wrap">
-                    <div class="toggle-left"><span class="toggle-icon">👥</span>
-                      <div>
-                        <div class="toggle-name">Role-Based Access Control</div>
-                        <div class="toggle-desc">Admin / Analyst / Viewer roles</div>
-                      </div>
-                    </div><button class="toggle-switch on" onclick="toggleSec(this)"></button>
-                  </div>
-                  <div class="toggle-wrap">
-                    <div class="toggle-left"><span class="toggle-icon">🌐</span>
-                      <div>
-                        <div class="toggle-name">IP Allowlisting</div>
-                        <div class="toggle-desc">Restrict access to known IPs</div>
-                      </div>
-                    </div><button class="toggle-switch off" onclick="toggleSec(this)"></button>
-                  </div>
-                  <div class="toggle-wrap">
-                    <div class="toggle-left"><span class="toggle-icon">⚠️</span>
-                      <div>
-                        <div class="toggle-name">Anomaly Detection</div>
-                        <div class="toggle-desc">Alert on unusual access patterns</div>
-                      </div>
-                    </div><button class="toggle-switch off" onclick="toggleSec(this)"></button>
-                  </div>
-                </div>
-              </div>
 
-              <div class="card">
-                <div class="card-header">
-                  <div class="card-title">Session Management</div>
-                </div>
-                <div style="display:flex;gap:16px;flex-wrap:wrap;">
-                  <div class="kpi" style="flex:1;min-width:100px;">
-                    <div class="kpi-label">Active Sessions</div>
-                    <div class="kpi-val">4</div>
-                  </div>
-                  <div class="kpi" style="flex:1;min-width:100px;">
-                    <div class="kpi-label">Session Timeout</div>
-                    <div class="kpi-val">30m</div>
-                  </div>
-                  <div class="kpi" style="flex:1;min-width:100px;">
-                    <div class="kpi-label">Failed Logins</div>
-                    <div class="kpi-val" style="color:var(--rose)">12</div>
-                  </div>
-                </div>
-                <button class="btn danger sm" style="margin-top:14px;">Terminate All Sessions</button>
-              </div>
-            </div>
-
-            <div style="display:flex;flex-direction:column;gap:16px;">
-              <div class="card">
-                <div class="card-header">
-                  <div class="card-title">Recent Security Alerts</div><span class="badge err">2 active</span>
-                </div>
-                <div>
-                  <div class="alert-row">
-                    <div class="alert-dot red"></div>
-                    <div>
-                      <div class="alert-msg"><b>Unauthorized login attempt</b> — IP 192.168.4.22</div>
-                      <div class="alert-time">5 min ago · Blocked</div>
-                    </div><span class="icon-btn">👁</span>
-                  </div>
-                  <div class="alert-row">
-                    <div class="alert-dot amber"></div>
-                    <div>
-                      <div class="alert-msg"><b>Unusual download volume</b> — user meera@org.com</div>
-                      <div class="alert-time">2 hrs ago · Flagged</div>
-                    </div><span class="icon-btn">👁</span>
-                  </div>
-                  <div class="alert-row">
-                    <div class="alert-dot green"></div>
-                    <div>
-                      <div class="alert-msg"><b>New device login</b> — admin Bharathi O.</div>
-                      <div class="alert-time">1 day ago · Approved</div>
-                    </div><span class="icon-btn">👁</span>
-                  </div>
-                  <div class="alert-row">
-                    <div class="alert-dot green"></div>
-                    <div>
-                      <div class="alert-msg"><b>Password changed</b> — user ravi@org.com</div>
-                      <div class="alert-time">2 days ago · OK</div>
-                    </div><span class="icon-btn">👁</span>
-                  </div>
-                </div>
-              </div>
-              <div class="card">
-                <div class="card-header">
-                  <div class="card-title">Compliance Status</div>
-                </div>
-                <div style="display:flex;flex-direction:column;gap:10px;">
-                  <div class="qs-item"><span class="qs-icon">✅</span><span class="qs-label">Data Encrypted at
-                      Rest</span><span class="qs-val" style="color:var(--emerald)">Pass</span></div>
-                  <div class="qs-item"><span class="qs-icon">✅</span><span class="qs-label">TLS in Transit</span><span
-                      class="qs-val" style="color:var(--emerald)">Pass</span></div>
-                  <div class="qs-item"><span class="qs-icon">✅</span><span class="qs-label">Audit Logs
-                      Enabled</span><span class="qs-val" style="color:var(--emerald)">Pass</span></div>
-                  <div class="qs-item"><span class="qs-icon">⚠️</span><span class="qs-label">IP Allowlisting</span><span
-                      class="qs-val" style="color:var(--amber)">Warn</span></div>
-                  <div class="qs-item"><span class="qs-icon">❌</span><span class="qs-label">Anomaly
-                      Detection</span><span class="qs-val" style="color:var(--rose)">Off</span></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
 
         <!-- ── USERS ── -->
         <div id="pg-users" class="fade-in" style="display:none;">
@@ -1266,104 +1117,7 @@
           </div>
         </div>
 
-        <!-- ── LOGS ── -->
-        <div id="pg-logs" class="fade-in" style="display:none;">
-          <div class="section-head">
-            <div>
-              <h2>Audit Logs</h2>
-              <p>Complete activity trail for compliance and security review.</p>
-            </div>
-            <button class="tb-btn ghost" style="height:36px;">⬇ Export CSV</button>
-          </div>
-          <div class="card">
-            <div class="card-header">
-              <div class="card-title">All Events</div>
-              <div style="display:flex;gap:8px;">
-                <select class="chart-select">
-                  <option>All types</option>
-                  <option>Login</option>
-                  <option>Upload</option>
-                  <option>Download</option>
-                  <option>Security</option>
-                </select>
-                <select class="chart-select">
-                  <option>Last 7 days</option>
-                  <option>Last 30 days</option>
-                </select>
-              </div>
-            </div>
-            <table>
-              <thead>
-                <tr>
-                  <th>Timestamp</th>
-                  <th>User</th>
-                  <th>Action</th>
-                  <th>Resource</th>
-                  <th>IP</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td style="font-family:var(--mono);font-size:11px;color:var(--muted)">2024-04-09 09:14:22</td>
-                  <td>bharathi@org.com</td>
-                  <td>LOGIN</td>
-                  <td>Web Dashboard</td>
-                  <td style="font-family:var(--mono);font-size:11px;">103.21.44.10</td>
-                  <td><span class="badge done"><span class="badge-dot"></span>Success</span></td>
-                </tr>
-                <tr>
-                  <td style="font-family:var(--mono);font-size:11px;color:var(--muted)">2024-04-09 09:16:05</td>
-                  <td>bharathi@org.com</td>
-                  <td>UPLOAD</td>
-                  <td>sales_q1_2024.csv</td>
-                  <td style="font-family:var(--mono);font-size:11px;">103.21.44.10</td>
-                  <td><span class="badge done"><span class="badge-dot"></span>Success</span></td>
-                </tr>
-                <tr>
-                  <td style="font-family:var(--mono);font-size:11px;color:var(--muted)">2024-04-09 09:20:10</td>
-                  <td>ravi@org.com</td>
-                  <td>UPLOAD</td>
-                  <td>inventory.xlsx</td>
-                  <td style="font-family:var(--mono);font-size:11px;">182.74.22.8</td>
-                  <td><span class="badge done"><span class="badge-dot"></span>Success</span></td>
-                </tr>
-                <tr>
-                  <td style="font-family:var(--mono);font-size:11px;color:var(--muted)">2024-04-09 11:02:44</td>
-                  <td>meera@org.com</td>
-                  <td>DOWNLOAD</td>
-                  <td>Q1_Sales_Report.pdf</td>
-                  <td style="font-family:var(--mono);font-size:11px;">49.36.11.22</td>
-                  <td><span class="badge proc"><span class="badge-dot"></span>Flagged</span></td>
-                </tr>
-                <tr>
-                  <td style="font-family:var(--mono);font-size:11px;color:var(--muted)">2024-04-09 11:44:00</td>
-                  <td>unknown</td>
-                  <td>LOGIN_FAIL</td>
-                  <td>Web Dashboard</td>
-                  <td style="font-family:var(--mono);font-size:11px;">192.168.4.22</td>
-                  <td><span class="badge err"><span class="badge-dot"></span>Blocked</span></td>
-                </tr>
-                <tr>
-                  <td style="font-family:var(--mono);font-size:11px;color:var(--muted)">2024-04-08 15:30:18</td>
-                  <td>bharathi@org.com</td>
-                  <td>REPORT_GEN</td>
-                  <td>Customer Insights</td>
-                  <td style="font-family:var(--mono);font-size:11px;">103.21.44.10</td>
-                  <td><span class="badge done"><span class="badge-dot"></span>Success</span></td>
-                </tr>
-                <tr>
-                  <td style="font-family:var(--mono);font-size:11px;color:var(--muted)">2024-04-08 10:14:55</td>
-                  <td>ravi@org.com</td>
-                  <td>DELETE</td>
-                  <td>hr_records_old.csv</td>
-                  <td style="font-family:var(--mono);font-size:11px;">182.74.22.8</td>
-                  <td><span class="badge done"><span class="badge-dot"></span>Success</span></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+
 
       </div><!-- /content -->
     </div><!-- /main-area -->
@@ -1474,9 +1228,7 @@
       cleaning: { title: 'Data Cleaning', breadcrumb: 'DataVault / Cleaning', btn1: 'Download Clean CSV', btn2: 'Run Analytics' },
       analytics: { title: 'Analytics', breadcrumb: 'DataVault / Analytics', btn1: 'Export Charts', btn2: 'Refresh Data' },
       reports: { title: 'Reports', breadcrumb: 'DataVault / Reports', btn1: 'Schedule Report', btn2: '+ New Report' },
-      security: { title: 'Security', breadcrumb: 'DataVault / Security', btn1: 'Run Security Scan', btn2: 'Export Logs' },
       users: { title: 'User Management', breadcrumb: 'DataVault / Users', btn1: 'Roles & Permissions', btn2: '+ Invite User' },
-      logs: { title: 'Audit Logs', breadcrumb: 'DataVault / Audit Logs', btn1: 'Export CSV', btn2: 'Clear Logs' },
     };
 
     let currentPage = 'dashboard';

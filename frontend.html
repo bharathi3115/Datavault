@@ -17,57 +17,45 @@
 
   <!-- ANIMATED BACKGROUND -->
   <canvas id="bg-canvas"></canvas>
-
   <!-- ════════════════════════════════
-     LOGIN PAGE
-════════════════════════════════ -->
-  <div class="page active" id="page-login">
-    <div class="login-card">
-      <div class="login-logo">
-        <div class="login-logo-icon">🔐</div>
-        <div>
-          <div class="login-logo-text">Data<span>Vault</span></div>
-          <div style="font-size:10px;color:var(--muted);letter-spacing:1.2px;text-transform:uppercase;">Secure Analytics
-            Platform</div>
+     LOGIN PAGE (SOFT THEME)
+  ════════════════════════════════ -->
+  <div class="page soft-mode active" id="page-login">
+    <div class="login-outer-frame">
+      <!-- Form Side -->
+      <div class="login-left-form">
+        <div class="login-brand">REERUI</div>
+
+        <h1 class="login-title-soft">Login</h1>
+        <p class="login-subtitle-soft">Welcome to log in to your background management system.</p>
+
+        <div class="soft-field">
+          <label>Email</label>
+          <input type="email" class="soft-input" placeholder="you@organization.com" id="login-email" value="admin@datavault.com">
         </div>
-      </div>
-      <p class="login-tagline">Welcome back! Sign in to access your analytics workspace.</p>
 
-      <div class="form-group">
-        <label class="form-label">Email Address</label>
-        <div class="form-input-wrap">
-          <input class="form-input" type="email" placeholder="you@organization.com" id="login-email" />
-          <span class="icon">✉️</span>
+        <div class="soft-field">
+          <label>Password</label>
+          <input type="password" class="soft-input" placeholder="Please enter your password" id="login-pass" value="password123">
+          <span style="position:absolute; right:0; top:35px; cursor:pointer; color:#94a3b8; font-size:14px;" onclick="togglePwd()">👁</span>
         </div>
+
+        <div id="login-error" style="display:none; color:#fb7185; font-size:12px; margin-bottom:15px;"></div>
+
+        <button class="btn-soft-login" onclick="doLogin()">LOGIN</button>
       </div>
 
-      <div class="form-group">
-        <label class="form-label">Password</label>
-        <div class="form-input-wrap">
-          <input class="form-input" type="password" placeholder="••••••••••" id="login-pass"
-            style="padding-right:42px;" />
-          <span class="icon" onclick="togglePwd()">👁</span>
-        </div>
+      <!-- Visual Side -->
+      <div class="login-right-visual">
+        <img src="login_illustration_v2.png" class="login-illustration-img" alt="Data Analytics Illustration">
+        
+        <!-- Abstract elements to mimic the image -->
+        <div class="abstract-blob" style="width:350px; height:350px; top:-120px; right:-120px; opacity:0.35; background:#c7d2fe;"></div>
+        <div class="abstract-blob" style="width:250px; height:250px; bottom:80px; left:-80px; opacity:0.25; background:#818cf8;"></div>
+        <div class="abstract-blob" style="width:100px; height:100px; top:40%; left:-50px; opacity:0.15; background:#6366f1;"></div>
       </div>
-
-      <div class="remember-row">
-        <label><input type="checkbox" checked /> Remember me</label>
-        <span class="forgot-link">Forgot password?</span>
-      </div>
-
-      <button class="btn-login" onclick="doLogin()">Sign In →</button>
-
-      <div class="login-divider">OR</div>
-
-      <button class="btn-login"
-        style="background:var(--surface2);color:var(--text);box-shadow:none;border:1px solid var(--border);">
-        🔑 Continue with SSO
-      </button>
-
-      <p class="login-footer">Don't have an account? <a onclick="showRegister()">Create one free</a></p>
-
-      <div id="login-error"
-        style="display:none;margin-top:14px;padding:10px 14px;background:rgba(251,113,133,0.1);border:1px solid rgba(251,113,133,0.3);border-radius:8px;font-size:13px;color:var(--rose);text-align:center;">
+    </div>
+  </div>a(251,113,133,0.1);border:1px solid rgba(251,113,133,0.3);border-radius:8px;font-size:13px;color:var(--rose);text-align:center;">
       </div>
     </div>
   </div>

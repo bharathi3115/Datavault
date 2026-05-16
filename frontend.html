@@ -9,6 +9,7 @@
     href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
     rel="stylesheet" />
   <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
 
 </head>
 
@@ -624,7 +625,8 @@
             <div>
               <div class="card" style="margin-bottom:18px;">
                 <div class="card-header">
-                  <div class="card-title">Cleaning Pipeline</div><span class="badge info" id="cleaning-progress-badge">0 of 5 complete</span>
+                  <div class="card-title">Cleaning Pipeline</div><span class="badge info" id="cleaning-progress-badge">0
+                    of 5 complete</span>
                 </div>
                 <div id="cleaning-steps-container" style="display:flex;flex-direction:column;gap:10px;">
                   <div class="cleaning-step">
@@ -693,8 +695,9 @@
                   <div class="quality-ring">
                     <svg viewBox="0 0 36 36" style="width:130px;height:130px;transform:rotate(-90deg);">
                       <circle cx="18" cy="18" r="15.9" fill="none" stroke="#1e2535" stroke-width="3.5" />
-                      <circle id="quality-ring-fill" cx="18" cy="18" r="15.9" fill="none" stroke="#38bdf8" stroke-width="3.5"
-                        stroke-dasharray="0 100" stroke-dashoffset="0" stroke-linecap="round" style="transition:stroke-dasharray 1.2s ease;" />
+                      <circle id="quality-ring-fill" cx="18" cy="18" r="15.9" fill="none" stroke="#38bdf8"
+                        stroke-width="3.5" stroke-dasharray="0 100" stroke-dashoffset="0" stroke-linecap="round"
+                        style="transition:stroke-dasharray 1.2s ease;" />
                     </svg>
                     <div class="quality-center">
                       <div class="quality-pct" id="quality-pct-display" style="color:var(--cyan)">—</div>
@@ -719,7 +722,7 @@
                   <div class="card-title">After Cleaning</div>
                 </div>
                 <div style="display:flex;gap:10px;flex-wrap:wrap;">
-                  <button class="btn primary sm" onclick="navTo('analytics')">📈 Run Analytics →</button>
+                  <button class="btn primary sm" onclick="runAnalytics()">📈 Run Analytics →</button>
                   <button class="btn outline sm" onclick="downloadCleanCSV()">⬇ Download Clean CSV</button>
                 </div>
               </div>
@@ -735,39 +738,39 @@
               <p>Interactive insights from your cleaned dataset.</p>
             </div>
             <div style="margin-left:auto;display:flex;gap:10px;align-items:center;">
-              <select class="chart-select">
-                <option>sales_q1_2024.csv</option>
+              <select class="chart-select" id="analytics-file-select">
+                <option id="analytics-file-name">sales_q1_2024.csv</option>
                 <option>customer_logs.json</option>
               </select>
-              <button class="tb-btn primary" style="height:36px;">Refresh</button>
+              <button class="tb-btn primary" style="height:36px;" onclick="runAnalytics()">Refresh</button>
             </div>
           </div>
 
           <!-- KPI ROW -->
           <div class="grid g-4" style="margin-bottom:20px;">
             <div class="stat-card c">
-              <div class="stat-icon">💰</div>
-              <div class="stat-label">Total Revenue</div>
-              <div class="stat-val" style="font-size:22px;">₹48.2L</div>
-              <div class="stat-change up">↑ 14.3%</div>
+              <div class="stat-icon">📊</div>
+              <div class="stat-label" id="stat-label-1">Total Metric</div>
+              <div class="stat-val" id="stat-revenue" style="font-size:22px;">—</div>
+              <div class="stat-change up" id="stat-revenue-change">Live</div>
             </div>
             <div class="stat-card e">
-              <div class="stat-icon">🛒</div>
-              <div class="stat-label">Avg Order Value</div>
-              <div class="stat-val" style="font-size:22px;">₹3,420</div>
-              <div class="stat-change up">↑ 6.8%</div>
+              <div class="stat-icon">🎯</div>
+              <div class="stat-label" id="stat-label-2">Average Value</div>
+              <div class="stat-val" id="stat-aov" style="font-size:22px;">—</div>
+              <div class="stat-change up" id="stat-aov-change">Live</div>
             </div>
             <div class="stat-card v">
-              <div class="stat-icon">👤</div>
-              <div class="stat-label">Unique Customers</div>
-              <div class="stat-val" style="font-size:22px;">8,924</div>
-              <div class="stat-change up">↑ 11.2%</div>
+              <div class="stat-icon">📂</div>
+              <div class="stat-label" id="stat-label-3">Unique Categories</div>
+              <div class="stat-val" id="stat-customers" style="font-size:22px;">—</div>
+              <div class="stat-change up" id="stat-customers-change">Detected</div>
             </div>
             <div class="stat-card a">
-              <div class="stat-icon">📦</div>
-              <div class="stat-label">Return Rate</div>
-              <div class="stat-val" style="font-size:22px;">4.1%</div>
-              <div class="stat-change down">↓ 0.8%</div>
+              <div class="stat-icon">✨</div>
+              <div class="stat-label" id="stat-label-4">Data Quality</div>
+              <div class="stat-val" id="stat-rate" style="font-size:22px;">—</div>
+              <div class="stat-change down" id="stat-rate-change">Pipeline Score</div>
             </div>
           </div>
 
@@ -780,27 +783,24 @@
                   <option>Last year</option>
                 </select>
               </div>
-              <svg class="line-svg" viewBox="0 0 400 120" preserveAspectRatio="none">
-                <defs>
-                  <linearGradient id="lg1" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.3" />
-                    <stop offset="100%" stop-color="#38bdf8" stop-opacity="0" />
-                  </linearGradient>
-                </defs>
-                <path d="M0,90 L66,75 L133,60 L200,45 L266,30 L333,20 L400,10 L400,120 L0,120 Z" fill="url(#lg1)" />
-                <polyline points="0,90 66,75 133,60 200,45 266,30 333,20 400,10" fill="none" stroke="#38bdf8"
-                  stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
-                <circle cx="400" cy="10" r="4" fill="#38bdf8" />
-                <circle cx="266" cy="30" r="3" fill="#38bdf8" opacity="0.7" />
-                <circle cx="133" cy="60" r="3" fill="#38bdf8" opacity="0.7" />
-              </svg>
-              <div
-                style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-top:4px;padding:0 2px;">
-                <span>Oct</span><span>Nov</span><span>Dec</span><span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span>
+              <div id="trend-chart-wrap" style="position:relative;">
+                <svg class="line-svg" viewBox="0 0 400 120" preserveAspectRatio="none">
+                  <defs>
+                    <linearGradient id="lg1" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.3" />
+                      <stop offset="100%" stop-color="#38bdf8" stop-opacity="0" />
+                    </linearGradient>
+                  </defs>
+                  <path id="trend-fill" d="M0,120 L400,120 Z" fill="url(#lg1)" style="transition: d 1s ease;" />
+                  <polyline id="trend-line" points="0,120 400,120" fill="none" stroke="#38bdf8" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round" style="transition: points 1s ease;" />
+                  <g id="trend-dots"></g>
+                </svg>
               </div>
-              <div class="insight-box">
-                <p>📌 <strong>Revenue grew 14.3%</strong> this quarter. March saw the highest monthly sales (₹9.8L).
-                  Consider boosting Q2 campaigns in the Electronics and Clothing categories.</p>
+              <div id="trend-labels"
+                style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-top:4px;padding:0 2px;">
+                <span>—</span><span>—</span><span>—</span><span>—</span><span>—</span><span>—</span><span>—</span>
+              </div>
               </div>
             </div>
 
@@ -808,121 +808,35 @@
               <div class="card-header">
                 <div class="card-title">Sales by Category</div>
               </div>
-              <svg class="pie-svg" viewBox="0 0 42 42">
-                <circle cx="21" cy="21" r="15.9" fill="none" stroke="#1e2535" stroke-width="10" />
-                <circle cx="21" cy="21" r="15.9" fill="none" stroke="#38bdf8" stroke-width="10" stroke-dasharray="38 62"
-                  stroke-dashoffset="25" />
-                <circle cx="21" cy="21" r="15.9" fill="none" stroke="#a78bfa" stroke-width="10" stroke-dasharray="26 74"
-                  stroke-dashoffset="-13" />
-                <circle cx="21" cy="21" r="15.9" fill="none" stroke="#34d399" stroke-width="10" stroke-dasharray="22 78"
-                  stroke-dashoffset="-39" />
-                <circle cx="21" cy="21" r="15.9" fill="none" stroke="#fbbf24" stroke-width="10" stroke-dasharray="14 86"
-                  stroke-dashoffset="-61" />
-              </svg>
-              <div style="display:flex;flex-direction:column;gap:7px;margin-top:8px;">
-                <div class="dl-item">
-                  <div class="dl-dot" style="background:#38bdf8"></div>
-                  <div class="dl-label">Electronics</div>
-                  <div class="dl-val">38%</div>
-                </div>
-                <div class="dl-item">
-                  <div class="dl-dot" style="background:#a78bfa"></div>
-                  <div class="dl-label">Clothing</div>
-                  <div class="dl-val">26%</div>
-                </div>
-                <div class="dl-item">
-                  <div class="dl-dot" style="background:#34d399"></div>
-                  <div class="dl-label">Food</div>
-                  <div class="dl-val">22%</div>
-                </div>
-                <div class="dl-item">
-                  <div class="dl-dot" style="background:#fbbf24"></div>
-                  <div class="dl-label">Others</div>
-                  <div class="dl-val">14%</div>
-                </div>
+              <div id="pie-wrap" style="position:relative;">
+                <svg class="pie-svg" viewBox="0 0 42 42">
+                  <circle cx="21" cy="21" r="15.9" fill="none" stroke="#1e2535" stroke-width="10" />
+                  <circle id="pie-seg-1" cx="21" cy="21" r="15.9" fill="none" stroke="#38bdf8" stroke-width="10"
+                    stroke-dasharray="0 100" stroke-dashoffset="25" />
+                  <circle id="pie-seg-2" cx="21" cy="21" r="15.9" fill="none" stroke="#a78bfa" stroke-width="10"
+                    stroke-dasharray="0 100" stroke-dashoffset="0" />
+                  <circle id="pie-seg-3" cx="21" cy="21" r="15.9" fill="none" stroke="#34d399" stroke-width="10"
+                    stroke-dasharray="0 100" stroke-dashoffset="0" />
+                  <circle id="pie-seg-4" cx="21" cy="21" r="15.9" fill="none" stroke="#fbbf24" stroke-width="10"
+                    stroke-dasharray="0 100" stroke-dashoffset="0" />
+                </svg>
               </div>
+              <div id="pie-legend" style="display:flex;flex-direction:column;gap:7px;margin-top:8px;"></div>
             </div>
           </div>
 
           <!-- TOP TABLE -->
           <div class="chart-card">
             <div class="card-header">
-              <div class="card-title">Top Performing Regions</div><span class="card-action">Export →</span>
+              <div class="card-title" id="performance-table-title">Performance Analytics</div><span class="card-action"
+                onclick="exportAnalytics()">Export Summary →</span>
             </div>
-            <table>
-              <thead>
-                <tr>
-                  <th>Region</th>
-                  <th>Revenue</th>
-                  <th>Orders</th>
-                  <th>Avg Order</th>
-                  <th>Growth</th>
-                  <th>Share</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><b>Mumbai</b></td>
-                  <td style="color:var(--cyan);font-family:var(--mono)">₹12.4L</td>
-                  <td>3,620</td>
-                  <td>₹3,426</td>
-                  <td><span class="up">↑ 18.2%</span></td>
-                  <td>
-                    <div class="prog" style="width:120px">
-                      <div class="prog-fill" style="width:85%"></div>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td><b>Delhi</b></td>
-                  <td style="color:var(--cyan);font-family:var(--mono)">₹9.8L</td>
-                  <td>2,890</td>
-                  <td>₹3,391</td>
-                  <td><span class="up">↑ 12.1%</span></td>
-                  <td>
-                    <div class="prog" style="width:120px">
-                      <div class="prog-fill" style="width:70%"></div>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td><b>Bangalore</b></td>
-                  <td style="color:var(--cyan);font-family:var(--mono)">₹8.2L</td>
-                  <td>2,410</td>
-                  <td>₹3,402</td>
-                  <td><span class="up">↑ 9.4%</span></td>
-                  <td>
-                    <div class="prog" style="width:120px">
-                      <div class="prog-fill" style="width:58%"></div>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td><b>Chennai</b></td>
-                  <td style="color:var(--cyan);font-family:var(--mono)">₹6.1L</td>
-                  <td>1,780</td>
-                  <td>₹3,427</td>
-                  <td><span class="down">↓ 2.3%</span></td>
-                  <td>
-                    <div class="prog" style="width:120px">
-                      <div class="prog-fill" style="width:42%"></div>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td><b>Hyderabad</b></td>
-                  <td style="color:var(--cyan);font-family:var(--mono)">₹5.4L</td>
-                  <td>1,560</td>
-                  <td>₹3,461</td>
-                  <td><span class="up">↑ 6.7%</span></td>
-                  <td>
-                    <div class="prog" style="width:120px">
-                      <div class="prog-fill" style="width:36%"></div>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+            <div id="analytics-table-wrap" class="tbl-wrap" style="max-height:400px;overflow:auto;">
+              <div style="padding:40px;text-align:center;color:var(--muted);">
+                <div style="font-size:32px;margin-bottom:10px;">📉</div>
+                <div>No analysis data yet. Click "Run Analytics" to process the dataset.</div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -1563,6 +1477,8 @@
       document.getElementById('tb-secondary-btn').textContent = cfg.btn1;
       document.getElementById('tb-primary-btn').textContent = cfg.btn2;
       currentPage = id;
+
+      if (id === 'analytics') runAnalytics();
     }
 
     document.querySelectorAll('.sb-item').forEach(item => {
@@ -1691,7 +1607,11 @@
         alert('Error reading file. Please try again.');
       };
 
-      reader.readAsText(file);
+      const ext = file.name.split('.').pop().toLowerCase();
+      const isExcel = ext === 'xlsx' || ext === 'xls';
+
+      if (isExcel) reader.readAsArrayBuffer(file);
+      else reader.readAsText(file);
     }
 
     function parseAndPreview(filename, content) {
@@ -1700,14 +1620,20 @@
       let headers = [];
 
       try {
-        if (ext === 'json') {
+        if (ext === 'xlsx' || ext === 'xls') {
+          const workbook = XLSX.read(content, { type: 'array' });
+          const firstSheet = workbook.SheetNames[0];
+          const sheet = workbook.Sheets[firstSheet];
+          const data = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+          if (data.length > 0) {
+            headers = data[0].map(h => String(h || ''));
+            rows = data.slice(1).map(row => row.map(v => v !== undefined ? String(v) : ''));
+          }
+        } else if (ext === 'json') {
           let data = JSON.parse(content);
           if (!Array.isArray(data)) {
-            // If it's an object with a data/results/records key, try to extract
             const keys = Object.keys(data);
-            for (const k of keys) {
-              if (Array.isArray(data[k])) { data = data[k]; break; }
-            }
+            for (const k of keys) { if (Array.isArray(data[k])) { data = data[k]; break; } }
             if (!Array.isArray(data)) data = [data];
           }
           if (data.length > 0) {
@@ -1727,6 +1653,7 @@
         }
       } catch (err) {
         console.error('Parse error:', err);
+        alert('Failed to parse file. Please ensure it is a valid ' + ext.toUpperCase() + ' file.');
       }
 
       if (headers.length === 0) return;
@@ -1936,8 +1863,8 @@
       const types = {};
       headers.forEach((_, ci) => {
         let n = 0, t = 0;
-        rows.slice(0, 100).forEach(r => { const v = (r[ci]||'').trim(); if (!v) return; t++; if (isNum(v)) n++; });
-        types[ci] = t === 0 ? 'empty' : (n/t > 0.7 ? 'numeric' : 'text');
+        rows.slice(0, 100).forEach(r => { const v = (r[ci] || '').trim(); if (!v) return; t++; if (isNum(v)) n++; });
+        types[ci] = t === 0 ? 'empty' : (n / t > 0.7 ? 'numeric' : 'text');
       });
       return types;
     }
@@ -2011,7 +1938,7 @@
       const { headers, rows, filename } = uploadedFileData;
       const subtitle = document.getElementById('cleaning-subtitle');
       if (subtitle) subtitle.innerHTML = 'Automatic preprocessing pipeline — reviewing <b>' + escapeHtml(filename) + '</b>';
-      
+
       const colTypes = detectColTypes(headers, rows);
       let curRows = rows.map(r => [...r]), results = {}, fixed = 0, removed = 0, origCount = rows.length;
       updateQuality(0, 0, 0, 0, headers.length);
@@ -2030,19 +1957,21 @@
       const medians = {}, modes = {};
       headers.forEach((_, ci) => {
         if (colTypes[ci] === 'numeric') {
-          const v = curRows.map(r => r[ci]).filter(v => isNum(v)).map(Number).sort((a,b)=>a-b);
-          if (v.length) medians[ci] = v[Math.floor(v.length/2)];
+          const v = curRows.map(r => r[ci]).filter(v => isNum(v)).map(Number).sort((a, b) => a - b);
+          if (v.length) medians[ci] = v[Math.floor(v.length / 2)];
         } else {
-          const freq = {}; curRows.forEach(r => { const v = (r[ci]||'').trim(); if (v) freq[v] = (freq[v]||0)+1; });
+          const freq = {}; curRows.forEach(r => { const v = (r[ci] || '').trim(); if (v) freq[v] = (freq[v] || 0) + 1; });
           let mx = 0, mv = ''; for (const k in freq) if (freq[k] > mx) { mx = freq[k]; mv = k; } modes[ci] = mv;
         }
       });
-      curRows = curRows.map(r => { const n = [...r]; headers.forEach((_, ci) => {
-        if ((n[ci]||'').trim() === '') {
-          if (colTypes[ci] === 'numeric' && medians[ci] != null) { n[ci] = String(medians[ci]); filled++; colsAff.add(ci); }
-          else if (modes[ci]) { n[ci] = modes[ci]; filled++; colsAff.add(ci); }
-        }
-      }); return n; });
+      curRows = curRows.map(r => {
+        const n = [...r]; headers.forEach((_, ci) => {
+          if ((n[ci] || '').trim() === '') {
+            if (colTypes[ci] === 'numeric' && medians[ci] != null) { n[ci] = String(medians[ci]); filled++; colsAff.add(ci); }
+            else if (modes[ci]) { n[ci] = modes[ci]; filled++; colsAff.add(ci); }
+          }
+        }); return n;
+      });
       fixed += filled;
       results[1] = [filled.toLocaleString() + ' cells filled', colsAff.size + ' columns affected'];
       updateQuality(40, curRows.length, fixed, removed, headers.length);
@@ -2052,13 +1981,14 @@
       let outliers = 0;
       headers.forEach((_, ci) => {
         if (colTypes[ci] !== 'numeric') return;
-        const v = curRows.map(r => r[ci]).filter(v => isNum(v)).map(Number).sort((a,b)=>a-b);
+        const v = curRows.map(r => r[ci]).filter(v => isNum(v)).map(Number).sort((a, b) => a - b);
         if (v.length < 4) return;
-        const q1 = v[Math.floor(v.length*.25)], q3 = v[Math.floor(v.length*.75)], iqr = q3-q1;
-        const lo = q1-1.5*iqr, hi = q3+1.5*iqr;
-        curRows.forEach(r => { if (!isNum(r[ci])) return; const n = Number(r[ci]);
-          if (n < lo) { r[ci] = String(Math.round(lo*100)/100); outliers++; }
-          else if (n > hi) { r[ci] = String(Math.round(hi*100)/100); outliers++; }
+        const q1 = v[Math.floor(v.length * .25)], q3 = v[Math.floor(v.length * .75)], iqr = q3 - q1;
+        const lo = q1 - 1.5 * iqr, hi = q3 + 1.5 * iqr;
+        curRows.forEach(r => {
+          if (!isNum(r[ci])) return; const n = Number(r[ci]);
+          if (n < lo) { r[ci] = String(Math.round(lo * 100) / 100); outliers++; }
+          else if (n > hi) { r[ci] = String(Math.round(hi * 100) / 100); outliers++; }
         });
       });
       fixed += outliers;
@@ -2068,11 +1998,13 @@
       // Step 4: Standardization
       renderSteps(3, results); await animProg(3, 900);
       let textFix = 0, numFix = 0;
-      curRows = curRows.map(r => { const n = [...r]; headers.forEach((_, ci) => {
-        let v = (n[ci]||'').toString();
-        if (colTypes[ci] === 'text') { const t = v.trim().replace(/\s+/g, ' '); if (t !== v) textFix++; n[ci] = t; }
-        else if (colTypes[ci] === 'numeric') { const c = v.replace(/[$€£₹,\s]/g, '').trim(); if (c !== v && isNum(c)) { n[ci] = c; numFix++; } }
-      }); return n; });
+      curRows = curRows.map(r => {
+        const n = [...r]; headers.forEach((_, ci) => {
+          let v = (n[ci] || '').toString();
+          if (colTypes[ci] === 'text') { const t = v.trim().replace(/\s+/g, ' '); if (t !== v) textFix++; n[ci] = t; }
+          else if (colTypes[ci] === 'numeric') { const c = v.replace(/[$€£₹,\s]/g, '').trim(); if (c !== v && isNum(c)) { n[ci] = c; numFix++; } }
+        }); return n;
+      });
       fixed += textFix + numFix;
       results[3] = [textFix + ' text normalized', numFix + ' numbers fixed'];
       updateQuality(80, curRows.length, fixed, removed, headers.length);
@@ -2081,9 +2013,9 @@
       renderSteps(4, results); await animProg(4, 1100);
       const final = []; let emptyRows = 0, inconsis = 0;
       curRows.forEach(r => {
-        const empty = r.filter(v => (v||'').trim() === '').length;
+        const empty = r.filter(v => (v || '').trim() === '').length;
         if (empty / headers.length > 0.5) { emptyRows++; return; }
-        headers.forEach((_, ci) => { if (colTypes[ci] === 'numeric' && (r[ci]||'').trim() !== '' && !isNum(r[ci])) inconsis++; });
+        headers.forEach((_, ci) => { if (colTypes[ci] === 'numeric' && (r[ci] || '').trim() !== '' && !isNum(r[ci])) inconsis++; });
         final.push(r);
       });
       curRows = final; removed += emptyRows;
@@ -2096,11 +2028,162 @@
       isCleaning = false;
     }
 
+    /* ═══ DATA ANALYTICS ENGINE ═══ */
+    function runAnalytics() {
+      const data = cleanedData || uploadedFileData;
+      if (!data) { alert('Please upload and clean a dataset first!'); return; }
+
+      const { headers, rows, filename } = data;
+      document.getElementById('analytics-file-name').textContent = filename;
+
+      // 1. Dynamic Feature Discovery
+      let metricIdx = -1, groupIdx = -1;
+      const numKeywords = ['revenue','price','sales','amount','fare','cost','value','weight','length','width','height','score','rating','age','salary'];
+      const catKeywords = ['category','type','status','class','region','species','group','gender','label','dept'];
+
+      // Find first likely numeric column
+      headers.forEach((h, i) => {
+        const l = h.toLowerCase();
+        if (metricIdx === -1 && numKeywords.some(k => l.includes(k))) metricIdx = i;
+        if (groupIdx === -1 && catKeywords.some(k => l.includes(k))) groupIdx = i;
+      });
+
+      // Fallback: If no keywords, find columns with numeric density
+      if (metricIdx === -1) {
+        headers.forEach((h, i) => {
+          let nums = 0, tot = 0;
+          rows.slice(0, 50).forEach(r => { if(r[i]) { tot++; if(isNum(r[i].replace(/[$€₹,]/g,''))) nums++; } });
+          if (tot > 0 && nums/tot > 0.8 && metricIdx === -1) metricIdx = i;
+        });
+      }
+      // Fallback: If no categories, find columns with low cardinality
+      if (groupIdx === -1) {
+        headers.forEach((h, i) => {
+          if (i === metricIdx) return;
+          const vals = new Set(); rows.slice(0, 100).forEach(r => { if(r[i]) vals.add(r[i]); });
+          if (vals.size > 1 && vals.size < 20 && groupIdx === -1) groupIdx = i;
+        });
+      }
+
+      const metricName = metricIdx !== -1 ? headers[metricIdx] : 'Records';
+      const groupName = groupIdx !== -1 ? headers[groupIdx] : 'Categories';
+      const isFin = metricIdx !== -1 && (headers[metricIdx].toLowerCase().match(/price|revenue|sales|cost|fare|amount|profit/));
+
+      // 2. Aggregate Data
+      let totalMetric = 0, rowCount = rows.length;
+      rows.forEach(r => {
+        if (metricIdx !== -1) {
+          const v = parseFloat((r[metricIdx]||'0').toString().replace(/[$€₹,]/g,''));
+          if (!isNaN(v)) totalMetric += v;
+        } else totalMetric++;
+      });
+      const avgVal = totalMetric / (rowCount || 1);
+
+      // 3. Update UI Labels & KPIs
+      document.getElementById('stat-label-1').textContent = 'Total ' + metricName;
+      document.getElementById('stat-label-2').textContent = 'Average ' + metricName;
+      document.getElementById('stat-label-3').textContent = 'Unique ' + groupName;
+      document.getElementById('stat-label-4').textContent = 'Data Quality';
+
+      const format = (v) => isFin ? formatCurrency(v) : (v > 1000 ? Math.round(v).toLocaleString() : v.toFixed(1));
+      document.getElementById('stat-revenue').textContent = format(totalMetric);
+      document.getElementById('stat-aov').textContent = format(avgVal);
+      
+      const uniqueGroups = new Set();
+      const gIdx = groupIdx !== -1 ? groupIdx : 0;
+      rows.forEach(r => { if(r[gIdx]) uniqueGroups.add(r[gIdx]); });
+      document.getElementById('stat-customers').textContent = uniqueGroups.size.toLocaleString();
+      
+      const qualityScore = document.getElementById('quality-pct-display') ? document.getElementById('quality-pct-display').textContent : '100%';
+      document.getElementById('stat-rate').textContent = qualityScore;
+
+      // 4. Distribution Breakdown (Pie)
+      const counts = {};
+      rows.forEach(r => { const key = (r[gIdx]||'Other').toString(); counts[key] = (counts[key] || 0) + 1; });
+      const sorted = Object.entries(counts).sort((a,b) => b[1] - a[1]).slice(0, 4);
+      const totalCount = sorted.reduce((a, b) => a + b[1], 0);
+      const colors = ['#38bdf8', '#a78bfa', '#34d399', '#fbbf24'];
+      let cum = 0, leg = '';
+      
+      for(let i=1; i<=4; i++) { const s = document.getElementById('pie-seg-'+i); if(s) s.setAttribute('stroke-dasharray', '0 100'); }
+      
+      sorted.forEach(([name, count], i) => {
+        const pct = Math.round((count / totalCount) * 100);
+        const seg = document.getElementById('pie-seg-' + (i + 1));
+        if (seg) {
+          seg.setAttribute('stroke-dasharray', pct + ' ' + (100 - pct));
+          seg.setAttribute('stroke-dashoffset', 25 - cum);
+          seg.setAttribute('stroke', colors[i]);
+        }
+        cum += pct;
+        leg += `<div class="dl-item"><div class="dl-dot" style="background:${colors[i]}"></div><div class="dl-label">${name}</div><div class="dl-val">${pct}%</div></div>`;
+      });
+      document.getElementById('pie-legend').innerHTML = leg;
+
+      // 5. Performance Table
+      const tableData = {};
+      rows.forEach(r => {
+        const g = r[gIdx] || 'Unknown';
+        if (!tableData[g]) tableData[g] = { val: 0, count: 0 };
+        if (metricIdx !== -1) {
+          const v = parseFloat((r[metricIdx]||'0').toString().replace(/[$€₹,]/g,''));
+          if (!isNaN(v)) tableData[g].val += v;
+        }
+        tableData[g].count++;
+      });
+      const sortedTable = Object.entries(tableData).sort((a,b) => b[1].val - a[1].val || b[1].count - a[1].count).slice(0, 10);
+      const maxTableVal = Math.max(...sortedTable.map(x => metricIdx !== -1 ? x[1].val : x[1].count)) || 1;
+      
+      let html = `<table><thead><tr><th>${headers[gIdx].toUpperCase()}</th><th>${metricName.toUpperCase()}</th><th>RECORDS</th><th>SHARE</th></tr></thead><tbody>`;
+      sortedTable.forEach(([name, s]) => {
+        const val = metricIdx !== -1 ? s.val : s.count;
+        const share = Math.round((val / maxTableVal) * 100);
+        html += `<tr><td><b>${name}</b></td><td style="color:var(--cyan);font-family:var(--mono)">${format(val)}</td><td>${s.count.toLocaleString()}</td><td><div class="prog" style="width:100px"><div class="prog-fill" style="width:${share}%"></div></div></td></tr>`;
+      });
+      html += '</tbody></table>';
+      document.getElementById('analytics-table-wrap').innerHTML = html;
+      document.getElementById('performance-table-title').textContent = 'Statistical Breakdown: ' + headers[gIdx];
+
+      // 6. Trend Chart
+      const points = [];
+      const size = Math.max(1, Math.floor(rowCount / 7));
+      for (let i = 0; i < 7; i++) {
+        let sum = 0;
+        const s = i * size, e = Math.min(rowCount, (i + 1) * size);
+        for (let j = s; j < e; j++) {
+          if (metricIdx !== -1) {
+            const v = parseFloat((rows[j][metricIdx]||'0').toString().replace(/[$€₹,]/g,''));
+            if (!isNaN(v)) sum += v;
+          } else sum++;
+        }
+        points.push(sum);
+      }
+      drawTrend(points);
+      if (currentPage !== 'analytics') navTo('analytics');
+    }
+
+    function drawTrend(points) {
+      const max = Math.max(...points) || 1;
+      const pts = points.map((p, i) => `${(i * 400) / 6},${110 - (p / max) * 100}`).join(' ');
+      const fillPts = `0,120 ${pts} 400,120 Z`;
+      document.getElementById('trend-line').setAttribute('points', pts);
+      document.getElementById('trend-fill').setAttribute('d', 'M' + fillPts.replace(/ /g, ' L').replace(',', ' '));
+
+      const labels = document.getElementById('trend-labels');
+      labels.innerHTML = points.map((_, i) => `<span>T${i + 1}</span>`).join('');
+    }
+
+    function formatCurrency(v) {
+      if (v >= 10000000) return '₹' + (v / 10000000).toFixed(1) + 'Cr';
+      if (v >= 100000) return '₹' + (v / 100000).toFixed(1) + 'L';
+      return '₹' + Math.round(v).toLocaleString();
+    }
+
     function downloadCleanCSV() {
       if (!cleanedData) return;
       const { headers, rows, filename } = cleanedData;
       let csv = headers.map(h => '"' + h.replace(/"/g, '""') + '"').join(',') + '\n';
-      rows.forEach(r => { csv += r.map(v => '"' + (v||'').replace(/"/g, '""') + '"').join(',') + '\n'; });
+      rows.forEach(r => { csv += r.map(v => '"' + (v || '').replace(/"/g, '""') + '"').join(',') + '\n'; });
       const blob = new Blob([csv], { type: 'text/csv' });
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);

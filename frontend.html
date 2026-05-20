@@ -36,13 +36,130 @@
 
     <!-- Hero Section -->
     <section class="home-hero">
-      <div class="hero-pill">Secure • Fast • Insightful</div>
-      <h1>Turn raw data into <span class="gradient-text">clear, actionable insights</span></h1>
-      <p>DataVault is a state-of-the-art secure analytics platform designed to clean, analyze, and visualize your organizational datasets with complete peace of mind.</p>
+      <div class="hero-container">
+        <!-- Left Column: Text -->
+        <div class="hero-text-content">
+          <div class="hero-pill">Secure • Fast • Insightful</div>
+          <h1>Turn raw data into <span class="gradient-text">clear, actionable insights</span></h1>
+          <p>DataVault is a state-of-the-art secure analytics platform designed to clean, analyze, and visualize your organizational datasets with complete peace of mind.</p>
+        </div>
 
-      <button class="hero-scroll-down" onclick="scrollToSection('home-how')">
-        ▼
-      </button>
+        <!-- Right Column: Premium Mockup -->
+        <div class="hero-visual-content">
+          <div class="db-mockup-window">
+            <!-- Titlebar -->
+            <div class="db-mockup-titlebar">
+              <div class="db-mockup-dots">
+                <span class="dot-red"></span>
+                <span class="dot-yellow"></span>
+                <span class="dot-green"></span>
+              </div>
+              <span class="db-mockup-title">Analytics Dashboard — Q2 Sales.csv</span>
+            </div>
+
+            <!-- Body -->
+            <div class="db-mockup-body">
+              <!-- Stats Cards -->
+              <div class="db-mockup-stats">
+                <div class="stat-mini-card">
+                  <span class="stat-label">Total Records</span>
+                  <span class="stat-value text-blue">24,891</span>
+                </div>
+                <div class="stat-mini-card">
+                  <span class="stat-label">Cleaned Rows</span>
+                  <span class="stat-value text-indigo">23,104</span>
+                </div>
+                <div class="stat-mini-card">
+                  <span class="stat-label">Data Quality</span>
+                  <span class="stat-value text-cyan">92.8%</span>
+                </div>
+              </div>
+
+              <!-- Bar Chart -->
+              <div class="db-mockup-section">
+                <span class="section-label">Monthly revenue distribution</span>
+                <div class="db-bar-chart">
+                  <div class="chart-bar-container">
+                    <div class="chart-bar" style="height: 30%;"></div>
+                    <span class="bar-lbl">Jan</span>
+                  </div>
+                  <div class="chart-bar-container">
+                    <div class="chart-bar" style="height: 45%;"></div>
+                    <span class="bar-lbl">Feb</span>
+                  </div>
+                  <div class="chart-bar-container">
+                    <div class="chart-bar" style="height: 35%;"></div>
+                    <span class="bar-lbl">Mar</span>
+                  </div>
+                  <div class="chart-bar-container">
+                    <div class="chart-bar" style="height: 55%;"></div>
+                    <span class="bar-lbl">Apr</span>
+                  </div>
+                  <div class="chart-bar-container">
+                    <div class="chart-bar" style="height: 65%;"></div>
+                    <span class="bar-lbl">May</span>
+                  </div>
+                  <div class="chart-bar-container">
+                    <div class="chart-bar" style="height: 90%;"></div>
+                    <span class="bar-lbl">Jun</span>
+                  </div>
+                  <div class="chart-bar-container">
+                    <div class="chart-bar" style="height: 80%;"></div>
+                    <span class="bar-lbl">Jul</span>
+                  </div>
+                  <div class="chart-bar-container">
+                    <div class="chart-bar" style="height: 95%;"></div>
+                    <span class="bar-lbl">Aug</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Bottom Row: Donut + Line -->
+              <div class="db-mockup-bottom">
+                <div class="bottom-card">
+                  <div class="db-donut-section">
+                    <div class="donut-chart-svg">
+                      <svg viewBox="0 0 36 36" class="donut-ring" style="width:100%; height:100%;">
+                        <circle cx="18" cy="18" r="15.9" fill="none" stroke="#f1f5f9" stroke-width="4" />
+                        <circle cx="18" cy="18" r="15.9" fill="none" stroke="#3b82f6" stroke-width="4" stroke-dasharray="60 40" stroke-dashoffset="0" />
+                        <circle cx="18" cy="18" r="15.9" fill="none" stroke="#4f46e5" stroke-width="4" stroke-dasharray="28 72" stroke-dashoffset="-60" />
+                        <circle cx="18" cy="18" r="15.9" fill="none" stroke="#06b6d4" stroke-width="4" stroke-dasharray="12 88" stroke-dashoffset="-88" />
+                      </svg>
+                      <div class="donut-center-hole"></div>
+                    </div>
+                    <div class="donut-legend">
+                      <div class="legend-item"><span class="dot dot-blue"></span> North – 60%</div>
+                      <div class="legend-item"><span class="dot dot-indigo"></span> South – 28%</div>
+                      <div class="legend-item"><span class="dot dot-cyan"></span> West – 12%</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="bottom-card">
+                  <span class="section-label" style="margin-bottom: 4px;">Growth trend</span>
+                  <div class="db-line-chart">
+                    <svg viewBox="0 0 100 30" class="line-svg" preserveAspectRatio="none">
+                      <defs>
+                        <linearGradient id="line-grad" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.2"/>
+                          <stop offset="100%" stop-color="#3b82f6" stop-opacity="0"/>
+                        </linearGradient>
+                      </defs>
+                      <path d="M 0 25 C 20 23, 40 12, 60 15 C 80 18, 90 2, 100 5 L 100 30 L 0 30 Z" fill="url(#line-grad)" />
+                      <path d="M 0 25 C 20 23, 40 12, 60 15 C 80 18, 90 2, 100 5" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Overlapping Scroll Down Button -->
+            <button class="db-mockup-scroll-indicator" onclick="scrollToSection('home-how')">
+              ↓
+            </button>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- How It Works Section -->

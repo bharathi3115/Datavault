@@ -18,9 +18,134 @@
   <!-- ANIMATED BACKGROUND -->
   <canvas id="bg-canvas"></canvas>
   <!-- ════════════════════════════════
+     SAAS HOMEPAGE
+  ════════════════════════════════ -->
+  <div class="page active" id="page-home">
+    <!-- Home Header -->
+    <header class="home-header">
+      <div class="home-logo">🔐 Data<span>Vault</span></div>
+      <nav class="home-nav">
+        <button class="home-nav-link" onclick="scrollToSection('home-features')">Features</button>
+        <button class="home-nav-link" onclick="scrollToSection('home-how')">How it works</button>
+        <button class="home-nav-link" onclick="showLoginPage()">Admin</button>
+      </nav>
+      <div class="home-header-actions">
+        <button class="btn-get-started" onclick="showLoginPage()">Get Started</button>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="home-hero">
+      <div class="hero-pill">Secure • Fast • Insightful</div>
+      <h1>Turn raw data into <span class="gradient-text">clear, actionable insights</span></h1>
+      <p>DataVault is a state-of-the-art secure analytics platform designed to clean, analyze, and visualize your organizational datasets with complete peace of mind.</p>
+      <div class="hero-buttons">
+        <button class="btn-primary-home" onclick="showLoginPage()">Upload Dataset</button>
+        <button class="btn-outline-home" onclick="showLoginPage()">View Demo</button>
+      </div>
+      <button class="hero-scroll-down" onclick="scrollToSection('home-how')">
+        ▼
+      </button>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="home-section alt-bg" id="home-how">
+      <h2 class="section-title">How DataVault Works</h2>
+      <p class="section-subtitle">A streamlined, end-to-end process to securely unlock the value of your complex data in seconds.</p>
+      
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-num">01</div>
+          <div class="step-icon-container">📤</div>
+          <h3 class="step-title">Upload Dataset</h3>
+          <p class="step-desc">Drag and drop your raw CSV or Excel datasets securely into the application sandbox.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num">02</div>
+          <div class="step-icon-container">🧼</div>
+          <h3 class="step-title">Auto Clean</h3>
+          <p class="step-desc">Our intelligent pipelines instantly identify and resolve missing values, anomalies, and duplicates.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num">03</div>
+          <div class="step-icon-container">📈</div>
+          <h3 class="step-title">Analyze</h3>
+          <p class="step-desc">Explore statistics, filter records, and query your database via intuitive interactive tools.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num">04</div>
+          <div class="step-icon-container">📊</div>
+          <h3 class="step-title">Visualize</h3>
+          <p class="step-desc">Generate beautiful dashboards, dynamic charts, and professional reports automatically.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Platform Features Section -->
+    <section class="home-section" id="home-features">
+      <h2 class="section-title">Platform Features</h2>
+      <p class="section-subtitle">Unlock an enterprise-grade analytics suite with premium capabilities built directly into your browser.</p>
+      
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feat-icon-container">✨</div>
+          <h3 class="feat-title">Smart Data Cleaning</h3>
+          <p class="feat-desc">Intelligent duplicate detection, format standardization, and rule-based data transformations.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feat-icon-container">🎨</div>
+          <h3 class="feat-title">Interactive Dashboards</h3>
+          <p class="feat-desc">Build customizable viewports featuring dynamic pivot points and sleek charts instantly.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feat-icon-container">🔒</div>
+          <h3 class="feat-title">Secure Access Control</h3>
+          <p class="feat-desc">Role-based data masking, end-to-end data encryption, and local-only sandbox execution.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feat-icon-container">📥</div>
+          <h3 class="feat-title">Report Export</h3>
+          <p class="feat-desc">One-click PDF generation, clean CSV exports, and structured JSON configuration schemas.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feat-icon-container">⚙️</div>
+          <h3 class="feat-title">Admin Control Panel</h3>
+          <p class="feat-desc">Manage system parameters, audit access logs, configure data governance schemas seamlessly.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feat-icon-container">⚡</div>
+          <h3 class="feat-title">Real-Time Insights</h3>
+          <p class="feat-desc">Lightning-fast processing speeds powered by modern local browser canvas rendering technologies.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="home-cta-section">
+      <div class="home-cta-card">
+        <h2>Ready to explore your data?</h2>
+        <p>Get started with DataVault today. Cleanse, analyze, and map out your analytical pipelines with modern ease.</p>
+        <button class="btn-cta-home" onclick="showLoginPage()">
+          Start for Free ➔
+        </button>
+      </div>
+    </section>
+
+    <!-- Home Footer -->
+    <footer class="home-footer">
+      <div class="footer-copy">© 2026 DataVault Inc. All rights reserved.</div>
+      <div class="footer-links">
+        <button class="footer-link" onclick="showLoginPage()">Privacy Policy</button>
+        <button class="footer-link" onclick="showLoginPage()">Terms of Service</button>
+        <button class="footer-link" onclick="showLoginPage()">Support</button>
+      </div>
+    </footer>
+  </div>
+
+  <!-- ════════════════════════════════
      LOGIN PAGE (SOFT THEME)
   ════════════════════════════════ -->
-  <div class="page soft-mode active" id="page-login">
+  <div class="page soft-mode" id="page-login">
     <!-- Floating Theme Switcher -->
     <div class="login-theme-switcher">
       <div class="theme-switcher">
@@ -36,7 +161,7 @@
     <div class="login-outer-frame">
       <!-- Form Side -->
       <div class="login-left-form">
-        <div class="login-brand">
+        <div class="login-brand" onclick="showHomePage()" style="cursor: pointer;">
           <div class="login-soft-logo">🔐</div>
           <div>
             <div class="brand-name">DataVault</div>
@@ -1549,9 +1674,30 @@
     }
     function showRegister() { alert('Registration page — connect to your backend!'); }
 
-    function doLogout() {
+    function showLoginPage() {
+      document.getElementById('page-home').classList.remove('active');
       document.getElementById('page-app').classList.remove('active');
       document.getElementById('page-login').classList.add('active');
+      window.scrollTo(0, 0);
+    }
+
+    function showHomePage() {
+      document.getElementById('page-login').classList.remove('active');
+      document.getElementById('page-app').classList.remove('active');
+      document.getElementById('page-home').classList.add('active');
+      window.scrollTo(0, 0);
+    }
+
+    function scrollToSection(id) {
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    function doLogout() {
+      document.getElementById('page-app').classList.remove('active');
+      showHomePage();
       document.getElementById('login-email').value = '';
       document.getElementById('login-pass').value = '';
     }

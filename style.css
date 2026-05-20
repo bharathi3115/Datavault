@@ -1971,6 +1971,11 @@ td {
   right: 24px;
   z-index: 1000;
   width: 180px;
+  display: none;
+}
+
+#page-login.active .login-theme-switcher {
+  display: block;
 }
 
 .theme-switcher {

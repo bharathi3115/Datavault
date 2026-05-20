@@ -21,6 +21,18 @@
      LOGIN PAGE (SOFT THEME)
   ════════════════════════════════ -->
   <div class="page soft-mode active" id="page-login">
+    <!-- Floating Theme Switcher -->
+    <div class="login-theme-switcher">
+      <div class="theme-switcher">
+        <button class="theme-btn active" id="login-theme-btn-dark" onclick="setTheme('dark')">
+          🌙 Dark
+        </button>
+        <button class="theme-btn" id="login-theme-btn-light" onclick="setTheme('light')">
+          ☀️ Light
+        </button>
+      </div>
+    </div>
+
     <div class="login-outer-frame">
       <!-- Form Side -->
       <div class="login-left-form">
@@ -115,6 +127,19 @@
           </div>
           <span style="color:var(--muted);font-size:13px;margin-left:auto;">⋯</span>
         </div>
+
+        <!-- Theme Switcher -->
+        <div class="theme-switcher-wrapper">
+          <div class="theme-switcher">
+            <button class="theme-btn active" id="theme-btn-dark" onclick="setTheme('dark')">
+              🌙 Dark
+            </button>
+            <button class="theme-btn" id="theme-btn-light" onclick="setTheme('light')">
+              ☀️ Light
+            </button>
+          </div>
+        </div>
+
         <button class="btn outline sm" style="width:100%;margin-top:10px;justify-content:center;" onclick="doLogout()">←
           Sign Out</button>
       </div>
@@ -247,7 +272,7 @@
               </div>
               <div class="donut-wrap" style="flex-direction:column;align-items:center;gap:16px;">
                 <svg class="donut-svg" viewBox="0 0 36 36">
-                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="#1e2535" stroke-width="3.8" />
+                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="var(--surface3)" stroke-width="3.8" />
                   <circle cx="18" cy="18" r="15.9" fill="none" stroke="#38bdf8" stroke-width="3.8"
                     stroke-dasharray="52 48" stroke-dashoffset="25" stroke-linecap="round" />
                   <circle cx="18" cy="18" r="15.9" fill="none" stroke="#a78bfa" stroke-width="3.8"
@@ -679,7 +704,7 @@
                 <div style="display:flex;flex-direction:column;align-items:center;gap:16px;">
                   <div class="quality-ring">
                     <svg viewBox="0 0 36 36" style="width:130px;height:130px;transform:rotate(-90deg);">
-                      <circle cx="18" cy="18" r="15.9" fill="none" stroke="#1e2535" stroke-width="3.5" />
+                      <circle cx="18" cy="18" r="15.9" fill="none" stroke="var(--surface3)" stroke-width="3.5" />
                       <circle id="quality-ring-fill" cx="18" cy="18" r="15.9" fill="none" stroke="#38bdf8"
                         stroke-width="3.5" stroke-dasharray="0 100" stroke-dashoffset="0" stroke-linecap="round"
                         style="transition:stroke-dasharray 1.2s ease;" />
@@ -795,7 +820,7 @@
               </div>
               <div id="pie-wrap" style="position:relative;">
                 <svg class="pie-svg" viewBox="0 0 42 42">
-                  <circle cx="21" cy="21" r="15.9" fill="none" stroke="#1e2535" stroke-width="10" />
+                  <circle cx="21" cy="21" r="15.9" fill="none" stroke="var(--surface3)" stroke-width="10" />
                   <circle id="pie-seg-1" cx="21" cy="21" r="15.9" fill="none" stroke="#38bdf8" stroke-width="10"
                     stroke-dasharray="0 100" stroke-dashoffset="25" />
                   <circle id="pie-seg-2" cx="21" cy="21" r="15.9" fill="none" stroke="#a78bfa" stroke-width="10"
@@ -1139,7 +1164,10 @@
         this.vy = (Math.random() - 0.5) * 0.35;
         this.r = Math.random() * 1.8 + 0.4;
         this.alpha = Math.random() * 0.5 + 0.2;
-        this.color = Math.random() > 0.5 ? '#38bdf8' : '#a78bfa';
+        const isLight = document.body.classList.contains('light-theme');
+        this.color = isLight 
+          ? (Math.random() > 0.5 ? '#3b82f6' : '#818cf8') 
+          : (Math.random() > 0.5 ? '#38bdf8' : '#a78bfa');
       }
       update() {
         this.x += this.vx; this.y += this.vy;
@@ -1160,9 +1188,14 @@
 
     for (let i = 0; i < 120; i++) particles.push(new Particle());
 
+    function resetAllParticles() {
+      particles.forEach(p => p.reset());
+    }
+
     function drawGrid() {
+      const isLight = document.body.classList.contains('light-theme');
       ctx.save();
-      ctx.strokeStyle = 'rgba(56,189,248,0.035)';
+      ctx.strokeStyle = isLight ? 'rgba(59, 130, 246, 0.02)' : 'rgba(56,189,248,0.035)';
       ctx.lineWidth = 0.7;
       const gs = 60;
       for (let x = 0; x < W; x += gs) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); }
@@ -1171,6 +1204,7 @@
     }
 
     function drawConnections() {
+      const isLight = document.body.classList.contains('light-theme');
       const maxDist = 130;
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
@@ -1179,8 +1213,8 @@
           const d = Math.sqrt(dx * dx + dy * dy);
           if (d < maxDist) {
             ctx.save();
-            ctx.globalAlpha = (1 - d / maxDist) * 0.12;
-            ctx.strokeStyle = '#38bdf8';
+            ctx.globalAlpha = (1 - d / maxDist) * (isLight ? 0.08 : 0.12);
+            ctx.strokeStyle = isLight ? '#3b82f6' : '#38bdf8';
             ctx.lineWidth = 0.6;
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
@@ -1195,13 +1229,14 @@
     let gradAngle = 0;
     function animate() {
       ctx.clearRect(0, 0, W, H);
+      const isLight = document.body.classList.contains('light-theme');
       // Subtle radial gradient glow
       gradAngle += 0.002;
       const cx = W / 2 + Math.cos(gradAngle) * W * 0.15;
       const cy = H / 2 + Math.sin(gradAngle) * H * 0.15;
       const grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, W * 0.55);
-      grd.addColorStop(0, 'rgba(56,189,248,0.04)');
-      grd.addColorStop(0.5, 'rgba(167,139,250,0.02)');
+      grd.addColorStop(0, isLight ? 'rgba(59,130,246,0.025)' : 'rgba(56,189,248,0.04)');
+      grd.addColorStop(0.5, isLight ? 'rgba(129,140,248,0.012)' : 'rgba(167,139,250,0.02)');
       grd.addColorStop(1, 'transparent');
       ctx.fillStyle = grd;
       ctx.fillRect(0, 0, W, H);
@@ -1963,6 +1998,48 @@
       a.download = filename.replace(/\.[^.]+$/, '') + '_cleaned.csv';
       a.click();
     }
+
+    function setTheme(theme) {
+      const body = document.body;
+      const darkBtn = document.getElementById('theme-btn-dark');
+      const lightBtn = document.getElementById('theme-btn-light');
+      const loginDarkBtn = document.getElementById('login-theme-btn-dark');
+      const loginLightBtn = document.getElementById('login-theme-btn-light');
+      
+      if (theme === 'light') {
+        body.classList.add('light-theme');
+        localStorage.setItem('theme', 'light');
+        if (darkBtn) darkBtn.classList.remove('active');
+        if (lightBtn) lightBtn.classList.add('active');
+        if (loginDarkBtn) loginDarkBtn.classList.remove('active');
+        if (loginLightBtn) loginLightBtn.classList.add('active');
+      } else {
+        body.classList.remove('light-theme');
+        localStorage.setItem('theme', 'dark');
+        if (lightBtn) lightBtn.classList.remove('active');
+        if (darkBtn) darkBtn.classList.add('active');
+        if (loginLightBtn) loginLightBtn.classList.remove('active');
+        if (loginDarkBtn) loginDarkBtn.classList.add('active');
+      }
+      
+      // Reset particle colors instantly for seamless animation transition
+      if (typeof resetAllParticles === 'function') {
+        resetAllParticles();
+      }
+      
+      // If we have active data, let's refresh analytics so SVG segments get correct color rendering
+      if (uploadedFileData) {
+        if (currentPage === 'analytics') runAnalytics();
+      }
+    }
+
+    // Auto-restore saved theme on load
+    (function() {
+      const savedTheme = localStorage.getItem('theme') || 'dark';
+      document.addEventListener('DOMContentLoaded', () => {
+        setTheme(savedTheme);
+      });
+    })();
   </script>
 
   <!-- URL UPLOAD MODAL -->

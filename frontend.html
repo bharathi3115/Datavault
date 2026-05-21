@@ -26,9 +26,12 @@
       <div class="home-logo" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" style="cursor: pointer;">🔐 Data<span>Vault</span></div>
       <nav class="home-nav">
         <button class="home-nav-link" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">Home</button>
-        <button class="home-nav-link" onclick="scrollToSection('home-about')">About</button>
-        <button class="home-nav-link" onclick="scrollToSection('home-how')">How it works</button>
         <button class="home-nav-link" onclick="scrollToSection('home-features')">Features</button>
+        <button class="home-nav-link" onclick="scrollToSection('home-how')">How it works</button>
+        <button class="home-nav-link" onclick="scrollToSection('home-sandbox')">Sandbox Demo</button>
+        <button class="home-nav-link" onclick="scrollToSection('home-security')">Security</button>
+        <button class="home-nav-link" onclick="scrollToSection('home-roadmap')">Roadmap</button>
+        <button class="home-nav-link" onclick="scrollToSection('home-testimonials')">Testimonials</button>
       </nav>
       <div class="home-header-actions">
         <button class="btn-header-outline" onclick="showLoginPage()">Explorers</button>
@@ -44,126 +47,15 @@
           <div class="hero-pill"><span class="hero-pill-dot"></span> Secure • Fast • Insightful</div>
           <h1>Turn raw data into <span class="gradient-text">clear, actionable insights</span></h1>
           <p>DataVault is a state-of-the-art secure analytics platform designed to clean, analyze, and visualize your organizational datasets with complete peace of mind.</p>
-          <div class="hero-buttons" style="margin-top: 24px; display: flex; gap: 16px;">
+          <div class="hero-buttons" style="margin-top: 28px; display: flex; gap: 16px;">
             <button class="btn-primary-home" onclick="showLoginPage()">Get Started ➔</button>
-            <button class="btn-outline-home" onclick="scrollToSection('home-about')">Learn More</button>
+            <button class="btn-outline-home" onclick="scrollToSection('home-sandbox')">Learn More</button>
           </div>
         </div>
 
-        <!-- Right Column: Premium Mockup -->
+        <!-- Right Column: Custom team illustration replacing macOS Mockup -->
         <div class="hero-visual-content">
-          <div class="db-mockup-window">
-            <!-- Titlebar -->
-            <div class="db-mockup-titlebar">
-              <div class="db-mockup-dots">
-                <span class="dot-red"></span>
-                <span class="dot-yellow"></span>
-                <span class="dot-green"></span>
-              </div>
-              <span class="db-mockup-title">Analytics Dashboard — Q2 Sales.csv</span>
-            </div>
-
-            <!-- Body -->
-            <div class="db-mockup-body">
-              <!-- Stats Cards -->
-              <div class="db-mockup-stats">
-                <div class="stat-mini-card">
-                  <span class="stat-label">Total Records</span>
-                  <span class="stat-value text-blue">24,891</span>
-                </div>
-                <div class="stat-mini-card">
-                  <span class="stat-label">Cleaned Rows</span>
-                  <span class="stat-value text-indigo">23,104</span>
-                </div>
-                <div class="stat-mini-card">
-                  <span class="stat-label">Data Quality</span>
-                  <span class="stat-value text-cyan">92.8%</span>
-                </div>
-              </div>
-
-              <!-- Bar Chart -->
-              <div class="db-mockup-section">
-                <span class="section-label">Monthly revenue distribution</span>
-                <div class="db-bar-chart">
-                  <div class="chart-bar-container">
-                    <div class="chart-bar" style="height: 30%;"></div>
-                    <span class="bar-lbl">Jan</span>
-                  </div>
-                  <div class="chart-bar-container">
-                    <div class="chart-bar" style="height: 45%;"></div>
-                    <span class="bar-lbl">Feb</span>
-                  </div>
-                  <div class="chart-bar-container">
-                    <div class="chart-bar" style="height: 35%;"></div>
-                    <span class="bar-lbl">Mar</span>
-                  </div>
-                  <div class="chart-bar-container">
-                    <div class="chart-bar" style="height: 55%;"></div>
-                    <span class="bar-lbl">Apr</span>
-                  </div>
-                  <div class="chart-bar-container">
-                    <div class="chart-bar" style="height: 65%;"></div>
-                    <span class="bar-lbl">May</span>
-                  </div>
-                  <div class="chart-bar-container">
-                    <div class="chart-bar" style="height: 90%;"></div>
-                    <span class="bar-lbl">Jun</span>
-                  </div>
-                  <div class="chart-bar-container">
-                    <div class="chart-bar" style="height: 80%;"></div>
-                    <span class="bar-lbl">Jul</span>
-                  </div>
-                  <div class="chart-bar-container">
-                    <div class="chart-bar" style="height: 95%;"></div>
-                    <span class="bar-lbl">Aug</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Bottom Row: Donut + Line -->
-              <div class="db-mockup-bottom">
-                <div class="bottom-card">
-                  <div class="db-donut-section">
-                    <div class="donut-chart-svg">
-                      <svg viewBox="0 0 36 36" class="donut-ring" style="width:100%; height:100%;">
-                        <circle cx="18" cy="18" r="15.9" fill="none" stroke="#f1f5f9" stroke-width="4" />
-                        <circle cx="18" cy="18" r="15.9" fill="none" stroke="#3b82f6" stroke-width="4" stroke-dasharray="60 40" stroke-dashoffset="0" />
-                        <circle cx="18" cy="18" r="15.9" fill="none" stroke="#4f46e5" stroke-width="4" stroke-dasharray="28 72" stroke-dashoffset="-60" />
-                        <circle cx="18" cy="18" r="15.9" fill="none" stroke="#06b6d4" stroke-width="4" stroke-dasharray="12 88" stroke-dashoffset="-88" />
-                      </svg>
-                      <div class="donut-center-hole"></div>
-                    </div>
-                    <div class="donut-legend">
-                      <div class="legend-item"><span class="dot dot-blue"></span> North – 60%</div>
-                      <div class="legend-item"><span class="dot dot-indigo"></span> South – 28%</div>
-                      <div class="legend-item"><span class="dot dot-cyan"></span> West – 12%</div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="bottom-card">
-                  <span class="section-label" style="margin-bottom: 4px;">Growth trend</span>
-                  <div class="db-line-chart">
-                    <svg viewBox="0 0 100 30" class="line-svg" preserveAspectRatio="none">
-                      <defs>
-                        <linearGradient id="line-grad" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.2"/>
-                          <stop offset="100%" stop-color="#3b82f6" stop-opacity="0"/>
-                        </linearGradient>
-                      </defs>
-                      <path d="M 0 25 C 20 23, 40 12, 60 15 C 80 18, 90 2, 100 5 L 100 30 L 0 30 Z" fill="url(#line-grad)" />
-                      <path d="M 0 25 C 20 23, 40 12, 60 15 C 80 18, 90 2, 100 5" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Overlapping Scroll Down Button -->
-            <button class="db-mockup-scroll-indicator" onclick="scrollToSection('home-about')">
-              ↓
-            </button>
-          </div>
+          <img src="hero_analytics_illustration.png" alt="Intelligent Data Analytics Illustration" class="hero-illustration-img">
         </div>
       </div>
     </section>
@@ -180,56 +72,69 @@
       </div>
     </section>
 
-    <!-- About Section -->
-    <section class="home-section" id="home-about" style="background: #ffffff; border-top: 1px solid rgba(59, 130, 246, 0.05); padding-bottom: 60px;">
-      <h2 class="section-title">About DataVault</h2>
-      
-      <div class="about-grid" style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 48px; width: 100%; max-width: 1200px; align-items: center; margin-top: 20px;">
-        <div class="about-left" style="text-align: left; display: flex; flex-direction: column; gap: 24px;">
-          <h3 style="font-size: 28px; font-weight: 800; color: #0f172a; line-height: 1.3;">Empowering teams with local-first, highly secure data pipelines</h3>
-          <p style="font-size: 15.5px; color: #64748b; line-height: 1.7;">DataVault is a state-of-the-art web analytics platform built for teams who value both insight and privacy. Traditional analytics suites require uploading sensitive CSV or Excel files to cloud servers, introducing security vulnerabilities and transfer latencies.</p>
-          <p style="font-size: 15.5px; color: #64748b; line-height: 1.7;">Our system operates with a secure-by-default architecture. By executing key cleaning, parsing, and visualization processes directly inside your browser sandbox, your organizational files remain strictly confidential while processing at lightning-fast local speeds.</p>
-          
-          <div class="about-stats-row" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 16px;">
-            <div style="border-left: 3px solid #3b82f6; padding-left: 16px;">
-              <div style="font-size: 32px; font-weight: 800; color: #0f172a; line-height: 1;">100%</div>
-              <div style="font-size: 12px; color: #64748b; font-weight: 600; margin-top: 6px; text-transform: uppercase; letter-spacing: 0.5px;">Client-side Privacy</div>
-            </div>
-            <div style="border-left: 3px solid #4f46e5; padding-left: 16px;">
-              <div style="font-size: 32px; font-weight: 800; color: #0f172a; line-height: 1;">10x</div>
-              <div style="font-size: 12px; color: #64748b; font-weight: 600; margin-top: 6px; text-transform: uppercase; letter-spacing: 0.5px;">Faster Parsing</div>
-            </div>
-            <div style="border-left: 3px solid #06b6d4; padding-left: 16px;">
-              <div style="font-size: 32px; font-weight: 800; color: #0f172a; line-height: 1;">0</div>
-              <div style="font-size: 12px; color: #64748b; font-weight: 600; margin-top: 6px; text-transform: uppercase; letter-spacing: 0.5px;">Cloud Leaks</div>
-            </div>
+    <!-- Trust / Stats Section -->
+    <section class="home-section" id="home-stats" style="padding-top: 20px; padding-bottom: 40px;">
+      <div class="stats-container" style="max-width: 1200px; width: 100%; margin: 0 auto; padding: 0 24px;">
+        <div class="stats-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;">
+          <div class="stat-glass-card" style="position: relative; overflow: hidden;">
+            <div class="stat-glow-orb blue"></div>
+            <div class="stat-card-metric">10K+</div>
+            <div class="stat-card-label">Datasets Processed</div>
+          </div>
+          <div class="stat-glass-card" style="position: relative; overflow: hidden;">
+            <div class="stat-glow-orb green"></div>
+            <div class="stat-card-metric">99.9%</div>
+            <div class="stat-card-label">Secure Sandbox</div>
+          </div>
+          <div class="stat-glass-card" style="position: relative; overflow: hidden;">
+            <div class="stat-glow-orb purple"></div>
+            <div class="stat-card-metric">50+</div>
+            <div class="stat-card-label">Analytics Tools</div>
+          </div>
+          <div class="stat-glass-card" style="position: relative; overflow: hidden;">
+            <div class="stat-glow-orb pink"></div>
+            <div class="stat-card-metric">Real-time</div>
+            <div class="stat-card-label">Instant Insights</div>
           </div>
         </div>
-        
-        <div class="about-right" style="position: relative; display: flex; justify-content: center; align-items: center; background: #f8fafc; border: 1px solid rgba(59,130,246,0.08); border-radius: 24px; padding: 40px; box-shadow: 0 15px 35px rgba(30,58,138,0.03);">
-          <div style="display: flex; flex-direction: column; gap: 20px; width: 100%;">
-            <div style="background: #ffffff; border-radius: 16px; padding: 16px; display: flex; align-items: center; gap: 16px; border: 1px solid rgba(59,130,246,0.05); box-shadow: 0 4px 12px rgba(0,0,0,0.02);">
-              <div style="font-size: 24px; background: rgba(59,130,246,0.08); color: #3b82f6; width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">🛡️</div>
-              <div style="text-align: left;">
-                <h4 style="font-size: 15px; font-weight: 700; color: #0f172a;">Zero Trust Security</h4>
-                <p style="font-size: 12px; color: #64748b; margin-top: 2px;">Your raw database is never stored or transmitted to external servers.</p>
-              </div>
-            </div>
-            <div style="background: #ffffff; border-radius: 16px; padding: 16px; display: flex; align-items: center; gap: 16px; border: 1px solid rgba(59,130,246,0.05); box-shadow: 0 4px 12px rgba(0,0,0,0.02);">
-              <div style="font-size: 24px; background: rgba(79,70,229,0.08); color: #4f46e5; width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">🚀</div>
-              <div style="text-align: left;">
-                <h4 style="font-size: 15px; font-weight: 700; color: #0f172a;">Intelligent Automation</h4>
-                <p style="font-size: 12px; color: #64748b; margin-top: 2px;">Heuristic anomaly detection and duplicate cleaner running seamlessly.</p>
-              </div>
-            </div>
-            <div style="background: #ffffff; border-radius: 16px; padding: 16px; display: flex; align-items: center; gap: 16px; border: 1px solid rgba(59,130,246,0.05); box-shadow: 0 4px 12px rgba(0,0,0,0.02);">
-              <div style="font-size: 24px; background: rgba(6,182,212,0.08); color: #06b6d4; width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">💡</div>
-              <div style="text-align: left;">
-                <h4 style="font-size: 15px; font-weight: 700; color: #0f172a;">Interactive Insights</h4>
-                <p style="font-size: 12px; color: #64748b; margin-top: 2px;">Create and share professional, fully customizable analytical dashboards.</p>
-              </div>
-            </div>
-          </div>
+      </div>
+    </section>
+
+    <!-- Platform Features Section -->
+    <section class="home-section" id="home-features">
+      <h2 class="section-title">Platform Features</h2>
+      <p class="section-subtitle">Unlock an enterprise-grade analytics suite with premium capabilities built directly into your browser.</p>
+      
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feat-icon-container">🧹</div>
+          <h3 class="feat-title">AI Data Cleaning</h3>
+          <p class="feat-desc">Intelligent duplicate detection, automatic outlier capping, format standardization, and local heuristics.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feat-icon-container">📊</div>
+          <h3 class="feat-title">Smart Visualization</h3>
+          <p class="feat-desc">Build customizable viewports featuring dynamic pivot points, charts, and custom metrics instantly.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feat-icon-container">🛡️</div>
+          <h3 class="feat-title">Secure Sandbox</h3>
+          <p class="feat-desc">Zero-trust architecture. All parsing, validation, and analytics occur strictly in your local sandbox.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feat-icon-container">📈</div>
+          <h3 class="feat-title">Predictive Analytics</h3>
+          <p class="feat-desc">Local regression calculations and anomaly detection designed to project clear trend metrics.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feat-icon-container">⚡</div>
+          <h3 class="feat-title">Real-time Dashboards</h3>
+          <p class="feat-desc">Lightning-fast processing speeds powered by modern browser canvas rendering technologies.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feat-icon-container">📋</div>
+          <h3 class="feat-title">Automated Reports</h3>
+          <p class="feat-desc">One-click exports for clean CSV, structured JSON, and beautiful print-ready PDF reports.</p>
         </div>
       </div>
     </section>
@@ -267,41 +172,267 @@
       </div>
     </section>
 
-    <!-- Platform Features Section -->
-    <section class="home-section" id="home-features">
-      <h2 class="section-title">Platform Features</h2>
-      <p class="section-subtitle">Unlock an enterprise-grade analytics suite with premium capabilities built directly into your browser.</p>
+    <!-- Large Admin Dashboard Preview Section -->
+    <section class="home-section" id="home-sandbox" style="padding-bottom: 80px;">
+      <h2 class="section-title">Enterprise Dashboard Preview</h2>
+      <p class="section-subtitle">Observe the full power of DataVault's browser analytics suite prior to connecting your datasets.</p>
       
-      <div class="features-grid">
-        <div class="feature-card">
-          <div class="feat-icon-container">✨</div>
-          <h3 class="feat-title">Smart Data Cleaning</h3>
-          <p class="feat-desc">Intelligent duplicate detection, format standardization, and rule-based data transformations.</p>
+      <div class="preview-container" style="max-width: 1100px; width: 100%; margin: 40px auto 0; padding: 0 24px;">
+        <div class="db-mockup-window large-preview" style="animation: none; transform: none; width: 100%; max-width: 100%;">
+          <!-- Titlebar -->
+          <div class="db-mockup-titlebar">
+            <div class="db-mockup-dots">
+              <span class="dot-red"></span>
+              <span class="dot-yellow"></span>
+              <span class="dot-green"></span>
+            </div>
+            <span class="db-mockup-title">Enterprise Live Dashboard — production_logs.xlsx</span>
+            <div style="margin-left: auto; display: flex; gap: 6px; font-size: 10px; color: #10b981; font-weight: 700; align-items: center;">
+              <span style="display:inline-block; width:6px; height:6px; background:#10b981; border-radius:50%; margin-right:4px; animation: pulse 2s infinite;"></span> LIVE PREVIEW
+            </div>
+          </div>
+          
+          <!-- Mockup Body -->
+          <div class="db-mockup-body" style="padding: 24px; gap: 20px;">
+            <!-- KPI Statistics -->
+            <div class="db-mockup-stats" style="grid-template-columns: repeat(4, 1fr);">
+              <div class="stat-mini-card">
+                <span class="stat-label">Total Records</span>
+                <span class="stat-value text-blue">986,204</span>
+              </div>
+              <div class="stat-mini-card">
+                <span class="stat-label">Cleaned Rows</span>
+                <span class="stat-value text-indigo">962,109</span>
+              </div>
+              <div class="stat-mini-card">
+                <span class="stat-label">Processing Time</span>
+                <span class="stat-value text-cyan">42 ms</span>
+              </div>
+              <div class="stat-mini-card">
+                <span class="stat-label">Data Quality Score</span>
+                <span class="stat-value text-green" style="color: #10b981 !important;">97.5%</span>
+              </div>
+            </div>
+            
+            <!-- Mid Row: Trend Line & Pie chart -->
+            <div style="display: grid; grid-template-columns: 1.4fr 0.8fr; gap: 20px;">
+              <div class="bottom-card" style="height: 220px; justify-content: flex-start;">
+                <span class="section-label" style="margin-bottom: 12px; font-size: 11px;">Analytical Growth & Revenue Trend</span>
+                <div class="db-line-chart" style="height: 150px; width: 100%;">
+                  <svg viewBox="0 0 100 30" class="line-svg" preserveAspectRatio="none" style="height: 100%;">
+                    <defs>
+                      <linearGradient id="preview-line-grad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#8b5cf6" stop-opacity="0.35"/>
+                        <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0"/>
+                      </linearGradient>
+                    </defs>
+                    <path d="M 0 28 C 15 25, 30 10, 45 15 C 60 20, 75 4, 90 8 C 95 10, 98 2, 100 3 L 100 30 L 0 30 Z" fill="url(#preview-line-grad)" />
+                    <path d="M 0 28 C 15 25, 30 10, 45 15 C 60 20, 75 4, 90 8 C 95 10, 98 2, 100 3" fill="none" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </div>
+              </div>
+              <div class="bottom-card" style="height: 220px; justify-content: flex-start;">
+                <span class="section-label" style="margin-bottom: 12px; font-size: 11px;">Distribution by File Type</span>
+                <div class="db-donut-section" style="margin-top: 15px; justify-content: space-around;">
+                  <div class="donut-chart-svg" style="width: 90px; height: 90px;">
+                    <svg viewBox="0 0 36 36" class="donut-ring" style="width:100%; height:100%;">
+                      <circle cx="18" cy="18" r="15.9" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="4.5" />
+                      <circle cx="18" cy="18" r="15.9" fill="none" stroke="#3b82f6" stroke-width="4.5" stroke-dasharray="52 48" stroke-dashoffset="0" />
+                      <circle cx="18" cy="18" r="15.9" fill="none" stroke="#8b5cf6" stroke-width="4.5" stroke-dasharray="24 76" stroke-dashoffset="-52" />
+                      <circle cx="18" cy="18" r="15.9" fill="none" stroke="#06b6d4" stroke-width="4.5" stroke-dasharray="16 84" stroke-dashoffset="-76" />
+                      <circle cx="18" cy="18" r="15.9" fill="none" stroke="#f59e0b" stroke-width="4.5" stroke-dasharray="8 92" stroke-dashoffset="-92" />
+                    </svg>
+                    <div class="donut-center-hole" style="width:70%; height:70%; top:15%; left:15%;"></div>
+                  </div>
+                  <div class="donut-legend" style="gap: 6px;">
+                    <div class="legend-item"><span class="dot" style="background:#3b82f6;"></span> CSV — 52%</div>
+                    <div class="legend-item"><span class="dot" style="background:#8b5cf6;"></span> XLSX — 24%</div>
+                    <div class="legend-item"><span class="dot" style="background:#06b6d4;"></span> JSON — 16%</div>
+                    <div class="legend-item"><span class="dot" style="background:#f59e0b;"></span> XML — 8%</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Bottom Row: Table & Activity -->
+            <div style="display: grid; grid-template-columns: 1.1fr 1.1fr; gap: 20px;">
+              <div class="bottom-card" style="height: 180px; justify-content: flex-start; overflow: hidden; padding: 16px;">
+                <span class="section-label" style="margin-bottom: 8px; font-size: 11px;">Analytical Metrics</span>
+                <div class="tbl-wrap" style="width:100%; font-size: 10.5px;">
+                  <table style="width: 100%;">
+                    <thead>
+                      <tr style="border-bottom: 1px solid rgba(255,255,255,0.06); text-align: left;">
+                        <th style="padding: 6px 0;">Category</th>
+                        <th style="padding: 6px 0;">Records</th>
+                        <th style="padding: 6px 0;">Growth</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
+                        <td style="padding: 6px 0;">Enterprise Safe</td>
+                        <td style="padding: 6px 0; color:#3b82f6;">502,401</td>
+                        <td style="padding: 6px 0; color:#10b981;">↑ 12%</td>
+                      </tr>
+                      <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
+                        <td style="padding: 6px 0;">AI Cleaner</td>
+                        <td style="padding: 6px 0; color:#8b5cf6;">231,104</td>
+                        <td style="padding: 6px 0; color:#10b981;">↑ 8%</td>
+                      </tr>
+                      <tr>
+                        <td style="padding: 6px 0;">Reports</td>
+                        <td style="padding: 6px 0; color:#06b6d4;">228,604</td>
+                        <td style="padding: 6px 0; color:#f87171;">↓ 1.4%</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="bottom-card" style="height: 180px; justify-content: flex-start; overflow: hidden; padding: 16px;">
+                <span class="section-label" style="margin-bottom: 8px; font-size: 11px;">System Health Activity Log</span>
+                <div style="display:flex; flex-direction:column; gap:8px; font-size: 10.5px; width:100%; text-align: left;">
+                  <div style="display:flex; gap:8px; align-items:center;">
+                    <span style="display:inline-block; width:6px; height:6px; background:#10b981; border-radius:50%;"></span>
+                    <span style="color:#cbd5e1;"><b>production_logs.xlsx</b> successfully cleaned</span>
+                    <span style="color:#64748b; margin-left:auto;">2m ago</span>
+                  </div>
+                  <div style="display:flex; gap:8px; align-items:center;">
+                    <span style="display:inline-block; width:6px; height:6px; background:#06b6d4; border-radius:50%;"></span>
+                    <span style="color:#cbd5e1;"><b>User Admin</b> ran ANOVA analysis report</span>
+                    <span style="color:#64748b; margin-left:auto;">12m ago</span>
+                  </div>
+                  <div style="display:flex; gap:8px; align-items:center;">
+                    <span style="display:inline-block; width:6px; height:6px; background:#8b5cf6; border-radius:50%;"></span>
+                    <span style="color:#cbd5e1;">Outlier filter Z-score caps updated dynamically</span>
+                    <span style="color:#64748b; margin-left:auto;">30m ago</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="feature-card">
-          <div class="feat-icon-container">🎨</div>
-          <h3 class="feat-title">Interactive Dashboards</h3>
-          <p class="feat-desc">Build customizable viewports featuring dynamic pivot points and sleek charts instantly.</p>
+      </div>
+    </section>
+
+    <!-- Zero-Trust Security Section -->
+    <section class="home-section alt-bg" id="home-security" style="padding-bottom: 60px;">
+      <h2 class="section-title">Zero-Trust Enterprise Security</h2>
+      <p class="section-subtitle">We secure your datasets by ensuring that raw organizational data never leaves your local computer.</p>
+      
+      <div style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 48px; max-width: 1200px; width: 100%; margin: 40px auto 0; align-items: center; padding: 0 24px;">
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+          <div class="security-card" style="display: flex; align-items: center; gap: 16px; padding: 20px; background: rgba(15,23,42,0.45); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px;">
+            <div style="font-size: 26px; background: rgba(59,130,246,0.1); color:#3b82f6; width:52px; height:52px; border-radius:12px; display:flex; align-items:center; justify-content:center;">🛡️</div>
+            <div style="text-align: left;">
+              <h4 style="font-size: 16px; font-weight: 700; color: #ffffff;">End-to-End Encryption</h4>
+              <p style="font-size: 13px; color: #94a3b8; margin-top: 4px;">Data is encrypted at rest (AES-256) and in transit (TLS 1.3) with client-side keys.</p>
+            </div>
+          </div>
+          <div class="security-card" style="display: flex; align-items: center; gap: 16px; padding: 20px; background: rgba(15,23,42,0.45); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px;">
+            <div style="font-size: 26px; background: rgba(139,92,246,0.1); color:#8b5cf6; width:52px; height:52px; border-radius:12px; display:flex; align-items:center; justify-content:center;">🔑</div>
+            <div style="text-align: left;">
+              <h4 style="font-size: 16px; font-weight: 700; color: #ffffff;">Role-Based Access Control</h4>
+              <p style="font-size: 13px; color: #94a3b8; margin-top: 4px;">Strict authorization profiles allowing customized data masking and audit trails.</p>
+            </div>
+          </div>
+          <div class="security-card" style="display: flex; align-items: center; gap: 16px; padding: 20px; background: rgba(15,23,42,0.45); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px;">
+            <div style="font-size: 26px; background: rgba(6,182,212,0.1); color:#06b6d4; width:52px; height:52px; border-radius:12px; display:flex; align-items:center; justify-content:center;">💻</div>
+            <div style="text-align: left;">
+              <h4 style="font-size: 16px; font-weight: 700; color: #ffffff;">Isolated Local Sandbox</h4>
+              <p style="font-size: 13px; color: #94a3b8; margin-top: 4px;">No database leaks. Analysis and CSV rendering pipelines run entirely in-browser.</p>
+            </div>
+          </div>
+          <div class="security-card" style="display: flex; align-items: center; gap: 16px; padding: 20px; background: rgba(15,23,42,0.45); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px;">
+            <div style="font-size: 26px; background: rgba(16,185,129,0.1); color:#10b981; width:52px; height:52px; border-radius:12px; display:flex; align-items:center; justify-content:center;">💾</div>
+            <div style="text-align: left;">
+              <h4 style="font-size: 16px; font-weight: 700; color: #ffffff;">Encrypted Local Backup</h4>
+              <p style="font-size: 13px; color: #94a3b8; margin-top: 4px;">Automatic, cryptographically safe cache points that save state locally.</p>
+            </div>
+          </div>
         </div>
-        <div class="feature-card">
-          <div class="feat-icon-container">🔒</div>
-          <h3 class="feat-title">Secure Access Control</h3>
-          <p class="feat-desc">Role-based data masking, end-to-end data encryption, and local-only sandbox execution.</p>
+        
+        <div style="display: flex; justify-content: center; position: relative;">
+          <!-- SVG Glowing Lock and Shield Visualization -->
+          <div style="width: 280px; height: 280px; background: radial-gradient(circle, rgba(139,92,246,0.15) 0%, transparent 70%); border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,0.04);">
+            <svg viewBox="0 0 100 100" style="width: 130px; height: 130px; fill: none;">
+              <defs>
+                <linearGradient id="shieldGrad" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#3b82f6"/>
+                  <stop offset="50%" stop-color="#8b5cf6"/>
+                  <stop offset="100%" stop-color="#06b6d4"/>
+                </linearGradient>
+                <filter id="glow">
+                  <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                  <feMerge>
+                    <feMergeNode in="coloredBlur"/>
+                    <feMergeNode in="SourceGraphic"/>
+                  </feMerge>
+                </filter>
+              </defs>
+              <path d="M 50 15 L 85 25 L 80 60 C 75 75, 60 85, 50 90 C 40 85, 25 75, 20 60 L 15 25 Z" stroke="url(#shieldGrad)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" filter="url(#glow)"/>
+              <rect x="38" y="45" width="24" height="20" rx="3" fill="rgba(255,255,255,0.08)" stroke="#ffffff" stroke-width="2"/>
+              <path d="M 44 45 L 44 38 C 44 33, 56 33, 56 38 L 56 45" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
+              <circle cx="50" cy="53" r="2.5" fill="#ffffff"/>
+              <path d="M 50 55.5 L 50 61" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
         </div>
-        <div class="feature-card">
-          <div class="feat-icon-container">📥</div>
-          <h3 class="feat-title">Report Export</h3>
-          <p class="feat-desc">One-click PDF generation, clean CSV exports, and structured JSON configuration schemas.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feat-icon-container">⚙️</div>
-          <h3 class="feat-title">Admin Control Panel</h3>
-          <p class="feat-desc">Manage system parameters, audit access logs, configure data governance schemas seamlessly.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feat-icon-container">⚡</div>
-          <h3 class="feat-title">Real-Time Insights</h3>
-          <p class="feat-desc">Lightning-fast processing speeds powered by modern local browser canvas rendering technologies.</p>
+      </div>
+    </section>
+
+    <!-- Futuristic Timeline Roadmap -->
+    <section class="home-section" id="home-roadmap" style="padding-bottom: 80px;">
+      <h2 class="section-title">Futuristic Analytics Roadmap</h2>
+      <p class="section-subtitle">Review our planned AI integrations, decentralized sharing engines, and local forecasting structures.</p>
+      
+      <div class="roadmap-wrapper" style="max-width: 1000px; width:100%; margin: 60px auto 0; padding: 0 24px; position: relative;">
+        <!-- Connector line -->
+        <div class="roadmap-line" style="position: absolute; top: 0; bottom: 0; left: 50%; width: 2px; background: linear-gradient(to bottom, #3b82f6, #8b5cf6, #06b6d4, rgba(255,255,255,0.05)); transform: translateX(-50%); z-index: 1;"></div>
+        
+        <div style="display: flex; flex-direction: column; gap: 40px; position: relative; z-index: 2;">
+          <!-- Node 1 -->
+          <div style="display: grid; grid-template-columns: 1fr 40px 1fr; align-items: center; width: 100%;">
+            <div style="text-align: right; padding-right: 30px;">
+              <h4 style="font-size: 16px; font-weight: 800; color: #3b82f6;">Phase 1: Local Engine Core</h4>
+              <p style="font-size: 13px; color: #94a3b8; margin-top: 6px;">Client-side Excel parses, heuristic anomaly detectors, and zero-latency canvas rendering charts.</p>
+            </div>
+            <div style="display: flex; justify-content: center; align-items: center;">
+              <div style="width: 16px; height: 16px; border-radius: 50%; background: #3b82f6; box-shadow: 0 0 12px #3b82f6; border: 3.5px solid #020617;"></div>
+            </div>
+            <div style="padding-left: 30px; text-align: left;"><span class="badge done" style="margin:0;"><span class="badge-dot" style="background:#10b981;"></span>Active</span></div>
+          </div>
+          <!-- Node 2 -->
+          <div style="display: grid; grid-template-columns: 1fr 40px 1fr; align-items: center; width: 100%;">
+            <div style="text-align: right; padding-right: 30px;"><span class="badge proc" style="margin:0;"><span class="badge-dot" style="background:#06b6d4;"></span>In Progress</span></div>
+            <div style="display: flex; justify-content: center; align-items: center;">
+              <div style="width: 16px; height: 16px; border-radius: 50%; background: #8b5cf6; box-shadow: 0 0 12px #8b5cf6; border: 3.5px solid #020617;"></div>
+            </div>
+            <div style="padding-left: 30px; text-align: left;">
+              <h4 style="font-size: 16px; font-weight: 800; color: #8b5cf6;">Phase 2: Predictive Heuristics</h4>
+              <p style="font-size: 13px; color: #94a3b8; margin-top: 6px;">Localized mathematical regression solvers, predictive curve forecasts, and automated warnings.</p>
+            </div>
+          </div>
+          <!-- Node 3 -->
+          <div style="display: grid; grid-template-columns: 1fr 40px 1fr; align-items: center; width: 100%;">
+            <div style="text-align: right; padding-right: 30px;">
+              <h4 style="font-size: 16px; font-weight: 800; color: #64748b;">Phase 3: Secure Collaboration</h4>
+              <p style="font-size: 13px; color: #64748b; margin-top: 6px;">Cryptographically safe database sharing keys enabling offline-first collaborative sync panels.</p>
+            </div>
+            <div style="display: flex; justify-content: center; align-items: center;">
+              <div style="width: 16px; height: 16px; border-radius: 50%; background: #64748b; border: 3.5px solid #020617;"></div>
+            </div>
+            <div style="padding-left: 30px; text-align: left;"><span class="badge" style="margin:0; background:rgba(255,255,255,0.06); color:#64748b;">Planned</span></div>
+          </div>
+          <!-- Node 4 -->
+          <div style="display: grid; grid-template-columns: 1fr 40px 1fr; align-items: center; width: 100%;">
+            <div style="text-align: right; padding-right: 30px;"><span class="badge" style="margin:0; background:rgba(255,255,255,0.06); color:#64748b;">Planned</span></div>
+            <div style="display: flex; justify-content: center; align-items: center;">
+              <div style="width: 16px; height: 16px; border-radius: 50%; background: #64748b; border: 3.5px solid #020617;"></div>
+            </div>
+            <div style="padding-left: 30px; text-align: left;">
+              <h4 style="font-size: 16px; font-weight: 800; color: #64748b;">Phase 4: Local AI Agent Engine</h4>
+              <p style="font-size: 13px; color: #64748b; margin-top: 6px;">Generative LLM query interpreters operating completely inside private client-side browser extensions.</p>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -349,8 +480,9 @@
     </section>
 
     <!-- CTA Section -->
-    <section class="home-cta-section">
-      <div class="home-cta-card">
+    <section class="home-cta-section" style="padding-top:60px;">
+      <div class="home-cta-card" style="position: relative; overflow: hidden;">
+        <div class="cta-glow-bg"></div>
         <h2>Ready to explore your data?</h2>
         <p>Get started with DataVault today. Cleanse, analyze, and map out your analytical pipelines with modern ease.</p>
         <button class="btn-cta-home" onclick="showLoginPage()">
@@ -361,11 +493,43 @@
 
     <!-- Home Footer -->
     <footer class="home-footer">
-      <div class="footer-copy">© 2026 DataVault Inc. All rights reserved.</div>
-      <div class="footer-links">
-        <button class="footer-link" onclick="showLoginPage()">Privacy Policy</button>
-        <button class="footer-link" onclick="showLoginPage()">Terms of Service</button>
-        <button class="footer-link" onclick="showLoginPage()">Support</button>
+      <div style="max-width: 1200px; width: 100%; margin: 0 auto; padding: 40px 24px 20px; display: grid; grid-template-columns: 1.5fr repeat(3, 1fr); gap: 40px; text-align: left;">
+        <div>
+          <div style="font-size: 20px; font-weight: 800; color: #ffffff; margin-bottom: 16px;">🔐 Data<span style="color:#8b5cf6;">Vault</span></div>
+          <p style="font-size: 13px; color: #64748b; line-height: 1.6; max-width: 260px;">A secure browser-based analytics platform focused on local-first processing speed and 100% database privacy.</p>
+        </div>
+        <div>
+          <h5 style="font-size: 13px; font-weight: 700; color: #ffffff; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px;">Product</h5>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:13px;">
+            <span style="color:#64748b; cursor:pointer;" onclick="scrollToSection('home-features')">Features</span>
+            <span style="color:#64748b; cursor:pointer;" onclick="scrollToSection('home-sandbox')">Live Demo</span>
+            <span style="color:#64748b; cursor:pointer;" onclick="scrollToSection('home-security')">Security</span>
+          </div>
+        </div>
+        <div>
+          <h5 style="font-size: 13px; font-weight: 700; color: #ffffff; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px;">Company</h5>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:13px;">
+            <span style="color:#64748b; cursor:pointer;" onclick="showLoginPage()">About Us</span>
+            <span style="color:#64748b; cursor:pointer;" onclick="scrollToSection('home-roadmap')">Roadmap</span>
+            <span style="color:#64748b; cursor:pointer;" onclick="showLoginPage()">Careers</span>
+          </div>
+        </div>
+        <div>
+          <h5 style="font-size: 13px; font-weight: 700; color: #ffffff; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px;">Legal</h5>
+          <div style="display:flex; flex-direction:column; gap:10px; font-size:13px;">
+            <span style="color:#64748b; cursor:pointer;" onclick="showLoginPage()">Privacy Policy</span>
+            <span style="color:#64748b; cursor:pointer;" onclick="showLoginPage()">Terms of Service</span>
+            <span style="color:#64748b; cursor:pointer;" onclick="showLoginPage()">Contact</span>
+          </div>
+        </div>
+      </div>
+      <div style="border-top:1px solid rgba(255,255,255,0.06); padding: 20px 24px; max-width:1200px; width:100%; margin: 20px auto 0; display:flex; justify-content:space-between; align-items:center; font-size:12px; color:#64748b;">
+        <div>© 2026 DataVault Inc. All rights reserved.</div>
+        <div style="display:flex; gap:16px;">
+          <span style="cursor:pointer;">𝕏 Twitter</span>
+          <span style="cursor:pointer;">🐙 GitHub</span>
+          <span style="cursor:pointer;">💬 Discord</span>
+        </div>
       </div>
     </footer>
   </div>

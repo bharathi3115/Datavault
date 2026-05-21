@@ -3583,4 +3583,45 @@ body:not(.light-theme) .footer-link {
 
 body:not(.light-theme) .footer-link:hover {
   color: #a78bfa !important;
+}
+
+/* ═══════════════════════════════════════════
+   HERO TEAM ILLUSTRATION & PILL STYLING
+   ═══════════════════════════════════════════ */
+
+/* Hero Team Illustration Styling */
+.hero-illustration-img {
+  width: 100%;
+  max-width: 540px;
+  border-radius: 20px;
+  border: 1px solid rgba(59, 130, 246, 0.15);
+  box-shadow: 0 20px 40px rgba(30, 58, 138, 0.06);
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s ease;
+  animation: heroFloat 6s ease-in-out infinite alternate;
+}
+
+@keyframes heroFloat {
+  0% { transform: translateY(0px) rotate(0deg); }
+  100% { transform: translateY(-8px) rotate(0.5deg); }
+}
+
+.hero-illustration-img:hover {
+  transform: scale(1.02) translateY(-12px) rotate(-0.5deg);
+  box-shadow: 0 30px 60px rgba(30, 58, 138, 0.12);
+}
+
+/* Dark theme overrides for Hero Illustration and Pill */
+body:not(.light-theme) .hero-illustration-img {
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(139, 92, 246, 0.15) !important;
+}
+
+body:not(.light-theme) .hero-illustration-img:hover {
+  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6), 0 0 50px rgba(139, 92, 246, 0.25) !important;
+}
+
+body:not(.light-theme) .hero-pill {
+  background: rgba(99, 102, 241, 0.12) !important;
+  border: 1px solid rgba(99, 102, 241, 0.25) !important;
+  color: #a78bfa !important;
 }

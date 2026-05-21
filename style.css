@@ -2139,6 +2139,26 @@ td {
   gap: 16px;
 }
 
+.btn-header-outline {
+  background: transparent;
+  color: #3b82f6;
+  border: 1.5px solid rgba(59, 130, 246, 0.35);
+  padding: 10px 24px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s, background 0.2s, border-color 0.2s;
+  font-family: 'Outfit', sans-serif;
+}
+
+.btn-header-outline:hover {
+  transform: translateY(-1px);
+  background: rgba(59, 130, 246, 0.08);
+  border-color: rgba(59, 130, 246, 0.6);
+  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.1);
+}
+
 .btn-get-started {
   background: #3b82f6;
   color: #ffffff;

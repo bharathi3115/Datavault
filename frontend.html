@@ -1852,17 +1852,33 @@
     function showRegister() { alert('Registration page — connect to your backend!'); }
 
     function showLoginPage() {
+      const htmlEl = document.documentElement;
+      const originalScrollBehavior = htmlEl.style.scrollBehavior;
+      htmlEl.style.scrollBehavior = 'auto';
+
       document.getElementById('page-home').classList.remove('active');
       document.getElementById('page-app').classList.remove('active');
       document.getElementById('page-login').classList.add('active');
       window.scrollTo(0, 0);
+
+      // Force repaint to apply the instant scroll before restoring behavior
+      void htmlEl.offsetHeight;
+      htmlEl.style.scrollBehavior = originalScrollBehavior;
     }
 
     function showHomePage() {
+      const htmlEl = document.documentElement;
+      const originalScrollBehavior = htmlEl.style.scrollBehavior;
+      htmlEl.style.scrollBehavior = 'auto';
+
       document.getElementById('page-login').classList.remove('active');
       document.getElementById('page-app').classList.remove('active');
       document.getElementById('page-home').classList.add('active');
       window.scrollTo(0, 0);
+
+      // Force repaint to apply the instant scroll before restoring behavior
+      void htmlEl.offsetHeight;
+      htmlEl.style.scrollBehavior = originalScrollBehavior;
     }
 
     function scrollToSection(id) {

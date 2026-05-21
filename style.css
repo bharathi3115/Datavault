@@ -335,6 +335,45 @@ select {
   box-shadow: 0 14px 28px rgba(2, 132, 199, 0.45);
 }
 
+.btn-soft-home {
+  background: transparent;
+  color: var(--text);
+  border: 1.5px solid var(--border2);
+  padding: 14px 44px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+  margin-top: 20px;
+  width: fit-content;
+  transition: transform 0.2s, background 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+
+.btn-soft-home:hover {
+  transform: translateY(-2px);
+  background: var(--cyan-dim);
+  border-color: var(--cyan);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
+}
+
+.login-actions-group {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.login-actions-group .btn-soft-login,
+.login-actions-group .btn-soft-home {
+  margin-top: 0;
+  flex: 1;
+  width: 100%;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .login-right-visual {
   flex: 1.2;
   background: var(--surface2);

@@ -32,7 +32,7 @@
         <button class="home-nav-link" onclick="showLoginPage()">Admin</button>
       </nav>
       <div class="home-header-actions">
-        <button class="btn-get-started" onclick="showLoginPage()">Get Started</button>
+        <button class="btn-get-started" onclick="showLoginPage()">Sign-In</button>
       </div>
     </header>
 
@@ -359,7 +359,10 @@
 
         <div id="login-error" style="display:none; color:#fb7185; font-size:12px; margin-bottom:15px;"></div>
 
-        <button class="btn-soft-login" onclick="doLogin()">LOGIN</button>
+        <div class="login-actions-group">
+          <button class="btn-soft-login" onclick="doLogin()">LOGIN</button>
+          <button class="btn-soft-home" onclick="showHomePage()">Home</button>
+        </div>
       </div>
 
       <!-- Visual Side -->

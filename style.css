@@ -2835,4 +2835,17 @@ td {
   .db-mockup-window {
     max-width: 480px;
   }
+  .about-grid {
+    grid-template-columns: 1fr !important;
+    gap: 32px !important;
+  }
+  .about-left {
+    text-align: center !important;
+    align-items: center !important;
+  }
+  .about-stats-row {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+    width: 100%;
+  }
 }

@@ -29,10 +29,11 @@
         <button class="home-nav-link" onclick="scrollToSection('home-features')">Features</button>
         <button class="home-nav-link" onclick="scrollToSection('home-how')">How it works</button>
         <button class="home-nav-link" onclick="scrollToSection('home-sandbox')">Preview</button>
+        <button class="home-nav-link" onclick="scrollToSection('home-insights')">Insights</button>
       </nav>
       <div class="home-header-actions">
-        <button class="btn-header-outline" onclick="showLoginPage()">Explorers</button>
-        <button class="btn-get-started" onclick="showLoginPage()">Admin</button>
+        <button class="btn-get-started" onclick="showLoginPage('user')">User</button>
+        <button class="btn-get-started" onclick="showLoginPage('admin')">Admin</button>
       </div>
     </header>
 
@@ -46,7 +47,7 @@
           <p>DataVault is a state-of-the-art secure analytics platform designed to clean, analyze, and visualize your organizational datasets with complete peace of mind.</p>
           <div class="hero-buttons" style="margin-top: 28px; display: flex; gap: 16px;">
             <button class="btn-primary-home" onclick="showLoginPage()">Get Started ➔</button>
-            <button class="btn-outline-home" onclick="scrollToSection('home-sandbox')">Learn More</button>
+            <button class="btn-outline-home" onclick="scrollToSection('home-sandbox')">Learn More ➔</button>
           </div>
         </div>
 
@@ -316,6 +317,99 @@
 
 
 
+    <!-- Insights / Features Grid Section -->
+    <section class="home-section" id="home-insights" style="background: rgba(13, 17, 23, 0.4);">
+      <h2 class="section-title">From Raw Chaos to Intelligent Insights</h2>
+      <div class="title-underline" style="width: 60px; height: 4px; background: linear-gradient(90deg, var(--brand), #a855f7); margin: 0 auto 60px; border-radius: 2px; box-shadow: 0 0 10px rgba(168,85,247,0.5);"></div>
+      
+      <div class="insights-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; max-width: 1200px; margin: 0 auto; text-align: left;">
+        
+        <!-- Left Side: Raw Chaos -->
+        <div class="insights-col">
+          <h3 style="font-size: 24px; font-weight: 700; color: #64748b; margin-bottom: 30px;">Raw Chaos & Messy Files</h3>
+          
+          <div class="insight-card dark-card">
+            <div class="insight-icon bg-red">⚠️</div>
+            <div class="insight-content">
+              <h4>1. Messy CSV Files</h4>
+              <p>Unstructured header lines, mismatched columns, and broken layout fields.</p>
+            </div>
+            <div class="insight-badge red-code">id,name,val,,<br>1,,#VALUE!,,</div>
+          </div>
+
+          <div class="insight-card dark-card">
+            <div class="insight-icon bg-red">❌</div>
+            <div class="insight-content">
+              <h4>2. Missing Values</h4>
+              <p>Empty spreadsheet blocks and null records skewing analytics logic.</p>
+            </div>
+            <div class="insight-badge red-badge">NULL<br>N/A</div>
+          </div>
+
+          <div class="insight-card dark-card">
+            <div class="insight-icon bg-red">📄</div>
+            <div class="insight-content">
+              <h4>3. Duplicate Records</h4>
+              <p>Redundant client rows leading to double-counting analytics anomalies.</p>
+            </div>
+            <div class="insight-badge brown-badge">Row #12<br>Row #12 (Copy)</div>
+          </div>
+
+          <div class="insight-card dark-card">
+            <div class="insight-icon bg-red">🔤</div>
+            <div class="insight-content">
+              <h4>4. Inconsistent Formatting</h4>
+              <p>Erratic date expressions, mismatched string cases, and unaligned values.</p>
+            </div>
+            <div class="insight-badge purple-code">05/12/24 vs 2024-12-05</div>
+          </div>
+        </div>
+
+        <!-- Right Side: Intelligent Insights -->
+        <div class="insights-col">
+          <h3 style="font-size: 24px; font-weight: 700; color: #475569; margin-bottom: 30px;">DataVault Active Intelligence</h3>
+          
+          <div class="insight-card dark-card">
+            <div class="insight-icon bg-green">✨</div>
+            <div class="insight-content">
+              <h4>1. One-Click AI Cleaning</h4>
+              <p>Advanced heuristics restructure layout headers and data fields instantly.</p>
+            </div>
+            <div class="insight-badge green-badge">✓ Structure<br>Unified</div>
+          </div>
+
+          <div class="insight-card dark-card">
+            <div class="insight-icon bg-blue">🔍</div>
+            <div class="insight-content">
+              <h4>2. Smart Missing Value Detection</h4>
+              <p>Auto-populates fields using customized, client-side math forecasts.</p>
+            </div>
+            <div class="insight-badge progress-badge" style="display:flex; align-items:center; gap:8px;"><div style="width: 40px; background: rgba(255,255,255,0.1); height: 6px; border-radius: 3px;"><div class="progress-bar" style="width: 100%; background: #10b981; height: 100%; border-radius: 3px;"></div></div><span style="color:#10b981; font-size: 10px; font-weight: 700; text-align:right;">100%<br>Fixed</span></div>
+          </div>
+
+          <div class="insight-card dark-card">
+            <div class="insight-icon bg-purple">🫧</div>
+            <div class="insight-content">
+              <h4>3. Automatic Duplicate Removal</h4>
+              <p>Deduplicates elements directly in browser with real-time feedback logs.</p>
+            </div>
+            <div class="insight-badge green-badge">✓ Duplicates<br>Removed</div>
+          </div>
+
+          <div class="insight-card dark-card">
+            <div class="insight-icon bg-blue">📅</div>
+            <div class="insight-content">
+              <h4>4. Standardized Formatting</h4>
+              <p>Normalizes casing, enforces ISO date standards, and trims empty whitespace.</p>
+            </div>
+            <div class="insight-badge green-badge">✓ ISO Standard<br>Schema</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
     <!-- CTA Section -->
     <section class="home-cta-section" style="padding-top:60px;">
       <div class="home-cta-card" style="position: relative; overflow: hidden;">
@@ -381,6 +475,7 @@
 
 
         <h1 class="login-title-soft">Login</h1>
+        <p id="login-subtitle" style="font-size:13px; color:#94a3b8; margin-bottom: 20px;">Access your DataVault dashboard</p>
 
 
         <div class="soft-field">
@@ -1624,7 +1719,7 @@
     });
 
     /* ── LOGIN ── */
-    function doLogin() {
+        function doLogin() {
       const e = document.getElementById('login-email').value.trim();
       const p = document.getElementById('login-pass').value;
       const err = document.getElementById('login-error');
@@ -1634,9 +1729,23 @@
         return;
       }
       err.style.display = 'none';
-      document.getElementById('page-login').classList.remove('active');
+
+      // Role based rendering
+      const role = window._loginRole || 'user';
+      const adminElements = document.querySelectorAll('.admin-only');
+      const roleLabel = document.querySelector('.sb-user-role');
+      if (role === 'admin') {
+        adminElements.forEach(el => el.style.display = '');
+        if (roleLabel) roleLabel.textContent = 'Admin · Free Plan';
+      } else {
+        adminElements.forEach(el => el.style.display = 'none');
+        if (roleLabel) roleLabel.textContent = 'User · Free Plan';
+      }
+
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.getElementById('page-app').classList.add('active');
       navTo('dashboard');
+      window.scrollTo(0, 0);
     }
 
     /* ── FILE UPLOAD & PARSING ── */
@@ -1888,17 +1997,23 @@
     }
     function showRegister() { alert('Registration page — connect to your backend!'); }
 
-    function showLoginPage() {
+        function showLoginPage(role) {
+      window._loginRole = role || 'user';
+      const subtitle = document.getElementById('login-subtitle');
+      if (subtitle) {
+        subtitle.textContent = role === 'admin'
+          ? 'Admin Access — DataVault Dashboard'
+          : 'User Access — DataVault Dashboard';
+      }
+
       const htmlEl = document.documentElement;
       const originalScrollBehavior = htmlEl.style.scrollBehavior;
       htmlEl.style.scrollBehavior = 'auto';
 
-      document.getElementById('page-home').classList.remove('active');
-      document.getElementById('page-app').classList.remove('active');
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.getElementById('page-login').classList.add('active');
       window.scrollTo(0, 0);
 
-      // Force repaint to apply the instant scroll before restoring behavior
       void htmlEl.offsetHeight;
       htmlEl.style.scrollBehavior = originalScrollBehavior;
     }
@@ -1908,8 +2023,8 @@
       const originalScrollBehavior = htmlEl.style.scrollBehavior;
       htmlEl.style.scrollBehavior = 'auto';
 
-      document.getElementById('page-login').classList.remove('active');
-      document.getElementById('page-app').classList.remove('active');
+      // Hide ALL pages first, then show only home
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.getElementById('page-home').classList.add('active');
       window.scrollTo(0, 0);
 
@@ -1934,10 +2049,11 @@
     }
 
     function doLogout() {
-      document.getElementById('page-app').classList.remove('active');
-      showHomePage();
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById('page-home').classList.add('active');
       document.getElementById('login-email').value = '';
       document.getElementById('login-pass').value = '';
+      window.scrollTo(0, 0);
     }
 
     /* ── SECURITY TOGGLES ── */

@@ -1,0 +1,2100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DataVault – Secure Analytics Platform</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Montserrat:wght@600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+
+</head>
+
+<body>
+
+  <!-- ANIMATED BACKGROUND -->
+  <canvas id="bg-canvas"></canvas>
+  <!-- ════════════════════════════════
+     SAAS HOMEPAGE
+  ════════════════════════════════ -->
+  <div class="page active" id="page-app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sb-logo">
+        <div class="sb-logo-inner">
+          <div class="sb-logo-icon">🔐</div>
+          <div>
+            <div class="sb-logo-name">Data<span>Vault</span></div>
+            <div class="sb-logo-sub">Analytics Platform</div>
+          </div>
+        </div>
+      </div>
+
+      <nav class="sb-nav">
+        <div class="sb-section">Main</div>
+        <div class="sb-item active" data-page="dashboard">
+          <span class="sb-icon">📊</span> Dashboard
+        </div>
+        <div class="sb-item" data-page="upload">
+          <span class="sb-icon">☁️</span> Upload Dataset
+          <span class="sb-badge amber">3</span>
+        </div>
+        <div class="sb-item" data-page="cleaning">
+          <span class="sb-icon">🧹</span> Data Cleaning
+        </div>
+        <div class="sb-item" data-page="analytics">
+          <span class="sb-icon">📈</span> Analytics
+        </div>
+        <div class="sb-item" data-page="reports">
+          <span class="sb-icon">📋</span> Reports
+          <span class="sb-badge">5</span>
+        </div>
+
+                <div class="admin-only">
+          <div class="sb-section">System</div>
+          <div class="sb-item" data-page="security">
+            <span class="sb-icon">&#128274;</span> Security
+          </div>
+          <div class="sb-item" data-page="users">
+            <span class="sb-icon">&#128101;</span> Users
+          </div>
+          <div class="sb-item" data-page="logs">
+            <span class="sb-icon">&#128196;</span> Audit Logs
+          </div>
+        </div>
+      </nav>
+
+      <div class="sb-footer">
+        <div class="sb-user">
+          <div class="sb-avatar">BO</div>
+          <div>
+            <div class="sb-user-name">Bharathi O.</div>
+            <div class="sb-user-role">Admin · Free Plan</div>
+          </div>
+          <span style="color:var(--muted);font-size:13px;margin-left:auto;">⋯</span>
+        </div>
+
+        <!-- Theme Switcher -->
+        <div class="theme-switcher-wrapper">
+          <div class="theme-switcher">
+            <button class="theme-btn active" id="theme-btn-dark" onclick="setTheme('dark')">
+              🌙 Dark
+            </button>
+            <button class="theme-btn" id="theme-btn-light" onclick="setTheme('light')">
+              ☀️ Light
+            </button>
+          </div>
+        </div>
+
+        <button class="btn outline sm" style="width:100%;margin-top:10px;justify-content:center;" onclick="localStorage.removeItem('userRole'); window.location.href='frontend.html';">←
+          Sign Out</button>
+      </div>
+    </aside>
+
+    <!-- MAIN AREA -->
+    <div class="main-area">
+
+      <!-- TOPBAR -->
+      <header class="topbar">
+        <div class="tb-left">
+          <div>
+            <div class="tb-page-title" id="tb-title">Dashboard</div>
+            <div class="tb-breadcrumb" id="tb-breadcrumb">DataVault / Dashboard</div>
+          </div>
+        </div>
+        <div class="tb-right">
+          <button class="tb-btn ghost" id="tb-secondary-btn">Export Report</button>
+          <button class="tb-btn primary" id="tb-primary-btn" onclick="navTo('upload')">+ Upload Dataset</button>
+          <div class="tb-icon-btn">🔔<div class="notif-dot"></div>
+          </div>
+          <div class="tb-icon-btn" onclick="localStorage.removeItem('userRole'); window.location.href='frontend.html';">⚙️</div>
+        </div>
+      </header>
+
+      <!-- CONTENT PAGES -->
+      <div class="content">
+
+        <!-- ── DASHBOARD ── -->
+        <div id="pg-dashboard" class="fade-in">
+          <div class="section-head" style="margin-bottom:22px;">
+            <div>
+              <h2>Good morning, Bharathi 👋</h2>
+              <p>Here's what's happening with your data platform today.</p>
+            </div>
+            <span class="section-tag">Live</span>
+          </div>
+
+          <!-- STATS -->
+          <div class="grid g-4" style="margin-bottom:20px;">
+            <div class="stat-card c">
+              <div class="stat-icon">📂</div>
+              <div class="stat-label">Total Datasets</div>
+              <div class="stat-val">1,248</div>
+              <div class="stat-change up">↑ 12.4% this month</div>
+            </div>
+            <div class="stat-card e">
+              <div class="stat-icon">✅</div>
+              <div class="stat-label">Records Processed</div>
+              <div class="stat-val">98.6K</div>
+              <div class="stat-change up">↑ 8.1% this week</div>
+            </div>
+            <div class="stat-card v">
+              <div class="stat-icon">📈</div>
+              <div class="stat-label">Reports Generated</div>
+              <div class="stat-val">342</div>
+              <div class="stat-change up">↑ 5.7% this week</div>
+            </div>
+            <div class="stat-card a">
+              <div class="stat-icon">👥</div>
+              <div class="stat-label">Active Users</div>
+              <div class="stat-val">64</div>
+              <div class="stat-change down">↓ 2.1% today</div>
+            </div>
+          </div>
+
+          <!-- CHART + DONUT -->
+          <div class="grid g-2-1" style="margin-bottom:20px;">
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">Weekly Processing Activity</div>
+                <span class="card-action">View details →</span>
+              </div>
+              <div style="background:var(--surface2);border-radius:10px;overflow:hidden;">
+                <div class="bar-chart">
+                  <div class="bar-grp">
+                    <div class="bar b1" style="height:55%"></div>
+                    <div class="bar b2" style="height:40%"></div>
+                  </div>
+                  <div class="bar-grp">
+                    <div class="bar b1" style="height:78%"></div>
+                    <div class="bar b2" style="height:62%"></div>
+                  </div>
+                  <div class="bar-grp">
+                    <div class="bar b1" style="height:48%"></div>
+                    <div class="bar b2" style="height:38%"></div>
+                  </div>
+                  <div class="bar-grp">
+                    <div class="bar b1" style="height:92%"></div>
+                    <div class="bar b2" style="height:80%"></div>
+                  </div>
+                  <div class="bar-grp">
+                    <div class="bar b1" style="height:68%"></div>
+                    <div class="bar b2" style="height:55%"></div>
+                  </div>
+                  <div class="bar-grp">
+                    <div class="bar b1" style="height:84%"></div>
+                    <div class="bar b2" style="height:70%"></div>
+                  </div>
+                  <div class="bar-grp">
+                    <div class="bar b1" style="height:100%"></div>
+                    <div class="bar b2" style="height:88%"></div>
+                  </div>
+                </div>
+                <div class="chart-xlabels">
+                  <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+                </div>
+              </div>
+              <div class="kpi-strip">
+                <div class="kpi">
+                  <div class="kpi-label">Avg Quality</div>
+                  <div class="kpi-val">94.2%</div>
+                  <div class="kpi-sub up">↑ 2.1%</div>
+                </div>
+                <div class="kpi">
+                  <div class="kpi-label">Missing Fixed</div>
+                  <div class="kpi-val">18.4K</div>
+                  <div class="kpi-sub neutral">This week</div>
+                </div>
+                <div class="kpi">
+                  <div class="kpi-label">Duplicates</div>
+                  <div class="kpi-val">3,221</div>
+                  <div class="kpi-sub neutral">Removed</div>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">Dataset Formats</div>
+              </div>
+              <div class="donut-wrap" style="flex-direction:column;align-items:center;gap:16px;">
+                <svg class="donut-svg" viewBox="0 0 36 36">
+                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="var(--surface3)" stroke-width="3.8" />
+                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="#38bdf8" stroke-width="3.8"
+                    stroke-dasharray="52 48" stroke-dashoffset="25" stroke-linecap="round" />
+                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="#a78bfa" stroke-width="3.8"
+                    stroke-dasharray="24 76" stroke-dashoffset="-27" stroke-linecap="round" />
+                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="#34d399" stroke-width="3.8"
+                    stroke-dasharray="16 84" stroke-dashoffset="-51" stroke-linecap="round" />
+                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="#fbbf24" stroke-width="3.8"
+                    stroke-dasharray="8 92" stroke-dashoffset="-67" stroke-linecap="round" />
+                </svg>
+                <div class="donut-legend" style="width:100%;">
+                  <div class="dl-item">
+                    <div class="dl-dot" style="background:#38bdf8"></div>
+                    <div class="dl-label">CSV</div>
+                    <div class="dl-val">52%</div>
+                  </div>
+                  <div class="dl-item">
+                    <div class="dl-dot" style="background:#a78bfa"></div>
+                    <div class="dl-label">XLSX</div>
+                    <div class="dl-val">24%</div>
+                  </div>
+                  <div class="dl-item">
+                    <div class="dl-dot" style="background:#34d399"></div>
+                    <div class="dl-label">JSON</div>
+                    <div class="dl-val">16%</div>
+                  </div>
+                  <div class="dl-item">
+                    <div class="dl-dot" style="background:#fbbf24"></div>
+                    <div class="dl-label">Other</div>
+                    <div class="dl-val">8%</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- RECENT + ACTIVITY -->
+          <div class="grid g-2-1">
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">Recent Datasets</div>
+                <span class="card-action" onclick="navTo('upload')">View all →</span>
+              </div>
+              <div class="tbl-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>File</th>
+                      <th>Records</th>
+                      <th>Status</th>
+                      <th>Quality</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><span class="file-row-icon">📄</span><b>sales_q1_2024.csv</b></td>
+                      <td style="color:var(--muted2)">14,280</td>
+                      <td><span class="badge done"><span class="badge-dot"></span>Done</span></td>
+                      <td>
+                        <div class="prog" style="width:80px">
+                          <div class="prog-fill" style="width:94%"></div>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><span class="file-row-icon">📊</span><b>inventory.xlsx</b></td>
+                      <td style="color:var(--muted2)">8,540</td>
+                      <td><span class="badge proc"><span class="badge-dot"></span>Processing</span></td>
+                      <td>
+                        <div class="prog" style="width:80px">
+                          <div class="prog-fill" style="width:62%"></div>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><span class="file-row-icon">📋</span><b>customer_logs.json</b></td>
+                      <td style="color:var(--muted2)">32,100</td>
+                      <td><span class="badge done"><span class="badge-dot"></span>Done</span></td>
+                      <td>
+                        <div class="prog" style="width:80px">
+                          <div class="prog-fill green" style="width:88%"></div>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><span class="file-row-icon">⚠️</span><b>hr_old.csv</b></td>
+                      <td style="color:var(--muted2)">4,200</td>
+                      <td><span class="badge err"><span class="badge-dot"></span>Error</span></td>
+                      <td>
+                        <div class="prog" style="width:80px">
+                          <div class="prog-fill red" style="width:23%"></div>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">Recent Activity</div>
+              </div>
+              <div class="activity-list">
+                <div class="act-item">
+                  <div class="act-dot-col">
+                    <div class="act-dot" style="background:var(--emerald)"></div>
+                    <div class="act-line"></div>
+                  </div>
+                  <div>
+                    <div class="act-txt"><b>sales_q1.csv</b> processed — 94% quality</div>
+                    <div class="act-time">2 min ago</div>
+                  </div>
+                </div>
+                <div class="act-item">
+                  <div class="act-dot-col">
+                    <div class="act-dot" style="background:var(--cyan)"></div>
+                    <div class="act-line"></div>
+                  </div>
+                  <div>
+                    <div class="act-txt"><b>Ravi K.</b> uploaded inventory.xlsx</div>
+                    <div class="act-time">5 hrs ago</div>
+                  </div>
+                </div>
+                <div class="act-item">
+                  <div class="act-dot-col">
+                    <div class="act-dot" style="background:var(--violet)"></div>
+                    <div class="act-line"></div>
+                  </div>
+                  <div>
+                    <div class="act-txt"><b>Meera S.</b> downloaded Q1 report PDF</div>
+                    <div class="act-time">1 day ago</div>
+                  </div>
+                </div>
+                <div class="act-item">
+                  <div class="act-dot-col">
+                    <div class="act-dot" style="background:var(--rose)"></div>
+                  </div>
+                  <div>
+                    <div class="act-txt"><b>Admin</b> blocked unauthorized access attempt</div>
+                    <div class="act-time">2 days ago</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── UPLOAD ── -->
+        <div id="pg-upload" class="fade-in" style="display:none;">
+          <div class="section-head">
+            <div>
+              <h2>Upload Dataset</h2>
+              <p>Upload your raw data files — we'll clean and process them automatically.</p>
+            </div>
+          </div>
+          <div class="grid g-2" style="margin-bottom:20px;align-items:start;">
+            <div>
+              <!-- Hidden file input -->
+              <input type="file" id="file-input" accept=".csv,.xlsx,.xls,.json,.tsv,.txt" style="display:none;"
+                onchange="handleFileSelect(event)" />
+
+              <div class="upload-zone" id="dropzone" ondragover="onDrag(event)" ondragleave="onDragLeave(event)"
+                ondrop="onDrop(event)" onclick="document.getElementById('file-input').click()">
+                <span class="upload-icon">☁️</span>
+                <div class="upload-title">Drag & Drop your file here</div>
+                <div class="upload-sub">or click the button below to browse your computer</div>
+                <div class="file-tags">
+                  <span class="ftag csv">CSV</span>
+                  <span class="ftag xlsx">XLSX</span>
+                  <span class="ftag json">JSON</span>
+                  <span class="ftag tsv">TSV</span>
+                </div>
+                <div class="upload-btn-wrap">
+                  <button class="btn primary"
+                    onclick="event.stopPropagation(); document.getElementById('file-input').click();">📁 Browse
+                    Files</button>
+                  <button class="btn outline" onclick="event.stopPropagation(); openUrlModal();">🔗 From URL</button>
+                </div>
+                <div style="margin-top:16px;font-size:11px;color:var(--muted);">Max file size: 500 MB · Secure encrypted
+                  upload</div>
+              </div>
+
+              <div class="upload-progress card" id="upload-prog" style="display:none;margin-top:16px;">
+                <div class="up-file-row">
+                  <div class="up-file-icon">📄</div>
+                  <div style="flex:1;">
+                    <div class="up-file-name" id="up-file-name">sales_data_2024.csv</div>
+                    <div class="up-file-size" id="up-file-size">2.4 MB · Uploading…</div>
+                  </div>
+                  <div class="up-pct" id="up-pct-txt">0%</div>
+                </div>
+                <div class="prog">
+                  <div class="prog-fill" id="up-prog-bar" style="width:0%"></div>
+                </div>
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-top:10px;">
+                  <div style="font-size:12px;color:var(--muted);">🔒 End-to-end encrypted · Files stored on AWS S3</div>
+                  <button class="btn danger sm" onclick="cancelUpload()" style="padding:6px 14px;font-size:11px;">✕
+                    Cancel</button>
+                </div>
+              </div>
+
+              <div class="card" id="upload-success"
+                style="display:none;margin-top:16px;border-color:rgba(52,211,153,0.3);">
+                <div style="display:flex;align-items:center;gap:12px;">
+                  <div style="font-size:32px;">✅</div>
+                  <div>
+                    <div style="font-size:14px;font-weight:700;color:var(--emerald);">Upload Successful!</div>
+                    <div style="font-size:12px;color:var(--muted2);margin-top:3px;" id="upload-success-msg">Your file is
+                      queued for automatic cleaning & analysis.</div>
+                  </div>
+                </div>
+                <div style="display:flex;gap:10px;margin-top:14px;">
+                  <button class="btn primary sm" onclick="startCleaningPipeline()">🧹 Start Cleaning →</button>
+                  <button class="btn outline sm" onclick="navTo('analytics')">📈 View Analytics</button>
+                  <button class="btn danger sm" onclick="discardUpload()" style="margin-left:auto;">🗑 Discard</button>
+                </div>
+              </div>
+
+              <!-- File Data Preview -->
+              <div class="card" id="file-preview" style="display:none;margin-top:16px;">
+                <div class="card-header">
+                  <div class="card-title" id="preview-title">📄 File Preview</div>
+                  <div style="display:flex;gap:8px;align-items:center;">
+                    <span style="font-size:12px;color:var(--muted2);" id="preview-info"></span>
+                    <button class="btn outline sm" onclick="closePreview()">✕ Close</button>
+                  </div>
+                </div>
+                <div class="tbl-wrap" id="preview-table-wrap" style="max-height:400px;overflow:auto;">
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">Upload Guidelines</div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:12px;">
+                <div style="display:flex;gap:10px;align-items:flex-start;">
+                  <span style="font-size:18px;">📋</span>
+                  <div>
+                    <div style="font-size:13px;font-weight:600;">Supported Formats</div>
+                    <div style="font-size:12px;color:var(--muted2);margin-top:2px;">CSV, XLSX, XLS, JSON, TSV up to
+                      500MB</div>
+                  </div>
+                </div>
+                <div style="display:flex;gap:10px;align-items:flex-start;">
+                  <span style="font-size:18px;">🔤</span>
+                  <div>
+                    <div style="font-size:13px;font-weight:600;">First Row = Headers</div>
+                    <div style="font-size:12px;color:var(--muted2);margin-top:2px;">Ensure your file has column names in
+                      row 1</div>
+                  </div>
+                </div>
+                <div style="display:flex;gap:10px;align-items:flex-start;">
+                  <span style="font-size:18px;">🔒</span>
+                  <div>
+                    <div style="font-size:13px;font-weight:600;">Data Privacy</div>
+                    <div style="font-size:12px;color:var(--muted2);margin-top:2px;">Files are encrypted at rest
+                      (AES-256) and in transit (TLS)</div>
+                  </div>
+                </div>
+                <div style="display:flex;gap:10px;align-items:flex-start;">
+                  <span style="font-size:18px;">⚡</span>
+                  <div>
+                    <div style="font-size:13px;font-weight:600;">Auto Processing</div>
+                    <div style="font-size:12px;color:var(--muted2);margin-top:2px;">Cleaning starts automatically after
+                      upload completes</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Upload History</div><span class="card-action">Clear all</span>
+            </div>
+            <div class="tbl-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>File Name</th>
+                    <th>Size</th>
+                    <th>Records</th>
+                    <th>Uploaded</th>
+                    <th>Status</th>
+                    <th>Quality</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="file-row-icon">📄</span><b>sales_q1_2024.csv</b></td>
+                    <td>2.4 MB</td>
+                    <td>14,280</td>
+                    <td style="color:var(--muted2)">2h ago</td>
+                    <td><span class="badge done"><span class="badge-dot"></span>Processed</span></td>
+                    <td>
+                      <div class="prog" style="width:90px">
+                        <div class="prog-fill" style="width:94%"></div>
+                      </div>
+                    </td>
+                    <td><span class="icon-btn">📊</span> <span class="icon-btn">⬇</span> <span
+                        class="icon-btn">🗑</span></td>
+                  </tr>
+                  <tr>
+                    <td><span class="file-row-icon">📊</span><b>inventory_data.xlsx</b></td>
+                    <td>1.1 MB</td>
+                    <td>8,540</td>
+                    <td style="color:var(--muted2)">5h ago</td>
+                    <td><span class="badge proc"><span class="badge-dot"></span>Processing</span></td>
+                    <td>
+                      <div class="prog" style="width:90px">
+                        <div class="prog-fill" style="width:62%"></div>
+                      </div>
+                    </td>
+                    <td><span class="icon-btn">👁</span> <span class="icon-btn">🗑</span></td>
+                  </tr>
+                  <tr>
+                    <td><span class="file-row-icon">📋</span><b>customer_logs.json</b></td>
+                    <td>5.8 MB</td>
+                    <td>32,100</td>
+                    <td style="color:var(--muted2)">1d ago</td>
+                    <td><span class="badge done"><span class="badge-dot"></span>Processed</span></td>
+                    <td>
+                      <div class="prog" style="width:90px">
+                        <div class="prog-fill green" style="width:88%"></div>
+                      </div>
+                    </td>
+                    <td><span class="icon-btn">📊</span> <span class="icon-btn">⬇</span> <span
+                        class="icon-btn">🗑</span></td>
+                  </tr>
+                  <tr>
+                    <td><span class="file-row-icon">⚠️</span><b>hr_records_old.csv</b></td>
+                    <td>890 KB</td>
+                    <td>4,200</td>
+                    <td style="color:var(--muted2)">2d ago</td>
+                    <td><span class="badge err"><span class="badge-dot"></span>Error</span></td>
+                    <td>
+                      <div class="prog" style="width:90px">
+                        <div class="prog-fill red" style="width:23%"></div>
+                      </div>
+                    </td>
+                    <td><span class="icon-btn">🔁</span> <span class="icon-btn">🗑</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── CLEANING ── -->
+        <div id="pg-cleaning" class="fade-in" style="display:none;">
+          <div class="section-head">
+            <div>
+              <h2>Data Cleaning</h2>
+              <p id="cleaning-subtitle">Automatic preprocessing pipeline — reviewing <b>sales_q1_2024.csv</b></p>
+            </div>
+          </div>
+          <div class="grid g-2-1" style="align-items:start;">
+            <div>
+              <div class="card" style="margin-bottom:18px;">
+                <div class="card-header">
+                  <div class="card-title">Cleaning Pipeline</div><span class="badge info" id="cleaning-progress-badge">0
+                    of 5 complete</span>
+                </div>
+                <div id="cleaning-steps-container" style="display:flex;flex-direction:column;gap:10px;">
+                  <div class="cleaning-step">
+                    <div class="step-num done">✓</div>
+                    <div class="step-body">
+                      <div class="step-title">Duplicate Row Removal</div>
+                      <div class="step-desc">Identified and removed identical rows based on all columns.</div>
+                      <div class="step-result"><span class="step-pill">342 duplicates removed</span><span
+                          class="step-pill">13,938 rows retained</span></div>
+                    </div>
+                    <div class="step-status" style="color:var(--emerald)">✅</div>
+                  </div>
+                  <div class="cleaning-step">
+                    <div class="step-num done">✓</div>
+                    <div class="step-body">
+                      <div class="step-title">Missing Value Handling</div>
+                      <div class="step-desc">Filled numeric columns with median, categorical with mode.</div>
+                      <div class="step-result"><span class="step-pill">1,204 cells filled</span><span
+                          class="step-pill">12 columns affected</span></div>
+                    </div>
+                    <div class="step-status" style="color:var(--emerald)">✅</div>
+                  </div>
+                  <div class="cleaning-step">
+                    <div class="step-num done">✓</div>
+                    <div class="step-body">
+                      <div class="step-title">Outlier Detection</div>
+                      <div class="step-desc">Z-score method used to cap extreme values in numeric columns.</div>
+                      <div class="step-result"><span class="step-pill">87 outliers capped</span><span
+                          class="step-pill">IQR method applied</span></div>
+                    </div>
+                    <div class="step-status" style="color:var(--emerald)">✅</div>
+                  </div>
+                  <div class="cleaning-step" style="border-color:rgba(56,189,248,0.3)">
+                    <div class="step-num active">4</div>
+                    <div class="step-body">
+                      <div class="step-title">Data Type Standardization</div>
+                      <div class="step-desc">Converting date strings to datetime, normalizing text case, fixing number
+                        formats.</div>
+                      <div style="margin-top:10px;">
+                        <div class="prog">
+                          <div class="prog-fill" style="width:72%"></div>
+                        </div>
+                        <div style="font-size:11px;color:var(--cyan);margin-top:6px;">72% complete…</div>
+                      </div>
+                    </div>
+                    <div class="step-status" style="color:var(--cyan)">⟳</div>
+                  </div>
+                  <div class="cleaning-step" style="opacity:0.5;">
+                    <div class="step-num pending">5</div>
+                    <div class="step-body">
+                      <div class="step-title">Feature Validation</div>
+                      <div class="step-desc">Cross-validate column relationships and flag inconsistencies.</div>
+                    </div>
+                    <div class="step-status" style="color:var(--muted)">○</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:16px;">
+              <div class="card">
+                <div class="card-header">
+                  <div class="card-title">Data Quality Score</div>
+                </div>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:16px;">
+                  <div class="quality-ring">
+                    <svg viewBox="0 0 36 36" style="width:130px;height:130px;transform:rotate(-90deg);">
+                      <circle cx="18" cy="18" r="15.9" fill="none" stroke="var(--surface3)" stroke-width="3.5" />
+                      <circle id="quality-ring-fill" cx="18" cy="18" r="15.9" fill="none" stroke="#38bdf8"
+                        stroke-width="3.5" stroke-dasharray="0 100" stroke-dashoffset="0" stroke-linecap="round"
+                        style="transition:stroke-dasharray 1.2s ease;" />
+                    </svg>
+                    <div class="quality-center">
+                      <div class="quality-pct" id="quality-pct-display" style="color:var(--cyan)">—</div>
+                      <div class="quality-label">Quality</div>
+                    </div>
+                  </div>
+                  <div class="quality-stats" style="width:100%;">
+                    <div class="qs-item"><span class="qs-icon">✅</span><span class="qs-label">Valid Rows</span><span
+                        class="qs-val" id="qs-valid" style="color:var(--emerald)">—</span></div>
+                    <div class="qs-item"><span class="qs-icon">⚠️</span><span class="qs-label">Rows Fixed</span><span
+                        class="qs-val" id="qs-fixed" style="color:var(--amber)">—</span></div>
+                    <div class="qs-item"><span class="qs-icon">❌</span><span class="qs-label">Removed</span><span
+                        class="qs-val" id="qs-removed" style="color:var(--rose)">—</span></div>
+                    <div class="qs-item"><span class="qs-icon">📊</span><span class="qs-label">Columns</span><span
+                        class="qs-val" id="qs-columns">—</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="card-header">
+                  <div class="card-title">After Cleaning</div>
+                </div>
+                <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                  <button class="btn primary sm" onclick="runAnalytics()">📈 Run Analytics →</button>
+                  <button class="btn outline sm" onclick="downloadCleanCSV()">⬇ Download Clean CSV</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── ANALYTICS ── -->
+        <div id="pg-analytics" class="fade-in" style="display:none;">
+          <div class="section-head">
+            <div>
+              <h2>Analytics</h2>
+              <p>Interactive insights from your cleaned dataset.</p>
+            </div>
+            <div style="margin-left:auto;display:flex;gap:10px;align-items:center;">
+              <select class="chart-select" id="analytics-file-select">
+                <option id="analytics-file-name">sales_q1_2024.csv</option>
+                <option>customer_logs.json</option>
+              </select>
+              <button class="tb-btn primary" style="height:36px;" onclick="runAnalytics()">Refresh</button>
+            </div>
+          </div>
+
+          <!-- KPI ROW -->
+          <div class="grid g-4" style="margin-bottom:20px;">
+            <div class="stat-card c">
+              <div class="stat-icon">📊</div>
+              <div class="stat-label" id="stat-label-1">Total Metric</div>
+              <div class="stat-val" id="stat-revenue" style="font-size:22px;">—</div>
+              <div class="stat-change up" id="stat-revenue-change">Live</div>
+            </div>
+            <div class="stat-card e">
+              <div class="stat-icon">🎯</div>
+              <div class="stat-label" id="stat-label-2">Average Value</div>
+              <div class="stat-val" id="stat-aov" style="font-size:22px;">—</div>
+              <div class="stat-change up" id="stat-aov-change">Live</div>
+            </div>
+            <div class="stat-card v">
+              <div class="stat-icon">📂</div>
+              <div class="stat-label" id="stat-label-3">Unique Categories</div>
+              <div class="stat-val" id="stat-customers" style="font-size:22px;">—</div>
+              <div class="stat-change up" id="stat-customers-change">Detected</div>
+            </div>
+            <div class="stat-card a">
+              <div class="stat-icon">✨</div>
+              <div class="stat-label" id="stat-label-4">Data Quality</div>
+              <div class="stat-val" id="stat-rate" style="font-size:22px;">—</div>
+              <div class="stat-change down" id="stat-rate-change">Pipeline Score</div>
+            </div>
+          </div>
+
+          <!-- CHARTS ROW 1 -->
+          <div class="grid g-2-1" style="margin-bottom:20px;">
+            <div class="chart-card">
+              <div class="card-header">
+                <div class="card-title">Monthly Revenue Trend</div><select class="chart-select">
+                  <option>Last 6 months</option>
+                  <option>Last year</option>
+                </select>
+              </div>
+              <div id="trend-chart-wrap" style="position:relative;">
+                <svg class="line-svg" viewBox="0 0 400 120" preserveAspectRatio="none">
+                  <defs>
+                    <linearGradient id="lg1" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.3" />
+                      <stop offset="100%" stop-color="#38bdf8" stop-opacity="0" />
+                    </linearGradient>
+                  </defs>
+                  <path id="trend-fill" d="M0,120 L400,120 Z" fill="url(#lg1)" style="transition: d 1s ease;" />
+                  <polyline id="trend-line" points="0,120 400,120" fill="none" stroke="#38bdf8" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round" style="transition: points 1s ease;" />
+                  <g id="trend-dots"></g>
+                </svg>
+              </div>
+              <div id="trend-labels"
+                style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-top:4px;padding:0 2px;">
+                <span>—</span><span>—</span><span>—</span><span>—</span><span>—</span><span>—</span><span>—</span>
+              </div>
+              </div>
+            </div>
+
+            <div class="chart-card">
+              <div class="card-header">
+                <div class="card-title">Sales by Category</div>
+              </div>
+              <div id="pie-wrap" style="position:relative;">
+                <svg class="pie-svg" viewBox="0 0 42 42">
+                  <circle cx="21" cy="21" r="15.9" fill="none" stroke="var(--surface3)" stroke-width="10" />
+                  <circle id="pie-seg-1" cx="21" cy="21" r="15.9" fill="none" stroke="#38bdf8" stroke-width="10"
+                    stroke-dasharray="0 100" stroke-dashoffset="25" />
+                  <circle id="pie-seg-2" cx="21" cy="21" r="15.9" fill="none" stroke="#a78bfa" stroke-width="10"
+                    stroke-dasharray="0 100" stroke-dashoffset="0" />
+                  <circle id="pie-seg-3" cx="21" cy="21" r="15.9" fill="none" stroke="#34d399" stroke-width="10"
+                    stroke-dasharray="0 100" stroke-dashoffset="0" />
+                  <circle id="pie-seg-4" cx="21" cy="21" r="15.9" fill="none" stroke="#fbbf24" stroke-width="10"
+                    stroke-dasharray="0 100" stroke-dashoffset="0" />
+                </svg>
+              </div>
+              <div id="pie-legend" style="display:flex;flex-direction:column;gap:7px;margin-top:8px;"></div>
+            </div>
+          </div>
+
+
+          <!-- TOP TABLE -->
+          <div class="chart-card">
+            <div class="card-header">
+              <div class="card-title" id="performance-table-title">Performance Analytics</div><span class="card-action"
+                onclick="exportAnalytics()">Export Summary →</span>
+            </div>
+            <div id="analytics-table-wrap" class="tbl-wrap" style="max-height:400px;overflow:auto;">
+              <div style="padding:40px;text-align:center;color:var(--muted);">
+                <div style="font-size:32px;margin-bottom:10px;">📉</div>
+                <div>No analysis data yet. Click "Run Analytics" to process the dataset.</div>
+              </div>
+            </div>
+          </div>
+
+          </div>
+        </div>
+
+        <!-- ── REPORTS ── -->
+        <div id="pg-reports" class="fade-in" style="display:none;">
+          <div class="section-head">
+            <div>
+              <h2>Reports</h2>
+              <p>Generate and download detailed insights from your data.</p>
+            </div>
+            <button class="tb-btn primary">+ New Report</button>
+          </div>
+
+          <div class="grid g-3" style="margin-bottom:24px;">
+            <!-- DYNAMIC CLEANED DATA REPORT -->
+            <div class="report-card" id="dynamic-clean-report" style="display:none;border:1px solid var(--emerald-glow);">
+              <div class="report-icon green">✨</div>
+              <div>
+                <div class="report-name" id="dynamic-report-name">Cleaned Dataset Export</div>
+                <div class="report-desc">Fully processed and validated dataset ready for download.</div>
+              </div>
+              <div class="report-meta">
+                <span class="report-tag">CSV</span>
+                <span class="report-tag" id="dynamic-report-time">Just Now</span>
+                <span class="report-tag" style="background:var(--emerald-glow);color:#fff;">READY</span>
+              </div>
+              <div class="report-actions">
+                <button class="btn primary sm" onclick="downloadCleanCSV()">⬇ Download CSV</button>
+                <button class="btn outline sm" onclick="navTo('analytics')">👁 Analytics</button>
+              </div>
+            </div>
+
+            <div class="report-card">
+              <div class="report-icon blue">📊</div>
+              <div>
+                <div class="report-name">Sales Analytics Report</div>
+                <div class="report-desc">Full Q1 2024 sales breakdown — revenue, orders, categories, regional
+                  performance.</div>
+              </div>
+              <div class="report-meta"><span class="report-tag">PDF</span><span class="report-tag">XLSX</span><span
+                  class="report-tag">14 pages</span><span class="report-tag">Generated today</span></div>
+              <div class="report-actions">
+                <button class="btn primary sm">⬇ Download</button>
+                <button class="btn outline sm">👁 Preview</button>
+              </div>
+            </div>
+            <div class="report-card">
+              <div class="report-icon green">🧹</div>
+              <div>
+                <div class="report-name">Data Quality Report</div>
+                <div class="report-desc">Cleaning summary — missing values, duplicates, outliers, and data health score.
+                </div>
+              </div>
+              <div class="report-meta"><span class="report-tag">PDF</span><span class="report-tag">6 pages</span><span
+                  class="report-tag">Yesterday</span></div>
+              <div class="report-actions">
+                <button class="btn primary sm">⬇ Download</button>
+                <button class="btn outline sm">👁 Preview</button>
+              </div>
+            </div>
+            <div class="report-card">
+              <div class="report-icon violet">📈</div>
+              <div>
+                <div class="report-name">Customer Insights Report</div>
+                <div class="report-desc">Customer segmentation, lifetime value, and churn rate analysis from CRM data.
+                </div>
+              </div>
+              <div class="report-meta"><span class="report-tag">PDF</span><span class="report-tag">XLSX</span><span
+                  class="report-tag">22 pages</span><span class="report-tag">2 days ago</span></div>
+              <div class="report-actions">
+                <button class="btn primary sm">⬇ Download</button>
+                <button class="btn outline sm">👁 Preview</button>
+              </div>
+            </div>
+            <div class="report-card">
+              <div class="report-icon amber">⚙️</div>
+              <div>
+                <div class="report-name">System Usage Report</div>
+                <div class="report-desc">Admin report — user activity, dataset uploads, processing times, storage usage.
+                </div>
+              </div>
+              <div class="report-meta"><span class="report-tag">PDF</span><span class="report-tag">9 pages</span><span
+                  class="report-tag">Weekly auto</span></div>
+              <div class="report-actions">
+                <button class="btn primary sm">⬇ Download</button>
+                <button class="btn outline sm">📧 Email</button>
+              </div>
+            </div>
+            <div class="report-card" style="border-style:dashed;cursor:pointer;" onclick="">
+              <div style="text-align:center;padding:20px 0;">
+                <div style="font-size:36px;margin-bottom:10px;">+</div>
+                <div style="font-size:14px;font-weight:700;">Generate Custom Report</div>
+                <div style="font-size:12px;color:var(--muted2);margin-top:6px;">Choose dataset, metrics, date range, and
+                  format</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">All Reports History</div><span class="card-action">Export list →</span>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>Report Name</th>
+                  <th>Dataset</th>
+                  <th>Format</th>
+                  <th>Pages</th>
+                  <th>Generated</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><b>Sales Analytics Q1</b></td>
+                  <td>sales_q1_2024.csv</td>
+                  <td><span class="badge info">PDF+XLSX</span></td>
+                  <td>14</td>
+                  <td style="color:var(--muted2)">Today</td>
+                  <td><span class="icon-btn">⬇</span><span class="icon-btn">📧</span><span class="icon-btn">🗑</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td><b>Data Quality Summary</b></td>
+                  <td>sales_q1_2024.csv</td>
+                  <td><span class="badge done">PDF</span></td>
+                  <td>6</td>
+                  <td style="color:var(--muted2)">Yesterday</td>
+                  <td><span class="icon-btn">⬇</span><span class="icon-btn">📧</span><span class="icon-btn">🗑</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td><b>Customer Insights</b></td>
+                  <td>customer_logs.json</td>
+                  <td><span class="badge info">PDF+XLSX</span></td>
+                  <td>22</td>
+                  <td style="color:var(--muted2)">2 days ago</td>
+                  <td><span class="icon-btn">⬇</span><span class="icon-btn">📧</span><span class="icon-btn">🗑</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td><b>System Usage</b></td>
+                  <td>—</td>
+                  <td><span class="badge done">PDF</span></td>
+                  <td>9</td>
+                  <td style="color:var(--muted2)">1 week ago</td>
+                  <td><span class="icon-btn">⬇</span><span class="icon-btn">📧</span><span class="icon-btn">🗑</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+
+
+        <!-- ── USERS ── -->
+        <div id="pg-users" class="fade-in" style="display:none;">
+          <div class="section-head">
+            <div>
+              <h2>User Management</h2>
+              <p>Manage platform users, roles and permissions.</p>
+            </div><button class="tb-btn primary">+ Invite User</button>
+          </div>
+          <div class="grid g-4" style="margin-bottom:20px;">
+            <div class="stat-card c">
+              <div class="stat-icon">👥</div>
+              <div class="stat-label">Total Users</div>
+              <div class="stat-val">64</div>
+              <div class="stat-change up">↑ 4 this month</div>
+            </div>
+            <div class="stat-card e">
+              <div class="stat-icon">✅</div>
+              <div class="stat-label">Active Now</div>
+              <div class="stat-val">18</div>
+              <div class="stat-change neutral">Online</div>
+            </div>
+            <div class="stat-card v">
+              <div class="stat-icon">🔑</div>
+              <div class="stat-label">Admins</div>
+              <div class="stat-val">3</div>
+              <div class="stat-change neutral">Superusers</div>
+            </div>
+            <div class="stat-card a">
+              <div class="stat-icon">⏳</div>
+              <div class="stat-label">Pending Invites</div>
+              <div class="stat-val">7</div>
+              <div class="stat-change amber">Awaiting</div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">All Users</div><input class="form-input" placeholder="Search users…"
+                style="width:220px;padding:7px 12px;font-size:13px;" />
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>User</th>
+                  <th>Role</th>
+                  <th>Last Active</th>
+                  <th>Datasets</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <div style="display:flex;align-items:center;gap:10px;">
+                      <div class="sb-avatar" style="width:30px;height:30px;font-size:11px;">BO</div>
+                      <div>
+                        <div style="font-weight:600;">Bharathi O.</div>
+                        <div style="font-size:11px;color:var(--muted)">bharathi@org.com</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td><span class="badge info">Admin</span></td>
+                  <td>Now</td>
+                  <td>48</td>
+                  <td><span class="badge done"><span class="badge-dot"></span>Active</span></td>
+                  <td><span class="icon-btn">✏️</span><span class="icon-btn">🔑</span></td>
+                </tr>
+                <tr>
+                  <td>
+                    <div style="display:flex;align-items:center;gap:10px;">
+                      <div class="sb-avatar"
+                        style="width:30px;height:30px;font-size:11px;background:linear-gradient(135deg,var(--emerald),#6ee7b7);">
+                        RK</div>
+                      <div>
+                        <div style="font-weight:600;">Ravi Kumar</div>
+                        <div style="font-size:11px;color:var(--muted)">ravi@org.com</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td><span class="badge done">Analyst</span></td>
+                  <td>5h ago</td>
+                  <td>12</td>
+                  <td><span class="badge done"><span class="badge-dot"></span>Active</span></td>
+                  <td><span class="icon-btn">✏️</span><span class="icon-btn">🗑</span></td>
+                </tr>
+                <tr>
+                  <td>
+                    <div style="display:flex;align-items:center;gap:10px;">
+                      <div class="sb-avatar"
+                        style="width:30px;height:30px;font-size:11px;background:linear-gradient(135deg,var(--violet),#c4b5fd);">
+                        MS</div>
+                      <div>
+                        <div style="font-weight:600;">Meera Sharma</div>
+                        <div style="font-size:11px;color:var(--muted)">meera@org.com</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td><span class="badge proc">Viewer</span></td>
+                  <td>1d ago</td>
+                  <td>3</td>
+                  <td><span class="badge done"><span class="badge-dot"></span>Active</span></td>
+                  <td><span class="icon-btn">✏️</span><span class="icon-btn">🗑</span></td>
+                </tr>
+                <tr>
+                  <td>
+                    <div style="display:flex;align-items:center;gap:10px;">
+                      <div class="sb-avatar"
+                        style="width:30px;height:30px;font-size:11px;background:linear-gradient(135deg,var(--amber),#fde68a);">
+                        AP</div>
+                      <div>
+                        <div style="font-weight:600;">Arjun P.</div>
+                        <div style="font-size:11px;color:var(--muted)">arjun@org.com</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td><span class="badge done">Analyst</span></td>
+                  <td>3d ago</td>
+                  <td>7</td>
+                  <td><span class="badge err"><span class="badge-dot"></span>Suspended</span></td>
+                  <td><span class="icon-btn">✏️</span><span class="icon-btn">🔓</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+
+
+      </div><!-- /content -->
+    </div><!-- /main-area -->
+  </div><!-- /page-app -->
+
+  <!-- ═══════════════════════════════════════════
+     JAVASCRIPT
+═══════════════════════════════════════════ -->
+  <script>
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const role = localStorage.getItem('userRole') || 'user';
+      const adminElements = document.querySelectorAll('.admin-only');
+      const roleLabel = document.querySelector('.sb-user-role');
+      if (role === 'admin') {
+        adminElements.forEach(el => el.style.display = '');
+        if (roleLabel) roleLabel.textContent = 'Admin · Free Plan';
+      } else {
+        adminElements.forEach(el => el.style.display = 'none');
+        if (roleLabel) roleLabel.textContent = 'User · Free Plan';
+      }
+    });
+
+    /* ── ANIMATED BACKGROUND ── */
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    let W, H, particles = [], lines = [];
+
+    function resize() {
+      W = canvas.width = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    class Particle {
+      constructor() { this.reset(); }
+      reset() {
+        this.x = Math.random() * W;
+        this.y = Math.random() * H;
+        this.vx = (Math.random() - 0.5) * 0.35;
+        this.vy = (Math.random() - 0.5) * 0.35;
+        this.r = Math.random() * 1.8 + 0.4;
+        this.alpha = Math.random() * 0.5 + 0.2;
+        const isLight = document.body.classList.contains('light-theme');
+        this.color = isLight 
+          ? (Math.random() > 0.5 ? '#3b82f6' : '#818cf8') 
+          : (Math.random() > 0.5 ? '#38bdf8' : '#a78bfa');
+      }
+      update() {
+        this.x += this.vx; this.y += this.vy;
+        if (this.x < 0 || this.x > W || this.y < 0 || this.y > H) this.reset();
+      }
+      draw() {
+        ctx.save();
+        ctx.globalAlpha = this.alpha;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
+        ctx.shadowColor = this.color;
+        ctx.shadowBlur = 8;
+        ctx.fill();
+        ctx.restore();
+      }
+    }
+
+    for (let i = 0; i < 120; i++) particles.push(new Particle());
+
+    function resetAllParticles() {
+      particles.forEach(p => p.reset());
+    }
+
+    function drawGrid() {
+      const isLight = document.body.classList.contains('light-theme');
+      ctx.save();
+      ctx.strokeStyle = isLight ? 'rgba(59, 130, 246, 0.02)' : 'rgba(56,189,248,0.035)';
+      ctx.lineWidth = 0.7;
+      const gs = 60;
+      for (let x = 0; x < W; x += gs) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); }
+      for (let y = 0; y < H; y += gs) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }
+      ctx.restore();
+    }
+
+    function drawConnections() {
+      const isLight = document.body.classList.contains('light-theme');
+      const maxDist = 130;
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const d = Math.sqrt(dx * dx + dy * dy);
+          if (d < maxDist) {
+            ctx.save();
+            ctx.globalAlpha = (1 - d / maxDist) * (isLight ? 0.08 : 0.12);
+            ctx.strokeStyle = isLight ? '#3b82f6' : '#38bdf8';
+            ctx.lineWidth = 0.6;
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.stroke();
+            ctx.restore();
+          }
+        }
+      }
+    }
+
+    let gradAngle = 0;
+    function animate() {
+      ctx.clearRect(0, 0, W, H);
+      const isLight = document.body.classList.contains('light-theme');
+      // Subtle radial gradient glow
+      gradAngle += 0.002;
+      const cx = W / 2 + Math.cos(gradAngle) * W * 0.15;
+      const cy = H / 2 + Math.sin(gradAngle) * H * 0.15;
+      const grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, W * 0.55);
+      grd.addColorStop(0, isLight ? 'rgba(59,130,246,0.025)' : 'rgba(56,189,248,0.04)');
+      grd.addColorStop(0.5, isLight ? 'rgba(129,140,248,0.012)' : 'rgba(167,139,250,0.02)');
+      grd.addColorStop(1, 'transparent');
+      ctx.fillStyle = grd;
+      ctx.fillRect(0, 0, W, H);
+      drawGrid();
+      drawConnections();
+      particles.forEach(p => { p.update(); p.draw(); });
+      requestAnimationFrame(animate);
+    }
+    animate();
+
+    /* ── PAGE ROUTING ── */
+    const pages = {
+      dashboard: { title: 'Dashboard', breadcrumb: 'DataVault / Dashboard', btn1: 'Export Report', btn2: '+ Upload Dataset' },
+      upload: { title: 'Upload Dataset', breadcrumb: 'DataVault / Upload', btn1: 'Clear History', btn2: '+ New Upload' },
+      cleaning: { title: 'Data Cleaning', breadcrumb: 'DataVault / Cleaning', btn1: 'Download Clean CSV', btn2: 'Run Analytics' },
+      analytics: { title: 'Analytics', breadcrumb: 'DataVault / Analytics', btn1: 'Export Charts', btn2: 'Refresh Data' },
+      reports: { title: 'Reports', breadcrumb: 'DataVault / Reports', btn1: 'Schedule Report', btn2: '+ New Report' },
+      users: { title: 'User Management', breadcrumb: 'DataVault / Users', btn1: 'Roles & Permissions', btn2: '+ Invite User' },
+    };
+
+    let currentPage = 'dashboard';
+
+    function navTo(id) {
+      // hide all pages
+      document.querySelectorAll('[id^="pg-"]').forEach(p => p.style.display = 'none');
+      // show target
+      const el = document.getElementById('pg-' + id);
+      if (el) { el.style.display = ''; el.classList.remove('fade-in'); void el.offsetWidth; el.classList.add('fade-in'); }
+      // sidebar
+      document.querySelectorAll('.sb-item').forEach(i => i.classList.remove('active'));
+      const sbItem = document.querySelector('[data-page="' + id + '"]');
+      if (sbItem) sbItem.classList.add('active');
+      // topbar
+      const cfg = pages[id] || { title: id, breadcrumb: 'DataVault / ' + id, btn1: '', btn2: '' };
+      document.getElementById('tb-title').textContent = cfg.title;
+      document.getElementById('tb-breadcrumb').textContent = cfg.breadcrumb;
+      document.getElementById('tb-secondary-btn').textContent = cfg.btn1;
+      document.getElementById('tb-primary-btn').textContent = cfg.btn2;
+      currentPage = id;
+
+      if (id === 'analytics') runAnalytics();
+    }
+
+    document.querySelectorAll('.sb-item').forEach(item => {
+      item.addEventListener('click', () => navTo(item.dataset.page));
+    });
+
+    /* ── LOGIN ── */
+        
+
+    /* ── FILE UPLOAD & PARSING ── */
+    let uploadedFileData = null;
+
+    function formatFileSize(bytes) {
+      if (bytes < 1024) return bytes + ' B';
+      if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+      return (bytes / 1048576).toFixed(1) + ' MB';
+    }
+
+    function getFileIcon(name) {
+      const ext = name.split('.').pop().toLowerCase();
+      if (ext === 'csv' || ext === 'tsv' || ext === 'txt') return '📄';
+      if (ext === 'xlsx' || ext === 'xls') return '📊';
+      if (ext === 'json') return '📋';
+      return '📁';
+    }
+
+    function handleFileSelect(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      processFile(file);
+    }
+
+    // Track active upload for cancellation
+    let activeReader = null;
+    let activeInterval = null;
+
+    function cancelUpload() {
+      if (activeReader) { activeReader.abort(); activeReader = null; }
+      if (activeInterval) { clearInterval(activeInterval); activeInterval = null; }
+      document.getElementById('upload-prog').style.display = 'none';
+      document.getElementById('upload-success').style.display = 'none';
+      document.getElementById('file-preview').style.display = 'none';
+      document.getElementById('file-input').value = '';
+      uploadedFileData = null;
+    }
+
+    function discardUpload() {
+      document.getElementById('upload-success').style.display = 'none';
+      document.getElementById('file-preview').style.display = 'none';
+      document.getElementById('file-input').value = '';
+      uploadedFileData = null;
+    }
+
+    function processFile(file) {
+      // Cancel any previous upload in progress
+      if (activeReader) { activeReader.abort(); activeReader = null; }
+      if (activeInterval) { clearInterval(activeInterval); activeInterval = null; }
+
+      // Update the progress display with real file info
+      document.getElementById('up-file-name').textContent = file.name;
+      document.getElementById('up-file-size').textContent = formatFileSize(file.size) + ' · Uploading…';
+      document.getElementById('upload-prog').style.display = '';
+      document.getElementById('upload-success').style.display = 'none';
+      document.getElementById('file-preview').style.display = 'none';
+
+      // Simulate upload progress while reading file
+      let pct = 0;
+      const bar = document.getElementById('up-prog-bar');
+      const txt = document.getElementById('up-pct-txt');
+      bar.style.width = '0%';
+      txt.textContent = '0%';
+
+      const reader = new FileReader();
+      activeReader = reader;
+
+      reader.onprogress = function (e) {
+        if (e.lengthComputable) {
+          pct = (e.loaded / e.total) * 80;
+          bar.style.width = pct + '%';
+          txt.textContent = Math.round(pct) + '%';
+        }
+      };
+
+      reader.onload = function (e) {
+        // Finish progress animation
+        let current = pct;
+        const iv = setInterval(() => {
+          activeInterval = iv;
+          current += Math.random() * 8 + 3;
+          if (current >= 100) {
+            current = 100;
+            clearInterval(iv);
+            bar.style.width = '100%';
+            txt.textContent = '100%';
+            setTimeout(() => {
+              document.getElementById('upload-prog').style.display = 'none';
+              document.getElementById('upload-success').style.display = '';
+              document.getElementById('upload-success-msg').textContent =
+                file.name + ' (' + formatFileSize(file.size) + ') uploaded successfully!';
+              // Parse and preview the file
+              parseAndPreview(file.name, e.target.result);
+              // Auto-start cleaning
+              setTimeout(() => { autoStartCleaning(); }, 600);
+            }, 300);
+          }
+          bar.style.width = current + '%';
+          txt.textContent = Math.min(100, Math.round(current)) + '%';
+        }, 80);
+      };
+
+      reader.onerror = function () {
+        document.getElementById('upload-prog').style.display = 'none';
+        alert('Error reading file. Please try again.');
+      };
+
+      const ext = file.name.split('.').pop().toLowerCase();
+      const isExcel = ext === 'xlsx' || ext === 'xls';
+
+      if (isExcel) reader.readAsArrayBuffer(file);
+      else reader.readAsText(file);
+    }
+
+    function parseAndPreview(filename, content) {
+      const ext = filename.split('.').pop().toLowerCase();
+      let rows = [];
+      let headers = [];
+
+      try {
+        if (ext === 'xlsx' || ext === 'xls') {
+          const workbook = XLSX.read(content, { type: 'array' });
+          const firstSheet = workbook.SheetNames[0];
+          const sheet = workbook.Sheets[firstSheet];
+          const data = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+          if (data.length > 0) {
+            headers = data[0].map(h => String(h || ''));
+            rows = data.slice(1).map(row => row.map(v => v !== undefined ? String(v) : ''));
+          }
+        } else if (ext === 'json') {
+          let data = JSON.parse(content);
+          if (!Array.isArray(data)) {
+            const keys = Object.keys(data);
+            for (const k of keys) { if (Array.isArray(data[k])) { data = data[k]; break; } }
+            if (!Array.isArray(data)) data = [data];
+          }
+          if (data.length > 0) {
+            headers = Object.keys(data[0]);
+            rows = data.map(row => headers.map(h => row[h] !== undefined ? String(row[h]) : ''));
+          }
+        } else {
+          // CSV / TSV / TXT
+          const delimiter = ext === 'tsv' ? '\t' : ',';
+          const lines = content.split(/\r?\n/).filter(l => l.trim() !== '');
+          if (lines.length > 0) {
+            headers = parseCSVLine(lines[0], delimiter);
+            for (let i = 1; i < lines.length; i++) {
+              rows.push(parseCSVLine(lines[i], delimiter));
+            }
+          }
+        }
+      } catch (err) {
+        console.error('Parse error:', err);
+        alert('Failed to parse file. Please ensure it is a valid ' + ext.toUpperCase() + ' file.');
+      }
+
+      if (headers.length === 0) return;
+
+      uploadedFileData = { headers, rows, filename };
+      renderPreview(headers, rows, filename);
+    }
+
+    function parseCSVLine(line, delimiter) {
+      const result = [];
+      let current = '';
+      let inQuotes = false;
+      for (let i = 0; i < line.length; i++) {
+        const c = line[i];
+        if (inQuotes) {
+          if (c === '"' && line[i + 1] === '"') { current += '"'; i++; }
+          else if (c === '"') { inQuotes = false; }
+          else { current += c; }
+        } else {
+          if (c === '"') { inQuotes = true; }
+          else if (c === delimiter) { result.push(current.trim()); current = ''; }
+          else { current += c; }
+        }
+      }
+      result.push(current.trim());
+      return result;
+    }
+
+    function renderPreview(headers, rows, filename) {
+      const maxRows = 50;
+      const displayRows = rows.slice(0, maxRows);
+      const totalRows = rows.length;
+
+      document.getElementById('preview-title').textContent = getFileIcon(filename) + ' ' + filename;
+      document.getElementById('preview-info').textContent =
+        'Showing ' + displayRows.length + ' of ' + totalRows + ' rows · ' + headers.length + ' columns';
+
+      let html = '<table><thead><tr><th style="color:var(--cyan);width:50px;">#</th>';
+      headers.forEach(h => {
+        html += '<th>' + escapeHtml(h) + '</th>';
+      });
+      html += '</tr></thead><tbody>';
+
+      displayRows.forEach((row, idx) => {
+        html += '<tr><td style="color:var(--muted);font-family:var(--mono);font-size:11px;">' + (idx + 1) + '</td>';
+        headers.forEach((_, ci) => {
+          const val = row[ci] !== undefined ? row[ci] : '';
+          html += '<td style="white-space:nowrap;max-width:200px;overflow:hidden;text-overflow:ellipsis;">' + escapeHtml(val) + '</td>';
+        });
+        html += '</tr>';
+      });
+
+      if (totalRows > maxRows) {
+        html += '<tr><td colspan="' + (headers.length + 1) + '" style="text-align:center;color:var(--muted);font-size:12px;padding:14px;">… and ' + (totalRows - maxRows) + ' more rows</td></tr>';
+      }
+
+      html += '</tbody></table>';
+      document.getElementById('preview-table-wrap').innerHTML = html;
+      document.getElementById('file-preview').style.display = '';
+      document.getElementById('file-preview').classList.remove('fade-in');
+      void document.getElementById('file-preview').offsetWidth;
+      document.getElementById('file-preview').classList.add('fade-in');
+    }
+
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.appendChild(document.createTextNode(str));
+      return div.innerHTML;
+    }
+
+    function closePreview() {
+      document.getElementById('file-preview').style.display = 'none';
+    }
+
+    function onDrag(e) { e.preventDefault(); document.getElementById('dropzone').classList.add('drag-over'); }
+    function onDragLeave(e) { document.getElementById('dropzone').classList.remove('drag-over'); }
+    function onDrop(e) {
+      e.preventDefault();
+      document.getElementById('dropzone').classList.remove('drag-over');
+      const file = e.dataTransfer.files[0];
+      if (file) processFile(file);
+    }
+
+    document.getElementById('login-pass').addEventListener('keydown', e => {
+      if (e.key === 'Enter') doLogin();
+    });
+    document.getElementById('login-email').addEventListener('keydown', e => {
+      if (e.key === 'Enter') doLogin();
+    });
+
+    function togglePwd() {
+      const f = document.getElementById('login-pass');
+      f.type = f.type === 'password' ? 'text' : 'password';
+    }
+    function showRegister() { alert('Registration page — connect to your backend!'); }
+
+        
+
+      const htmlEl = document.documentElement;
+      const originalScrollBehavior = htmlEl.style.scrollBehavior;
+      htmlEl.style.scrollBehavior = 'auto';
+
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById('page-login').classList.add('active');
+      window.scrollTo(0, 0);
+
+      void htmlEl.offsetHeight;
+      htmlEl.style.scrollBehavior = originalScrollBehavior;
+    }
+
+    
+
+    function scrollToSection(id) {
+      const el = document.getElementById(id);
+      if (el) {
+        const headerHeight = document.querySelector('.home-header')?.offsetHeight || 80;
+        const bodyRect = document.body.getBoundingClientRect().top;
+        const elementRect = el.getBoundingClientRect().top;
+        const elementPosition = elementRect - bodyRect;
+        const offsetPosition = elementPosition - headerHeight;
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
+      }
+    }
+
+    
+
+    /* ── SECURITY TOGGLES ── */
+    function toggleSec(btn) { btn.classList.toggle('on'); btn.classList.toggle('off'); }
+
+    /* ── TOPBAR PRIMARY BTN ROUTING ── */
+    document.getElementById('tb-primary-btn').addEventListener('click', () => {
+      const routes = { dashboard: 'upload', upload: 'upload', cleaning: 'analytics', analytics: 'reports', reports: 'reports', security: 'security', users: 'users', logs: 'logs' };
+      navTo(routes[currentPage] || currentPage);
+    });
+    /* ── URL UPLOAD MODAL ── */
+    function openUrlModal() {
+      document.getElementById('url-modal').style.display = 'flex';
+      document.getElementById('url-input').value = '';
+      document.getElementById('url-error').style.display = 'none';
+      document.getElementById('url-loading').style.display = 'none';
+      setTimeout(() => document.getElementById('url-input').focus(), 100);
+    }
+
+    function closeUrlModal() {
+      document.getElementById('url-modal').style.display = 'none';
+    }
+
+    function fetchFromUrl() {
+      const url = document.getElementById('url-input').value.trim();
+      const errEl = document.getElementById('url-error');
+      const loadEl = document.getElementById('url-loading');
+
+      if (!url) {
+        errEl.textContent = 'Please enter a valid URL.';
+        errEl.style.display = 'block';
+        return;
+      }
+
+      // Basic URL validation
+      try { new URL(url); } catch {
+        errEl.textContent = 'Invalid URL format. Please enter a full URL (e.g. https://...)';
+        errEl.style.display = 'block';
+        return;
+      }
+
+      errEl.style.display = 'none';
+      loadEl.style.display = 'flex';
+
+      fetch(url)
+        .then(response => {
+          if (!response.ok) throw new Error('HTTP ' + response.status + ': ' + response.statusText);
+          return response.text();
+        })
+        .then(content => {
+          loadEl.style.display = 'none';
+          closeUrlModal();
+
+          // Guess filename from URL
+          let filename = url.split('/').pop().split('?')[0] || 'data';
+          if (!filename.includes('.')) filename += '.csv';
+
+          // Show upload success
+          const size = new Blob([content]).size;
+          document.getElementById('upload-prog').style.display = 'none';
+          document.getElementById('upload-success').style.display = '';
+          document.getElementById('upload-success-msg').textContent =
+            filename + ' (' + formatFileSize(size) + ') fetched from URL successfully!';
+
+          // Parse and preview
+          parseAndPreview(filename, content);
+
+          // Auto-start cleaning
+          if (currentPage !== 'upload') navTo('upload');
+          setTimeout(() => { autoStartCleaning(); }, 600);
+        })
+        .catch(err => {
+          loadEl.style.display = 'none';
+          errEl.textContent = 'Failed to fetch: ' + err.message + '. Check the URL or CORS settings.';
+          errEl.style.display = 'block';
+        });
+    }
+
+    // Close modal on Escape key
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeUrlModal();
+    });
+
+    /* ═══ DATA CLEANING PIPELINE ENGINE ═══ */
+    let cleanedData = null;
+    let isCleaning = false;
+
+    function startCleaningPipeline() {
+      if (!uploadedFileData || !uploadedFileData.rows.length) {
+        alert('Please upload a dataset first.');
+        return;
+      }
+      navTo('cleaning');
+      runCleaningPipeline();
+    }
+
+    function autoStartCleaning() {
+      if (currentPage === 'cleaning') return;
+      startCleaningPipeline();
+    }
+
+    function isNum(v) { return v !== '' && v != null && !isNaN(Number(v)); }
+    function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+    function detectColTypes(headers, rows) {
+      const types = {};
+      headers.forEach((_, ci) => {
+        let n = 0, t = 0;
+        rows.slice(0, 100).forEach(r => { const v = (r[ci] || '').trim(); if (!v) return; t++; if (isNum(v)) n++; });
+        types[ci] = t === 0 ? 'empty' : (n / t > 0.7 ? 'numeric' : 'text');
+      });
+      return types;
+    }
+
+    function updateQuality(q, v, f, rm, c) {
+      const ring = document.getElementById('quality-ring-fill');
+      if (ring) {
+        ring.setAttribute('stroke-dasharray', q + ' ' + (100 - q));
+        ring.setAttribute('stroke', q >= 80 ? '#34d399' : q >= 60 ? '#38bdf8' : '#fbbf24');
+      }
+      const pct = document.getElementById('quality-pct-display');
+      if (pct) {
+        pct.textContent = q + '%';
+        pct.style.color = q >= 80 ? 'var(--emerald)' : q >= 60 ? 'var(--cyan)' : 'var(--amber)';
+      }
+      if (document.getElementById('qs-valid')) document.getElementById('qs-valid').textContent = v.toLocaleString();
+      if (document.getElementById('qs-fixed')) document.getElementById('qs-fixed').textContent = f.toLocaleString();
+      if (document.getElementById('qs-removed')) document.getElementById('qs-removed').textContent = rm.toLocaleString();
+      if (document.getElementById('qs-columns')) document.getElementById('qs-columns').textContent = c;
+    }
+
+    function stepHTML(i, title, desc, state, pills) {
+      const cls = state === 'done' ? 'done' : state === 'active' ? 'active' : 'pending';
+      const num = state === 'done' ? '✓' : (i + 1);
+      const ico = state === 'done' ? '✅' : state === 'active' ? '⟳' : '○';
+      const col = state === 'done' ? 'var(--emerald)' : state === 'active' ? 'var(--cyan)' : 'var(--muted)';
+      const sty = state === 'pending' ? 'opacity:0.5;' : state === 'active' ? 'border-color:rgba(56,189,248,0.3);' : '';
+      let r = (pills && pills.length) ? '<div class="step-result">' + pills.map(p => '<span class="step-pill">' + p + '</span>').join('') + '</div>' : '';
+      let pr = state === 'active' ? '<div style="margin-top:10px;"><div class="prog"><div class="prog-fill" id="sp-' + i + '" style="width:0%"></div></div><div style="font-size:11px;color:var(--cyan);margin-top:6px;" id="spt-' + i + '">0% complete…</div></div>' : '';
+      return '<div class="cleaning-step" style="' + sty + '"><div class="step-num ' + cls + '">' + num + '</div><div class="step-body"><div class="step-title">' + title + '</div><div class="step-desc">' + desc + '</div>' + r + pr + '</div><div class="step-status" style="color:' + col + '">' + ico + '</div></div>';
+    }
+
+    const STEPS = [
+      { t: 'Duplicate Row Removal', d: 'Identifying and removing identical rows based on all columns.' },
+      { t: 'Missing Value Handling', d: 'Filling numeric columns with median, categorical with mode.' },
+      { t: 'Outlier Detection', d: 'Z-score method to cap extreme values in numeric columns.' },
+      { t: 'Data Type Standardization', d: 'Normalizing text case, trimming whitespace, fixing number formats.' },
+      { t: 'Feature Validation', d: 'Cross-validating column relationships and flagging inconsistencies.' }
+    ];
+
+    function renderSteps(curStep, stepResults) {
+      const container = document.getElementById('cleaning-steps-container');
+      if (!container) return;
+      let html = '';
+      for (let i = 0; i < 5; i++) {
+        const state = i < curStep ? 'done' : (i === curStep ? 'active' : 'pending');
+        html += stepHTML(i, STEPS[i].t, STEPS[i].d, state, stepResults[i]);
+      }
+      container.innerHTML = html;
+      const badge = document.getElementById('cleaning-progress-badge');
+      if (badge) badge.textContent = Math.min(curStep, 5) + ' of 5 complete';
+    }
+
+    function animProg(i, dur) {
+      return new Promise(res => {
+        const bar = document.getElementById('sp-' + i), txt = document.getElementById('spt-' + i);
+        if (!bar) { res(); return; }
+        let p = 0;
+        const iv = setInterval(() => {
+          p += Math.random() * 15 + 5;
+          if (p >= 100) { p = 100; clearInterval(iv); setTimeout(res, 200); }
+          bar.style.width = p + '%';
+          if (txt) txt.textContent = Math.round(p) + '% complete…';
+        }, dur / 10);
+      });
+    }
+
+    async function runCleaningPipeline() {
+      if (isCleaning) return;
+      isCleaning = true;
+      const { headers, rows, filename } = uploadedFileData;
+      const subtitle = document.getElementById('cleaning-subtitle');
+      if (subtitle) subtitle.innerHTML = 'Automatic preprocessing pipeline — reviewing <b>' + escapeHtml(filename) + '</b>';
+
+      const colTypes = detectColTypes(headers, rows);
+      let curRows = rows.map(r => [...r]), results = {}, fixed = 0, removed = 0, origCount = rows.length;
+      updateQuality(0, 0, 0, 0, headers.length);
+
+      // Step 1: Duplicates
+      renderSteps(0, results); await animProg(0, 800);
+      const seen = new Set(); const uniq = []; let dups = 0;
+      curRows.forEach(r => { const k = r.join('|'); if (seen.has(k)) dups++; else { seen.add(k); uniq.push([...r]); } });
+      curRows = uniq; removed += dups;
+      results[0] = [dups + ' duplicates removed', curRows.length.toLocaleString() + ' rows retained'];
+      updateQuality(20, curRows.length, fixed, removed, headers.length);
+
+      // Step 2: Missing Values
+      renderSteps(1, results); await animProg(1, 1000);
+      let filled = 0, colsAff = new Set();
+      const medians = {}, modes = {};
+      headers.forEach((_, ci) => {
+        if (colTypes[ci] === 'numeric') {
+          const v = curRows.map(r => r[ci]).filter(v => isNum(v)).map(Number).sort((a, b) => a - b);
+          if (v.length) medians[ci] = v[Math.floor(v.length / 2)];
+        } else {
+          const freq = {}; curRows.forEach(r => { const v = (r[ci] || '').trim(); if (v) freq[v] = (freq[v] || 0) + 1; });
+          let mx = 0, mv = ''; for (const k in freq) if (freq[k] > mx) { mx = freq[k]; mv = k; } modes[ci] = mv;
+        }
+      });
+      curRows = curRows.map(r => {
+        const n = [...r]; headers.forEach((_, ci) => {
+          if ((n[ci] || '').trim() === '') {
+            if (colTypes[ci] === 'numeric' && medians[ci] != null) { n[ci] = String(medians[ci]); filled++; colsAff.add(ci); }
+            else if (modes[ci]) { n[ci] = modes[ci]; filled++; colsAff.add(ci); }
+          }
+        }); return n;
+      });
+      fixed += filled;
+      results[1] = [filled.toLocaleString() + ' cells filled', colsAff.size + ' columns affected'];
+      updateQuality(40, curRows.length, fixed, removed, headers.length);
+
+      // Step 3: Outliers
+      renderSteps(2, results); await animProg(2, 1200);
+      let outliers = 0;
+      headers.forEach((_, ci) => {
+        if (colTypes[ci] !== 'numeric') return;
+        const v = curRows.map(r => r[ci]).filter(v => isNum(v)).map(Number).sort((a, b) => a - b);
+        if (v.length < 4) return;
+        const q1 = v[Math.floor(v.length * .25)], q3 = v[Math.floor(v.length * .75)], iqr = q3 - q1;
+        const lo = q1 - 1.5 * iqr, hi = q3 + 1.5 * iqr;
+        curRows.forEach(r => {
+          if (!isNum(r[ci])) return; const n = Number(r[ci]);
+          if (n < lo) { r[ci] = String(Math.round(lo * 100) / 100); outliers++; }
+          else if (n > hi) { r[ci] = String(Math.round(hi * 100) / 100); outliers++; }
+        });
+      });
+      fixed += outliers;
+      results[2] = [outliers + ' outliers capped', 'IQR method applied'];
+      updateQuality(60, curRows.length, fixed, removed, headers.length);
+
+      // Step 4: Standardization
+      renderSteps(3, results); await animProg(3, 900);
+      let textFix = 0, numFix = 0;
+      curRows = curRows.map(r => {
+        const n = [...r]; headers.forEach((_, ci) => {
+          let v = (n[ci] || '').toString();
+          if (colTypes[ci] === 'text') { const t = v.trim().replace(/\s+/g, ' '); if (t !== v) textFix++; n[ci] = t; }
+          else if (colTypes[ci] === 'numeric') { const c = v.replace(/[$€£₹,\s]/g, '').trim(); if (c !== v && isNum(c)) { n[ci] = c; numFix++; } }
+        }); return n;
+      });
+      fixed += textFix + numFix;
+      results[3] = [textFix + ' text normalized', numFix + ' numbers fixed'];
+      updateQuality(80, curRows.length, fixed, removed, headers.length);
+
+      // Step 5: Validation
+      renderSteps(4, results); await animProg(4, 1100);
+      const final = []; let emptyRows = 0, inconsis = 0;
+      curRows.forEach(r => {
+        const empty = r.filter(v => (v || '').trim() === '').length;
+        if (empty / headers.length > 0.5) { emptyRows++; return; }
+        headers.forEach((_, ci) => { if (colTypes[ci] === 'numeric' && (r[ci] || '').trim() !== '' && !isNum(r[ci])) inconsis++; });
+        final.push(r);
+      });
+      curRows = final; removed += emptyRows;
+      results[4] = [curRows.length.toLocaleString() + ' valid rows', emptyRows + ' empty rows removed', inconsis + ' inconsistencies'];
+      renderSteps(5, results);
+
+      const q = Math.max(0, Math.min(100, Math.round((curRows.length / origCount) * 100)));
+      updateQuality(q, curRows.length, fixed, removed, headers.length);
+      cleanedData = { headers, rows: curRows, filename };
+      isCleaning = false;
+
+      // Update Reports tab with the dynamic card
+      const repCard = document.getElementById('dynamic-clean-report');
+      if (repCard) {
+        repCard.style.display = 'flex';
+        document.getElementById('dynamic-report-name').textContent = 'Cleaned: ' + filename;
+        document.getElementById('dynamic-report-time').textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      }
+    }
+
+    /* ═══ DATA ANALYTICS ENGINE ═══ */
+    function runAnalytics() {
+      const data = cleanedData || uploadedFileData;
+      if (!data) { alert('Please upload and clean a dataset first!'); return; }
+
+      const { headers, rows, filename } = data;
+      document.getElementById('analytics-file-name').textContent = filename;
+
+      // 1. Dynamic Feature Discovery
+      let metricIdx = -1, groupIdx = -1;
+      const numKeywords = ['revenue','price','sales','amount','fare','cost','value','weight','length','width','height','score','rating','age','salary'];
+      const catKeywords = ['category','type','status','class','region','species','group','gender','label','dept'];
+
+      // Find first likely numeric column
+      headers.forEach((h, i) => {
+        const l = h.toLowerCase();
+        if (metricIdx === -1 && numKeywords.some(k => l.includes(k))) metricIdx = i;
+        if (groupIdx === -1 && catKeywords.some(k => l.includes(k))) groupIdx = i;
+      });
+
+      // Fallback: If no keywords, find columns with numeric density
+      if (metricIdx === -1) {
+        headers.forEach((h, i) => {
+          let nums = 0, tot = 0;
+          rows.slice(0, 50).forEach(r => { if(r[i]) { tot++; if(isNum(r[i].replace(/[$€₹,]/g,''))) nums++; } });
+          if (tot > 0 && nums/tot > 0.8 && metricIdx === -1) metricIdx = i;
+        });
+      }
+      // Fallback: If no categories, find columns with low cardinality
+      if (groupIdx === -1) {
+        headers.forEach((h, i) => {
+          if (i === metricIdx) return;
+          const vals = new Set(); rows.slice(0, 100).forEach(r => { if(r[i]) vals.add(r[i]); });
+          if (vals.size > 1 && vals.size < 20 && groupIdx === -1) groupIdx = i;
+        });
+      }
+
+      const metricName = metricIdx !== -1 ? headers[metricIdx] : 'Records';
+      const groupName = groupIdx !== -1 ? headers[groupIdx] : 'Categories';
+      const isFin = metricIdx !== -1 && (headers[metricIdx].toLowerCase().match(/price|revenue|sales|cost|fare|amount|profit/));
+
+      // 2. Aggregate Data
+      let totalMetric = 0, rowCount = rows.length;
+      rows.forEach(r => {
+        if (metricIdx !== -1) {
+          const v = parseFloat((r[metricIdx]||'0').toString().replace(/[$€₹,]/g,''));
+          if (!isNaN(v)) totalMetric += v;
+        } else totalMetric++;
+      });
+      const avgVal = totalMetric / (rowCount || 1);
+
+      // 3. Update UI Labels & KPIs
+      document.getElementById('stat-label-1').textContent = 'Total ' + metricName;
+      document.getElementById('stat-label-2').textContent = 'Average ' + metricName;
+      document.getElementById('stat-label-3').textContent = 'Unique ' + groupName;
+      document.getElementById('stat-label-4').textContent = 'Data Quality';
+
+      const format = (v) => isFin ? formatCurrency(v) : (v > 1000 ? Math.round(v).toLocaleString() : v.toFixed(1));
+      document.getElementById('stat-revenue').textContent = format(totalMetric);
+      document.getElementById('stat-aov').textContent = format(avgVal);
+      
+      const uniqueGroups = new Set();
+      const gIdx = groupIdx !== -1 ? groupIdx : 0;
+      rows.forEach(r => { if(r[gIdx]) uniqueGroups.add(r[gIdx]); });
+      document.getElementById('stat-customers').textContent = uniqueGroups.size.toLocaleString();
+      
+      const qualityScore = document.getElementById('quality-pct-display') ? document.getElementById('quality-pct-display').textContent : '100%';
+      document.getElementById('stat-rate').textContent = qualityScore;
+
+      // 4. Distribution Breakdown (Pie)
+      const counts = {};
+      rows.forEach(r => { const key = (r[gIdx]||'Other').toString(); counts[key] = (counts[key] || 0) + 1; });
+      const sorted = Object.entries(counts).sort((a,b) => b[1] - a[1]).slice(0, 4);
+      const totalCount = sorted.reduce((a, b) => a + b[1], 0);
+      const colors = ['#38bdf8', '#a78bfa', '#34d399', '#fbbf24'];
+      let cum = 0, leg = '';
+      
+      for(let i=1; i<=4; i++) { const s = document.getElementById('pie-seg-'+i); if(s) s.setAttribute('stroke-dasharray', '0 100'); }
+      
+      sorted.forEach(([name, count], i) => {
+        const pct = Math.round((count / totalCount) * 100);
+        const seg = document.getElementById('pie-seg-' + (i + 1));
+        if (seg) {
+          seg.setAttribute('stroke-dasharray', pct + ' ' + (100 - pct));
+          seg.setAttribute('stroke-dashoffset', 25 - cum);
+          seg.setAttribute('stroke', colors[i]);
+        }
+        cum += pct;
+        leg += `<div class="dl-item"><div class="dl-dot" style="background:${colors[i]}"></div><div class="dl-label">${name}</div><div class="dl-val">${pct}%</div></div>`;
+      });
+      document.getElementById('pie-legend').innerHTML = leg;
+
+      // 5. Performance Table
+      const tableData = {};
+      rows.forEach(r => {
+        const g = r[gIdx] || 'Unknown';
+        if (!tableData[g]) tableData[g] = { val: 0, count: 0 };
+        if (metricIdx !== -1) {
+          const v = parseFloat((r[metricIdx]||'0').toString().replace(/[$€₹,]/g,''));
+          if (!isNaN(v)) tableData[g].val += v;
+        }
+        tableData[g].count++;
+      });
+      const sortedTable = Object.entries(tableData).sort((a,b) => b[1].val - a[1].val || b[1].count - a[1].count).slice(0, 10);
+      const maxTableVal = Math.max(...sortedTable.map(x => metricIdx !== -1 ? x[1].val : x[1].count)) || 1;
+      
+      let html = `<table><thead><tr><th>${headers[gIdx].toUpperCase()}</th><th>${metricName.toUpperCase()}</th><th>RECORDS</th><th>SHARE</th></tr></thead><tbody>`;
+      sortedTable.forEach(([name, s]) => {
+        const val = metricIdx !== -1 ? s.val : s.count;
+        const share = Math.round((val / maxTableVal) * 100);
+        html += `<tr><td><b>${name}</b></td><td style="color:var(--cyan);font-family:var(--mono)">${format(val)}</td><td>${s.count.toLocaleString()}</td><td><div class="prog" style="width:100px"><div class="prog-fill" style="width:${share}%"></div></div></td></tr>`;
+      });
+      html += '</tbody></table>';
+      document.getElementById('analytics-table-wrap').innerHTML = html;
+      document.getElementById('performance-table-title').textContent = 'Statistical Breakdown: ' + headers[gIdx];
+
+      // 6. Trend Chart
+      const points = [];
+      const size = Math.max(1, Math.floor(rowCount / 7));
+      for (let i = 0; i < 7; i++) {
+        let sum = 0;
+        const s = i * size, e = Math.min(rowCount, (i + 1) * size);
+        for (let j = s; j < e; j++) {
+          if (metricIdx !== -1) {
+            const v = parseFloat((rows[j][metricIdx]||'0').toString().replace(/[$€₹,]/g,''));
+            if (!isNaN(v)) sum += v;
+          } else sum++;
+        }
+        points.push(sum);
+      }
+      drawTrend(points);
+
+      if (currentPage !== 'analytics') navTo('analytics');
+    }
+
+    function drawTrend(points) {
+      const max = Math.max(...points) || 1;
+      const pts = points.map((p, i) => `${(i * 400) / 6},${110 - (p / max) * 100}`).join(' ');
+      const fillPts = `0,120 ${pts} 400,120 Z`;
+      document.getElementById('trend-line').setAttribute('points', pts);
+      document.getElementById('trend-fill').setAttribute('d', 'M' + fillPts.replace(/ /g, ' L').replace(',', ' '));
+
+      const labels = document.getElementById('trend-labels');
+      labels.innerHTML = points.map((_, i) => `<span>T${i + 1}</span>`).join('');
+    }
+
+    function formatCurrency(v) {
+      if (v >= 10000000) return '₹' + (v / 10000000).toFixed(1) + 'Cr';
+      if (v >= 100000) return '₹' + (v / 100000).toFixed(1) + 'L';
+      return '₹' + Math.round(v).toLocaleString();
+    }
+
+    function downloadCleanCSV() {
+      if (!cleanedData) return;
+      const { headers, rows, filename } = cleanedData;
+      let csv = headers.map(h => '"' + h.replace(/"/g, '""') + '"').join(',') + '\n';
+      rows.forEach(r => { csv += r.map(v => '"' + (v || '').replace(/"/g, '""') + '"').join(',') + '\n'; });
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = filename.replace(/\.[^.]+$/, '') + '_cleaned.csv';
+      a.click();
+    }
+
+    function setTheme(theme) {
+      const body = document.body;
+      const darkBtn = document.getElementById('theme-btn-dark');
+      const lightBtn = document.getElementById('theme-btn-light');
+      const loginDarkBtn = document.getElementById('login-theme-btn-dark');
+      const loginLightBtn = document.getElementById('login-theme-btn-light');
+      
+      if (theme === 'light') {
+        body.classList.add('light-theme');
+        localStorage.setItem('theme', 'light');
+        if (darkBtn) darkBtn.classList.remove('active');
+        if (lightBtn) lightBtn.classList.add('active');
+        if (loginDarkBtn) loginDarkBtn.classList.remove('active');
+        if (loginLightBtn) loginLightBtn.classList.add('active');
+      } else {
+        body.classList.remove('light-theme');
+        localStorage.setItem('theme', 'dark');
+        if (lightBtn) lightBtn.classList.remove('active');
+        if (darkBtn) darkBtn.classList.add('active');
+        if (loginLightBtn) loginLightBtn.classList.remove('active');
+        if (loginDarkBtn) loginDarkBtn.classList.add('active');
+      }
+      
+      // Reset particle colors instantly for seamless animation transition
+      if (typeof resetAllParticles === 'function') {
+        resetAllParticles();
+      }
+      
+      // If we have active data, let's refresh analytics so SVG segments get correct color rendering
+      if (uploadedFileData) {
+        if (currentPage === 'analytics') runAnalytics();
+      }
+    }
+
+    // Auto-restore saved theme on load
+    (function() {
+      const savedTheme = localStorage.getItem('theme') || 'dark';
+      document.addEventListener('DOMContentLoaded', () => {
+        setTheme(savedTheme);
+      });
+    })();
+  </script>
+
+  <!-- URL UPLOAD MODAL -->
+  <div id="url-modal"
+    style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.65);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:24px;">
+    <div
+      style="width:100%;max-width:520px;background:rgba(13,17,23,0.95);border:1px solid rgba(56,189,248,0.2);border-radius:20px;padding:36px 32px;box-shadow:0 0 60px rgba(56,189,248,0.08),0 24px 48px rgba(0,0,0,0.6);animation:cardIn 0.4s cubic-bezier(0.22,1,0.36,1) both;">
+
+      <!-- Header -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div
+            style="width:42px;height:42px;border-radius:12px;background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.2);display:flex;align-items:center;justify-content:center;font-size:20px;">
+            🔗</div>
+          <div>
+            <div style="font-size:16px;font-weight:700;letter-spacing:-0.3px;">Import from URL</div>
+            <div style="font-size:12px;color:#64748b;margin-top:2px;">Paste a link to a CSV, JSON, or TSV file</div>
+          </div>
+        </div>
+        <button onclick="closeUrlModal()"
+          style="background:none;border:none;color:#64748b;font-size:20px;cursor:pointer;width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;transition:all 0.15s;"
+          onmouseover="this.style.background='#1e2535';this.style.color='#e2e8f0'"
+          onmouseout="this.style.background='none';this.style.color='#64748b'">✕</button>
+      </div>
+
+      <!-- URL Input -->
+      <div style="margin-bottom:16px;">
+        <label
+          style="display:block;font-size:12px;font-weight:500;color:#94a3b8;margin-bottom:7px;letter-spacing:0.5px;text-transform:uppercase;">File
+          URL</label>
+        <input id="url-input" type="url" placeholder="https://example.com/data.csv"
+          style="width:100%;background:#161b27;border:1px solid rgba(56,189,248,0.2);border-radius:10px;padding:13px 14px;color:#e2e8f0;font-size:14px;font-family:'Outfit',sans-serif;outline:none;transition:border-color 0.2s,box-shadow 0.2s;"
+          onfocus="this.style.borderColor='#38bdf8';this.style.boxShadow='0 0 0 3px rgba(56,189,248,0.12)'"
+          onblur="this.style.borderColor='rgba(56,189,248,0.2)';this.style.boxShadow='none'" />
+      </div>
+
+      <!-- Supported formats hint -->
+      <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;">
+        <span
+          style="padding:3px 10px;border-radius:20px;font-size:10.5px;font-weight:600;color:#34d399;border:1px solid rgba(52,211,153,0.3);background:rgba(52,211,153,0.08);">CSV</span>
+        <span
+          style="padding:3px 10px;border-radius:20px;font-size:10.5px;font-weight:600;color:#38bdf8;border:1px solid rgba(56,189,248,0.3);background:rgba(56,189,248,0.08);">JSON</span>
+        <span
+          style="padding:3px 10px;border-radius:20px;font-size:10.5px;font-weight:600;color:#a78bfa;border:1px solid rgba(167,139,250,0.3);background:rgba(167,139,250,0.08);">TSV</span>
+        <span
+          style="padding:3px 10px;border-radius:20px;font-size:10.5px;font-weight:600;color:#fbbf24;border:1px solid rgba(251,191,36,0.3);background:rgba(251,191,36,0.08);">TXT</span>
+        <span style="margin-left:auto;font-size:11px;color:#64748b;">Public URLs only (CORS enabled)</span>
+      </div>
+
+      <!-- Error message -->
+      <div id="url-error"
+        style="display:none;margin-bottom:14px;padding:10px 14px;background:rgba(251,113,133,0.1);border:1px solid rgba(251,113,133,0.3);border-radius:8px;font-size:13px;color:#fb7185;">
+      </div>
+
+      <!-- Loading spinner -->
+      <div id="url-loading"
+        style="display:none;align-items:center;gap:10px;margin-bottom:14px;padding:12px 14px;background:rgba(56,189,248,0.05);border:1px solid rgba(56,189,248,0.15);border-radius:10px;">
+        <div
+          style="width:18px;height:18px;border:2px solid rgba(56,189,248,0.3);border-top-color:#38bdf8;border-radius:50%;animation:spin 0.8s linear infinite;">
+        </div>
+        <span style="font-size:13px;color:#94a3b8;">Fetching file from URL…</span>
+      </div>
+
+      <!-- Action Buttons -->
+      <div style="display:flex;gap:10px;justify-content:flex-end;">
+        <button onclick="closeUrlModal()"
+          style="display:inline-flex;align-items:center;gap:7px;padding:11px 22px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;border:1px solid rgba(56,189,248,0.1);background:transparent;color:#94a3b8;font-family:'Outfit',sans-serif;transition:all 0.18s;"
+          onmouseover="this.style.background='#161b27';this.style.color='#e2e8f0'"
+          onmouseout="this.style.background='transparent';this.style.color='#94a3b8'">Cancel</button>
+        <button onclick="fetchFromUrl()"
+          style="display:inline-flex;align-items:center;gap:7px;padding:11px 22px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;border:none;background:linear-gradient(135deg,#38bdf8,#0ea5e9);color:#06080f;font-family:'Outfit',sans-serif;box-shadow:0 4px 18px rgba(56,189,248,0.2);transition:all 0.18s;"
+          onmouseover="this.style.transform='translateY(-1px)';this.style.boxShadow='0 8px 24px rgba(56,189,248,0.3)'"
+          onmouseout="this.style.transform='none';this.style.boxShadow='0 4px 18px rgba(56,189,248,0.2)'">🔗 Fetch &
+          Preview</button>
+      </div>
+    </div>
+  </div>
+
+</body>
+
+</html>

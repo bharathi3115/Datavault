@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DataVault – Secure Analytics Platform</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Montserrat:wght@600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+
+</head>
+
+<body>
+
+  <!-- ANIMATED BACKGROUND -->
+  <canvas id="bg-canvas"></canvas>
+  <!-- ════════════════════════════════
+     SAAS HOMEPAGE
+  ════════════════════════════════ -->
+  <div class="page soft-mode active" id="page-login">
+
+
+    <div class="login-outer-frame">
+      <!-- Form Side -->
+      <div class="login-left-form">
+
+
+        <h1 class="login-title-soft">Login</h1>
+        <p id="login-subtitle" style="font-size:13px; color:#94a3b8; margin-bottom: 20px;">User Access &mdash; DataVault Dashboard</p>
+
+
+        <div class="soft-field">
+          <label>Email</label>
+          <input type="email" class="soft-input" placeholder="you@organization.com" id="login-email" value="admin@datavault.com">
+        </div>
+
+        <div class="soft-field">
+          <label>Password</label>
+          <input type="password" class="soft-input" placeholder="Please enter your password" id="login-pass" value="password123">
+          <span style="position:absolute; right:0; top:35px; cursor:pointer; color:#94a3b8; font-size:14px;" onclick="togglePwd()">👁</span>
+        </div>
+
+        <div id="login-error" style="display:none; color:#fb7185; font-size:12px; margin-bottom:15px;"></div>
+
+        <div class="login-actions-group">
+          <button class="btn-soft-login" onclick="doLogin()">LOGIN</button>
+          <button class="btn-soft-home" onclick="window.location.href='frontend.html'">Home</button>
+        </div>
+      </div>
+
+      <!-- Visual Side -->
+      <div class="login-right-visual">
+        <img src="login_illustration_v2.png" class="login-illustration-img" alt="Data Analytics Illustration">
+        
+        <!-- Abstract elements to mimic the image -->
+        <div class="abstract-blob" style="width:350px; height:350px; top:-120px; right:-120px; opacity:0.35; background:#c7d2fe;"></div>
+        <div class="abstract-blob" style="width:250px; height:250px; bottom:80px; left:-80px; opacity:0.25; background:#818cf8;"></div>
+        <div class="abstract-blob" style="width:100px; height:100px; top:40%; left:-50px; opacity:0.15; background:#6366f1;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════
+     APP SHELL
+════════════════════════════════ -->
+    <script>
+    function doLogin() {
+      const e = document.getElementById('login-email').value.trim();
+      const p = document.getElementById('login-pass').value;
+      const err = document.getElementById('login-error');
+      if (!e || !p) {
+        err.style.display = 'block';
+        err.textContent = 'Please enter your email and password.';
+        return;
+      }
+      localStorage.setItem('userRole', 'user');
+      window.location.href = 'dashboard.html';
+    }
+  </script>
+</body>
+</html>

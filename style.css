@@ -3573,6 +3573,7 @@ body:not(.light-theme) .btn-cta-home:hover {
 /* Footer Section */
 body:not(.light-theme) .home-footer {
   border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+  background: transparent !important;
 }
 
 body:not(.light-theme) .footer-copy {

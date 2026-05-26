@@ -37,12 +37,12 @@
 
         <div class="soft-field">
           <label>Email</label>
-          <input type="email" class="soft-input" placeholder="you@organization.com" id="login-email" value="admin@datavault.com">
+          <input type="email" class="soft-input" placeholder="you@organization.com" id="login-email">
         </div>
 
         <div class="soft-field">
           <label>Password</label>
-          <input type="password" class="soft-input" placeholder="Please enter your password" id="login-pass" value="password123">
+          <input type="password" class="soft-input" placeholder="••••••••" id="login-pass">
           <span style="position:absolute; right:0; top:35px; cursor:pointer; color:#94a3b8; font-size:14px;" onclick="togglePwd()">👁</span>
         </div>
 
@@ -74,6 +74,15 @@
      APP SHELL
 ════════════════════════════════ -->
     <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('login-email').addEventListener('keydown', e => {
+        if (e.key === 'Enter') doLogin();
+      });
+      document.getElementById('login-pass').addEventListener('keydown', e => {
+        if (e.key === 'Enter') doLogin();
+      });
+    });
+
     function doLogin() {
       const e = document.getElementById('login-email').value.trim();
       const p = document.getElementById('login-pass').value;
@@ -83,8 +92,32 @@
         err.textContent = 'Please enter your email and password.';
         return;
       }
-      localStorage.setItem('userRole', 'user');
-      window.location.href = 'dashboard.html';
+
+      // Check registered user in localStorage
+      const regUserStr = localStorage.getItem('registeredUser');
+      let isRegistered = false;
+      if (regUserStr) {
+        try {
+          const regUser = JSON.parse(regUserStr);
+          if (e === regUser.email && p === regUser.pass) {
+            isRegistered = true;
+          }
+        } catch (err) {
+          console.error(err);
+        }
+      }
+
+      const isDefaultUser = (e === 'user@datavault.com' && p === 'password123');
+      const isAdminUser = (e === 'admin@datavault.com' && p === 'password123');
+
+      if (isRegistered || isDefaultUser || isAdminUser) {
+        const role = isAdminUser ? 'admin' : 'user';
+        localStorage.setItem('userRole', role);
+        window.location.href = 'dashboard.html';
+      } else {
+        err.style.display = 'block';
+        err.textContent = 'Invalid email or password. Hint: user@datavault.com / password123';
+      }
     }
 
     function togglePwd() {

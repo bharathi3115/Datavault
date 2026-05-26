@@ -82,7 +82,8 @@
         return;
       }
 
-      // Simulate successful registration, save user credentials, and log them in
+      // Save user credentials for actual login validation
+      localStorage.setItem('registeredUser', JSON.stringify({ name, email, pass }));
       localStorage.setItem('userRole', 'user');
       alert('Account created successfully! Redirecting to Dashboard...');
       window.location.href = 'dashboard.html';

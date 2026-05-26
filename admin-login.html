@@ -37,12 +37,12 @@
 
         <div class="soft-field">
           <label>Email</label>
-          <input type="email" class="soft-input" placeholder="you@organization.com" id="login-email" value="admin@datavault.com">
+          <input type="email" class="soft-input" placeholder="admin@datavault.com" id="login-email">
         </div>
 
         <div class="soft-field">
           <label>Password</label>
-          <input type="password" class="soft-input" placeholder="Please enter your password" id="login-pass" value="password123">
+          <input type="password" class="soft-input" placeholder="••••••••" id="login-pass">
           <span style="position:absolute; right:0; top:35px; cursor:pointer; color:#94a3b8; font-size:14px;" onclick="togglePwd()">👁</span>
         </div>
 
@@ -74,6 +74,15 @@
      APP SHELL
 ════════════════════════════════ -->
     <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('login-email').addEventListener('keydown', e => {
+        if (e.key === 'Enter') doLogin();
+      });
+      document.getElementById('login-pass').addEventListener('keydown', e => {
+        if (e.key === 'Enter') doLogin();
+      });
+    });
+
     function doLogin() {
       const e = document.getElementById('login-email').value.trim();
       const p = document.getElementById('login-pass').value;
@@ -81,6 +90,11 @@
       if (!e || !p) {
         err.style.display = 'block';
         err.textContent = 'Please enter your email and password.';
+        return;
+      }
+      if (e !== 'admin@datavault.com' || p !== 'password123') {
+        err.style.display = 'block';
+        err.textContent = 'Invalid admin email or password. Hint: admin@datavault.com / password123';
         return;
       }
       localStorage.setItem('userRole', 'admin');

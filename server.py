@@ -297,6 +297,29 @@ class DataCleaningServer(http.server.SimpleHTTPRequestHandler):
         self.end_headers()
 
     def do_GET(self):
+        # Normalize path
+        path = self.path.split('?', 1)[0]
+        query = '?' + self.path.split('?', 1)[1] if '?' in self.path else ''
+        
+        # Redirection rules mapping underscored and extension-less variants to correct hyphenated HTML files
+        redirects = {
+            '/admin_login.html': '/admin-login.html',
+            '/admin_login': '/admin-login.html',
+            '/admin-login': '/admin-login.html',
+            '/user_login.html': '/user-login.html',
+            '/user_login': '/user-login.html',
+            '/user-login': '/user-login.html',
+            '/user_signup.html': '/user-signup.html',
+            '/user_signup': '/user-signup.html',
+            '/user-signup': '/user-signup.html',
+        }
+        
+        if path in redirects:
+            self.send_response(301)
+            self.send_header('Location', redirects[path] + query)
+            self.end_headers()
+            return
+
         return super().do_GET()
 
     def do_POST(self):

@@ -756,7 +756,6 @@
                 <span>—</span><span>—</span><span>—</span><span>—</span><span>—</span><span>—</span><span>—</span>
               </div>
               </div>
-            </div>
 
             <div class="chart-card">
               <div class="card-header">
@@ -795,7 +794,6 @@
           </div>
 
           </div>
-        </div>
 
         <!-- ── REPORTS ── -->
         <div id="pg-reports" class="fade-in" style="display:none;">
@@ -807,90 +805,118 @@
             <button class="tb-btn primary">+ New Report</button>
           </div>
 
-          <div class="grid g-3" style="margin-bottom:24px;">
-            <!-- DYNAMIC CLEANED DATA REPORT -->
-            <div class="report-card" id="dynamic-clean-report" style="display:none;border:1px solid var(--emerald-glow);">
-              <div class="report-icon green">✨</div>
-              <div>
-                <div class="report-name" id="dynamic-report-name">Cleaned Dataset Export</div>
-                <div class="report-desc">Fully processed and validated dataset ready for download.</div>
-              </div>
-              <div class="report-meta">
-                <span class="report-tag">CSV</span>
-                <span class="report-tag" id="dynamic-report-time">Just Now</span>
-                <span class="report-tag" style="background:var(--emerald-glow);color:#fff;">READY</span>
-              </div>
-              <div class="report-actions">
-                <button class="btn primary sm" onclick="downloadCleanCSV()">⬇ Download CSV</button>
-                <button class="btn outline sm" onclick="navTo('analytics')">👁 Analytics</button>
-              </div>
+          <!-- Statistical Breakdown by Country (Full Width) -->
+          <div class="chart-card" style="margin-bottom:24px; min-height: auto; display: flex; flex-direction: column;">
+            <div class="card-header" style="margin-bottom:15px; flex-shrink: 0;">
+              <div class="card-title" id="reports-performance-table-title">Statistical Breakdown</div>
+              <span class="card-action" onclick="exportAnalytics()">Export Summary →</span>
             </div>
-
-            <div class="report-card">
-              <div class="report-icon blue">📊</div>
-              <div>
-                <div class="report-name">Sales Analytics Report</div>
-                <div class="report-desc">Full Q1 2024 sales breakdown — revenue, orders, categories, regional
-                  performance.</div>
-              </div>
-              <div class="report-meta"><span class="report-tag">PDF</span><span class="report-tag">XLSX</span><span
-                  class="report-tag">14 pages</span><span class="report-tag">Generated today</span></div>
-              <div class="report-actions">
-                <button class="btn primary sm" onclick="downloadAnalyticsReport()">⬇ Download</button>
-                <button class="btn outline sm" onclick="navTo('analytics')">👁 Preview</button>
-              </div>
-            </div>
-            <div class="report-card">
-              <div class="report-icon green">🧹</div>
-              <div>
-                <div class="report-name">Data Quality Report</div>
-                <div class="report-desc">Cleaning summary — missing values, duplicates, outliers, and data health score.
-                </div>
-              </div>
-              <div class="report-meta"><span class="report-tag">PDF</span><span class="report-tag">6 pages</span><span
-                  class="report-tag">Yesterday</span></div>
-              <div class="report-actions">
-                <button class="btn primary sm" onclick="downloadQualityReport()">⬇ Download</button>
-                <button class="btn outline sm" onclick="navTo('cleaning')">👁 Preview</button>
-              </div>
-            </div>
-            <div class="report-card">
-              <div class="report-icon violet">📈</div>
-              <div>
-                <div class="report-name">Customer Insights Report</div>
-                <div class="report-desc">Customer segmentation, lifetime value, and churn rate analysis from CRM data.
-                </div>
-              </div>
-              <div class="report-meta"><span class="report-tag">PDF</span><span class="report-tag">XLSX</span><span
-                  class="report-tag">22 pages</span><span class="report-tag">2 days ago</span></div>
-              <div class="report-actions">
-                <button class="btn primary sm" onclick="downloadInsightsReport()">⬇ Download</button>
-                <button class="btn outline sm" onclick="navTo('analytics')">👁 Preview</button>
-              </div>
-            </div>
-            <div class="report-card">
-              <div class="report-icon amber">⚙️</div>
-              <div>
-                <div class="report-name">System Usage Report</div>
-                <div class="report-desc">Admin report — user activity, dataset uploads, processing times, storage usage.
-                </div>
-              </div>
-              <div class="report-meta"><span class="report-tag">PDF</span><span class="report-tag">9 pages</span><span
-                  class="report-tag">Weekly auto</span></div>
-              <div class="report-actions">
-                <button class="btn primary sm" onclick="downloadUsageReport()">⬇ Download</button>
-                <button class="btn outline sm">📧 Email</button>
-              </div>
-            </div>
-            <div class="report-card" style="border-style:dashed;cursor:pointer;" onclick="">
-              <div style="text-align:center;padding:20px 0;">
-                <div style="font-size:36px;margin-bottom:10px;">+</div>
-                <div style="font-size:14px;font-weight:700;">Generate Custom Report</div>
-                <div style="font-size:12px;color:var(--muted2);margin-top:6px;">Choose dataset, metrics, date range, and
-                  format</div>
+            <div id="reports-analytics-table-wrap" class="tbl-wrap" style="flex: 1; max-height:550px; overflow:auto;">
+              <div style="padding:40px;text-align:center;color:var(--muted);">
+                <div style="font-size:32px;margin-bottom:10px;">📉</div>
+                <div>No analysis data yet. Click "Run Analytics" on the Analytics page.</div>
               </div>
             </div>
           </div>
+
+          <!-- SEARCH & FILTER BAR -->
+          <div class="search-filter-bar" style="display:flex;gap:12px;margin-bottom:20px;align-items:center;">
+            <div style="position:relative;flex:1;">
+              <input type="text" id="report-search-input" class="form-input" placeholder="Search reports by title or description..." style="width:100%;padding:10px 16px 10px 36px;font-size:13.5px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;color:var(--text);outline:none;transition:border-color 0.2s;" oninput="filterReports()">
+              <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:15px;">🔍</span>
+            </div>
+            <div style="display:flex;gap:8px;">
+              <button class="btn sm outline report-filter-btn active" onclick="filterReportTag('all', this)" style="border-radius:9px;padding:8px 16px;">All</button>
+              <button class="btn sm outline report-filter-btn" onclick="filterReportTag('PDF', this)" style="border-radius:9px;padding:8px 16px;">PDF</button>
+              <button class="btn sm outline report-filter-btn" onclick="filterReportTag('XLSX', this)" style="border-radius:9px;padding:8px 16px;">XLSX</button>
+              <button class="btn sm outline report-filter-btn" onclick="filterReportTag('CSV', this)" style="border-radius:9px;padding:8px 16px;">CSV</button>
+            </div>
+          </div>
+
+          <div class="grid g-3" style="margin-bottom:24px;">
+                <!-- DYNAMIC CLEANED DATA REPORT -->
+                <div class="report-card green" id="dynamic-clean-report" style="display:none;border:1px solid var(--emerald-glow);">
+                  <div class="report-icon green">✨</div>
+                  <div>
+                    <div class="report-name" id="dynamic-report-name">Cleaned Dataset Export</div>
+                    <div class="report-desc">Fully processed and validated dataset ready for download.</div>
+                  </div>
+                  <div class="report-meta">
+                    <span class="report-tag">CSV</span>
+                    <span class="report-tag" id="dynamic-report-time">Just Now</span>
+                    <span class="report-tag" style="background:var(--emerald-glow);color:#fff;">READY</span>
+                  </div>
+                  <div class="report-actions">
+                    <button class="btn primary sm" onclick="downloadCleanCSV()">⬇ Download CSV</button>
+                    <button class="btn outline sm" onclick="navTo('analytics')">👁 Analytics</button>
+                  </div>
+                </div>
+
+                <div class="report-card blue">
+                  <div class="report-icon blue">📊</div>
+                  <div>
+                    <div class="report-name">Sales Analytics Report</div>
+                    <div class="report-desc">Full Q1 2024 sales breakdown — revenue, orders, categories, regional
+                      performance.</div>
+                  </div>
+                  <div class="report-meta"><span class="report-tag">PDF</span><span class="report-tag">XLSX</span><span
+                      class="report-tag">14 pages</span><span class="report-tag">Generated today</span></div>
+                  <div class="report-actions">
+                    <button class="btn primary sm" onclick="downloadAnalyticsReport()">⬇ Download</button>
+                    <button class="btn outline sm" onclick="navTo('analytics')">👁 Preview</button>
+                  </div>
+                </div>
+                <div class="report-card green">
+                  <div class="report-icon green">🧹</div>
+                  <div>
+                    <div class="report-name">Data Quality Report</div>
+                    <div class="report-desc">Cleaning summary — missing values, duplicates, outliers, and data health score.
+                    </div>
+                  </div>
+                  <div class="report-meta"><span class="report-tag">PDF</span><span class="report-tag">6 pages</span><span
+                      class="report-tag">Yesterday</span></div>
+                  <div class="report-actions">
+                    <button class="btn primary sm" onclick="downloadQualityReport()">⬇ Download</button>
+                    <button class="btn outline sm" onclick="navTo('cleaning')">👁 Preview</button>
+                  </div>
+                </div>
+                <div class="report-card violet">
+                  <div class="report-icon violet">📈</div>
+                  <div>
+                    <div class="report-name">Customer Insights Report</div>
+                    <div class="report-desc">Customer segmentation, lifetime value, and churn rate analysis from CRM data.
+                    </div>
+                  </div>
+                  <div class="report-meta"><span class="report-tag">PDF</span><span class="report-tag">XLSX</span><span
+                      class="report-tag">22 pages</span><span class="report-tag">2 days ago</span></div>
+                  <div class="report-actions">
+                    <button class="btn primary sm" onclick="downloadInsightsReport()">⬇ Download</button>
+                    <button class="btn outline sm" onclick="navTo('analytics')">👁 Preview</button>
+                  </div>
+                </div>
+                <div class="report-card amber">
+                  <div class="report-icon amber">⚙️</div>
+                  <div>
+                    <div class="report-name">System Usage Report</div>
+                    <div class="report-desc">Admin report — user activity, dataset uploads, processing times, storage usage.
+                    </div>
+                  </div>
+                  <div class="report-meta"><span class="report-tag">PDF</span><span class="report-tag">9 pages</span><span
+                      class="report-tag">Weekly auto</span></div>
+                  <div class="report-actions">
+                    <button class="btn primary sm" onclick="downloadUsageReport()">⬇ Download</button>
+                    <button class="btn outline sm">📧 Email</button>
+                  </div>
+                </div>
+                
+                <div class="report-card custom-report-trigger" onclick="alert('Custom Report Builder coming soon!')">
+                  <div class="custom-report-inner">
+                    <div class="custom-report-icon">+</div>
+                    <div class="custom-report-title">Generate Custom Report</div>
+                    <div class="custom-report-desc">Select custom columns, filter rules, metrics, and export file formats dynamically.</div>
+                  </div>
+                </div>
+              </div>
 
           <div class="card">
             <div class="card-header">
@@ -1572,6 +1598,41 @@
     });
 
     function exportAnalytics() { downloadAnalyticsReport(); }
+
+    /* ── REPORTS SEARCH & FILTER ── */
+    function filterReports() {
+      const query = document.getElementById('report-search-input').value.toLowerCase();
+      const cards = document.querySelectorAll('#pg-reports .report-card:not(.custom-report-trigger)');
+      cards.forEach(card => {
+        const title = card.querySelector('.report-name') ? card.querySelector('.report-name').textContent.toLowerCase() : '';
+        const desc = card.querySelector('.report-desc') ? card.querySelector('.report-desc').textContent.toLowerCase() : '';
+        if (title.includes(query) || desc.includes(query)) {
+          card.style.display = '';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    function filterReportTag(tag, btn) {
+      document.querySelectorAll('.report-filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const cards = document.querySelectorAll('#pg-reports .report-card:not(.custom-report-trigger)');
+      cards.forEach(card => {
+        if (tag === 'all') {
+          card.style.display = '';
+          return;
+        }
+        const tags = Array.from(card.querySelectorAll('.report-tag, .report-meta span')).map(t => t.textContent.toUpperCase());
+        const matches = tags.some(t => t.includes(tag.toUpperCase()));
+        if (matches) {
+          card.style.display = '';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
     /* ── URL UPLOAD MODAL ── */
     function openUrlModal() {
       document.getElementById('url-modal').style.display = 'flex';
@@ -2046,6 +2107,12 @@
       html += '</tbody></table>';
       document.getElementById('analytics-table-wrap').innerHTML = html;
       document.getElementById('performance-table-title').textContent = 'Statistical Breakdown by ' + headers[gIdx];
+
+      // Sync Reports page table card
+      const repWrap = document.getElementById('reports-analytics-table-wrap');
+      const repTitle = document.getElementById('reports-performance-table-title');
+      if (repWrap) repWrap.innerHTML = html;
+      if (repTitle) repTitle.textContent = 'Statistical Breakdown by ' + headers[gIdx];
 
       // 6. Trend Chart — REAL bucketed data
       const points = [];

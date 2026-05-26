@@ -3827,3 +3827,111 @@ body:not(.light-theme) .hero-pill {
   box-shadow: 0 0 15px rgba(56, 189, 248, 0.15);
 }
 
+/* ── PREMIUM DARK THEME LOGIN OVERRIDES ── */
+body:not(.light-theme) #page-login.soft-mode {
+  background: #06080f !important;
+}
+
+body:not(.light-theme) .login-outer-frame {
+  background: rgba(13, 17, 23, 0.7) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 24px !important;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(56, 189, 248, 0.03) !important;
+  max-width: 1000px !important;
+  height: 600px !important;
+}
+
+body:not(.light-theme) .login-left-form {
+  padding: 60px 60px !important;
+  flex: 0.95 !important;
+}
+
+body:not(.light-theme) .login-title-soft {
+  font-size: 38px !important;
+  font-weight: 800 !important;
+  color: #ffffff !important;
+  margin-bottom: 8px !important;
+}
+
+body:not(.light-theme) #login-subtitle {
+  font-size: 13.5px !important;
+  color: #94a3b8 !important;
+  margin-bottom: 32px !important;
+}
+
+body:not(.light-theme) .soft-field {
+  margin-bottom: 24px !important;
+}
+
+body:not(.light-theme) .soft-field label {
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  color: #cbd5e1 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.8px !important;
+  margin-bottom: 10px !important;
+}
+
+body:not(.light-theme) .soft-input {
+  background: rgba(15, 23, 42, 0.5) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 8px !important;
+  padding: 12px 14px !important;
+  font-size: 14.5px !important;
+  color: #ffffff !important;
+  transition: all 0.3s !important;
+  box-sizing: border-box !important;
+}
+
+body:not(.light-theme) .soft-input:focus {
+  border-color: var(--cyan) !important;
+  box-shadow: 0 0 15px rgba(56, 189, 248, 0.15) !important;
+}
+
+body:not(.light-theme) .btn-soft-login {
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%) !important;
+  color: #ffffff !important;
+  border: none !important;
+  padding: 14px 36px !important;
+  border-radius: 10px !important;
+  font-weight: 700 !important;
+  font-size: 14.5px !important;
+  cursor: pointer !important;
+  box-shadow: 0 8px 24px rgba(139, 92, 246, 0.25) !important;
+  transition: all 0.3s !important;
+}
+
+body:not(.light-theme) .btn-soft-login:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 12px 30px rgba(139, 92, 246, 0.4) !important;
+}
+
+body:not(.light-theme) .btn-soft-home {
+  background: rgba(255, 255, 255, 0.03) !important;
+  color: #cbd5e1 !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  padding: 14px 36px !important;
+  border-radius: 10px !important;
+  font-weight: 700 !important;
+  font-size: 14.5px !important;
+  cursor: pointer !important;
+  transition: all 0.3s !important;
+  box-shadow: none !important;
+}
+
+body:not(.light-theme) .btn-soft-home:hover {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
+  transform: translateY(-2px) !important;
+}
+
+body:not(.light-theme) .login-right-visual {
+  background: #0f172a !important;
+  border-left: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+body:not(.light-theme) .soft-field span[onclick*="togglePwd"] {
+  top: 38px !important;
+  right: 12px !important;
+}
+

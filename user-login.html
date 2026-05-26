@@ -82,6 +82,15 @@
       localStorage.setItem('userRole', 'user');
       window.location.href = 'dashboard.html';
     }
+
+    function togglePwd() {
+      const p = document.getElementById('login-pass');
+      if (p.type === 'password') {
+        p.type = 'text';
+      } else {
+        p.type = 'password';
+      }
+    }
   </script>
 </body>
 </html>

@@ -805,20 +805,6 @@
             <button class="tb-btn primary">+ New Report</button>
           </div>
 
-          <!-- Statistical Breakdown by Country (Full Width) -->
-          <div class="chart-card" style="margin-bottom:24px; min-height: auto; display: flex; flex-direction: column;">
-            <div class="card-header" style="margin-bottom:15px; flex-shrink: 0;">
-              <div class="card-title" id="reports-performance-table-title">Statistical Breakdown</div>
-              <span class="card-action" onclick="exportAnalytics()">Export Summary →</span>
-            </div>
-            <div id="reports-analytics-table-wrap" class="tbl-wrap" style="flex: 1; max-height:550px; overflow:auto;">
-              <div style="padding:40px;text-align:center;color:var(--muted);">
-                <div style="font-size:32px;margin-bottom:10px;">📉</div>
-                <div>No analysis data yet. Click "Run Analytics" on the Analytics page.</div>
-              </div>
-            </div>
-          </div>
-
           <!-- SEARCH & FILTER BAR -->
           <div class="search-filter-bar" style="display:flex;gap:12px;margin-bottom:20px;align-items:center;">
             <div style="position:relative;flex:1;">
@@ -917,6 +903,20 @@
                   </div>
                 </div>
               </div>
+
+          <!-- Statistical Breakdown by Country (Full Width) -->
+          <div class="chart-card" style="margin-bottom:24px; min-height: auto; display: flex; flex-direction: column;">
+            <div class="card-header" style="margin-bottom:15px; flex-shrink: 0;">
+              <div class="card-title" id="reports-performance-table-title">Statistical Breakdown</div>
+              <span class="card-action" onclick="exportAnalytics()">Export Summary →</span>
+            </div>
+            <div id="reports-analytics-table-wrap" class="tbl-wrap" style="flex: 1; max-height:550px; overflow:auto;">
+              <div style="padding:40px;text-align:center;color:var(--muted);">
+                <div style="font-size:32px;margin-bottom:10px;">📉</div>
+                <div>No analysis data yet. Click "Run Analytics" on the Analytics page.</div>
+              </div>
+            </div>
+          </div>
 
           <div class="card">
             <div class="card-header">

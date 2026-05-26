@@ -20,13 +20,16 @@
   <!-- ════════════════════════════════
      SAAS HOMEPAGE
   ════════════════════════════════ -->
-  <div class="page soft-mode active" id="page-login">
+  <div class="page soft-mode active" id="page-login" style="flex-direction: column; gap: 20px; justify-content: center; align-items: center;">
 
+    <!-- Big Premium Logo above the login frame -->
+    <div class="home-logo" style="font-size: 38px; font-weight: 800; gap: 12px; cursor: pointer; transition: transform 0.2s; margin-top: 20px;" 
+         onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"
+         onclick="window.location.href='index.html'">🔐 Data<span>Vault</span></div>
 
     <div class="login-outer-frame">
       <!-- Form Side -->
       <div class="login-left-form">
-
 
         <h1 class="login-title-soft">Login</h1>
         <p id="login-subtitle" style="font-size:13px; color:#94a3b8; margin-bottom: 20px;">Admin Access &mdash; DataVault Dashboard</p>
@@ -47,7 +50,7 @@
 
         <div class="login-actions-group">
           <button class="btn-soft-login" onclick="doLogin()">LOGIN</button>
-          <button class="btn-soft-home" onclick="window.location.href='frontend.html'">Home</button>
+          <button class="btn-soft-home" onclick="window.location.href='index.html'">Home</button>
         </div>
       </div>
 

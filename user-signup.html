@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DataVault – Create Account</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Montserrat:wght@600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="style.css?v=2.0">
+</head>
+
+<body>
+  <!-- ANIMATED BACKGROUND -->
+  <canvas id="bg-canvas"></canvas>
+
+  <div class="page soft-mode active" id="page-login" style="flex-direction: column; gap: 20px; justify-content: center; align-items: center;">
+
+    <!-- Big Premium Logo above the signup frame -->
+    <div class="home-logo" style="font-size: 38px; font-weight: 800; gap: 12px; cursor: pointer; transition: transform 0.2s; margin-top: 20px;" 
+         onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"
+         onclick="window.location.href='index.html'">🔐 Data<span>Vault</span></div>
+
+    <div class="login-outer-frame" style="height: 650px !important;">
+      <!-- Form Side -->
+      <div class="login-left-form" style="padding: 40px 60px !important;">
+
+        <h1 class="login-title-soft">Sign Up</h1>
+        <p id="login-subtitle" style="font-size:13px; color:#94a3b8; margin-bottom: 20px;">Create a secure DataVault account</p>
+
+        <div class="soft-field" style="margin-bottom: 18px !important;">
+          <label>Full Name</label>
+          <input type="text" class="soft-input" placeholder="John Doe" id="signup-name" required>
+        </div>
+
+        <div class="soft-field" style="margin-bottom: 18px !important;">
+          <label>Email Address</label>
+          <input type="email" class="soft-input" placeholder="you@organization.com" id="signup-email" required>
+        </div>
+
+        <div class="soft-field" style="margin-bottom: 18px !important;">
+          <label>Password</label>
+          <input type="password" class="soft-input" placeholder="Create a strong password" id="signup-pass" required>
+          <span style="position:absolute; right:12px; top:38px; cursor:pointer; color:#94a3b8; font-size:14px;" onclick="togglePwd()">👁</span>
+        </div>
+
+        <div id="signup-error" style="display:none; color:#fb7185; font-size:12px; margin-bottom:12px;"></div>
+
+        <div class="login-actions-group">
+          <button class="btn-soft-login" onclick="doSignUp()">SIGN UP</button>
+          <button class="btn-soft-home" onclick="window.location.href='index.html'">Home</button>
+        </div>
+
+        <div style="margin-top: 20px; font-size: 13.5px; text-align: center; color: var(--muted2);">
+          Already have an account? <span style="color: var(--cyan); cursor: pointer; font-weight: 600;" onclick="window.location.href='user-login.html'">Login</span>
+        </div>
+      </div>
+
+      <!-- Visual Side -->
+      <div class="login-right-visual">
+        <img src="login_illustration_v2.png" class="login-illustration-img" alt="Data Analytics Illustration">
+        
+        <!-- Abstract elements to mimic the image -->
+        <div class="abstract-blob" style="width:350px; height:350px; top:-120px; right:-120px; opacity:0.35; background:#c7d2fe;"></div>
+        <div class="abstract-blob" style="width:250px; height:250px; bottom:80px; left:-80px; opacity:0.25; background:#818cf8;"></div>
+        <div class="abstract-blob" style="width:100px; height:100px; top:40%; left:-50px; opacity:0.15; background:#6366f1;"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function doSignUp() {
+      const name = document.getElementById('signup-name').value.trim();
+      const email = document.getElementById('signup-email').value.trim();
+      const pass = document.getElementById('signup-pass').value;
+      const err = document.getElementById('signup-error');
+
+      if (!name || !email || !pass) {
+        err.style.display = 'block';
+        err.textContent = 'Please fill out all fields.';
+        return;
+      }
+
+      // Simulate successful registration, save user credentials, and log them in
+      localStorage.setItem('userRole', 'user');
+      alert('Account created successfully! Redirecting to Dashboard...');
+      window.location.href = 'dashboard.html';
+    }
+
+    function togglePwd() {
+      const p = document.getElementById('signup-pass');
+      if (p.type === 'password') {
+        p.type = 'text';
+      } else {
+        p.type = 'password';
+      }
+    }
+
+    /* ANIMATED BACKGROUND */
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    function resize() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+    const particles = [];
+    for (let i = 0; i < 40; i++) {
+      particles.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        r: Math.random() * 2 + 0.5,
+        dx: (Math.random() - 0.5) * 0.5,
+        dy: (Math.random() - 0.5) * 0.5
+      });
+    }
+    function draw() {
+      ctx.clearRect(0, 0, width, height);
+      ctx.fillStyle = 'rgba(96, 165, 250, 0.15)';
+      particles.forEach(p => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fill();
+        p.x += p.dx;
+        p.y += p.dy;
+        if (p.x < 0 || p.x > width) p.dx *= -1;
+        if (p.y < 0 || p.y > height) p.dy *= -1;
+      });
+      requestAnimationFrame(draw);
+    }
+    draw();
+  </script>
+</body>
+
+</html>

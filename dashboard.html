@@ -371,8 +371,7 @@
               <p>Upload your raw data files — we'll clean and process them automatically.</p>
             </div>
           </div>
-          <div class="grid g-2" style="margin-bottom:20px;align-items:start;">
-            <div>
+          <div style="margin-bottom:20px;">
               <!-- Hidden file input -->
               <input type="file" id="file-input"  style="display:none;"
                 onchange="handleFileSelect(event)" />
@@ -446,47 +445,6 @@
                 <div class="tbl-wrap" id="preview-table-wrap" style="max-height:400px;overflow:auto;">
                 </div>
               </div>
-            </div>
-
-            <div class="card">
-              <div class="card-header">
-                <div class="card-title">Upload Guidelines</div>
-              </div>
-              <div style="display:flex;flex-direction:column;gap:12px;">
-                <div style="display:flex;gap:10px;align-items:flex-start;">
-                  <span style="font-size:18px;">📋</span>
-                  <div>
-                    <div style="font-size:13px;font-weight:600;">Supported Formats</div>
-                    <div style="font-size:12px;color:var(--muted2);margin-top:2px;">CSV, XLSX, XLS, JSON, TSV up to
-                      500MB</div>
-                  </div>
-                </div>
-                <div style="display:flex;gap:10px;align-items:flex-start;">
-                  <span style="font-size:18px;">🔤</span>
-                  <div>
-                    <div style="font-size:13px;font-weight:600;">First Row = Headers</div>
-                    <div style="font-size:12px;color:var(--muted2);margin-top:2px;">Ensure your file has column names in
-                      row 1</div>
-                  </div>
-                </div>
-                <div style="display:flex;gap:10px;align-items:flex-start;">
-                  <span style="font-size:18px;">🔒</span>
-                  <div>
-                    <div style="font-size:13px;font-weight:600;">Data Privacy</div>
-                    <div style="font-size:12px;color:var(--muted2);margin-top:2px;">Files are encrypted at rest
-                      (AES-256) and in transit (TLS)</div>
-                  </div>
-                </div>
-                <div style="display:flex;gap:10px;align-items:flex-start;">
-                  <span style="font-size:18px;">⚡</span>
-                  <div>
-                    <div style="font-size:13px;font-weight:600;">Auto Processing</div>
-                    <div style="font-size:12px;color:var(--muted2);margin-top:2px;">Cleaning starts automatically after
-                      upload completes</div>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
 
           <div class="card">

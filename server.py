@@ -83,7 +83,7 @@ def remove_duplicates(df):
     return df, removed
 
 
-def handle_missing_values(df, schema):
+def handle_missing_values(df, schema, logs):
     """Fill missing values intelligently based on column type."""
     total_fixed = 0
     cols_affected = 0
@@ -105,18 +105,22 @@ def handle_missing_values(df, schema):
         if col_type == 'numeric':
             median_val = pd.to_numeric(df[col], errors='coerce').median()
             df[col] = pd.to_numeric(df[col], errors='coerce').fillna(median_val)
+            logs.append(f"[{col}] Filled {null_count} missing values with median: {median_val}")
         elif col_type == 'boolean':
             df[col] = df[col].fillna('False')
+            logs.append(f"[{col}] Filled {null_count} missing values with 'False'")
         elif col_type == 'datetime':
             df[col] = df[col].fillna(method='ffill').fillna(method='bfill')
+            logs.append(f"[{col}] Filled {null_count} missing dates using forward/backward fill")
         else:
             mode_vals = df[col].mode()
             fill_val = mode_vals.iloc[0] if not mode_vals.empty else 'Unknown'
             df[col] = df[col].fillna(fill_val)
+            logs.append(f"[{col}] Filled {null_count} missing text values with mode: '{fill_val}'")
     return df, total_fixed, cols_affected
 
 
-def standardize_columns(df, schema):
+def standardize_columns(df, schema, logs):
     """Coerce types, strip symbols, normalize text."""
     num_fixed = 0
     text_fixed = 0
@@ -132,11 +136,14 @@ def standardize_columns(df, schema):
             df[col] = pd.to_numeric(df[col], errors='coerce')
             # Count how many were coerced from invalid text to NaN
             newly_null = df[col].isnull() & original.notna()
-            invalid_coerced += int(newly_null.sum())
-            # Fill newly created NaNs with median
-            if df[col].isnull().any():
+            newly_null_count = int(newly_null.sum())
+            if newly_null_count > 0:
+                invalid_coerced += newly_null_count
+                # Fill newly created NaNs with median
                 median_val = df[col].median()
-                df[col] = df[col].fillna(median_val if not pd.isna(median_val) else 0)
+                fill_val = median_val if not pd.isna(median_val) else 0
+                df[col] = df[col].fillna(fill_val)
+                logs.append(f"[{col}] Converted {newly_null_count} invalid text values to median: {fill_val}")
             num_fixed += 1
         elif col_type == 'boolean':
             mapping = {
@@ -158,7 +165,7 @@ def standardize_columns(df, schema):
     return df, num_fixed, text_fixed, bool_fixed, invalid_coerced
 
 
-def validate_business_rules(df, schema):
+def validate_business_rules(df, schema, logs):
     """Apply semantic business-rule validation on numeric columns."""
     total_fixed = 0
     details = []
@@ -194,7 +201,9 @@ def validate_business_rules(df, schema):
                 df[col] = df[col].astype(float)
                 df.loc[neg_mask, col] = pos_median if not pd.isna(pos_median) else 0
                 total_fixed += neg_count
-                details.append(f'{col}: {neg_count} negative values fixed')
+                msg = f"[{col}] Fixed {neg_count} invalid negative values with median: {pos_median}"
+                details.append(msg)
+                logs.append(msg)
         # Check for upper/lower bounds
         for kw, (lo, hi) in capped_keywords.items():
             if kw in col_lower:
@@ -219,7 +228,7 @@ def validate_business_rules(df, schema):
     return df, total_fixed, details
 
 
-def detect_outliers(df, schema):
+def detect_outliers(df, schema, logs):
     """Detect and cap outliers using IQR method."""
     total_outliers = 0
     cols_affected = 0
@@ -243,6 +252,7 @@ def detect_outliers(df, schema):
             df[col] = df[col].astype(float)
             df.loc[df[col] < lower, col] = lower
             df.loc[df[col] > upper, col] = upper
+            logs.append(f"[{col}] Capped {count} outliers to range [{lower:.2f}, {upper:.2f}]")
     return df, total_outliers, cols_affected
 
 
@@ -369,6 +379,8 @@ class DataCleaningServer(http.server.SimpleHTTPRequestHandler):
                 line = json.dumps(clean_nans({'event': event, 'data': payload}), default=str) + '\n'
                 self.wfile.write(line.encode('utf-8'))
                 self.wfile.flush()
+                
+            logs = []
 
             # ── Step 0: Parse & Schema ──
             df = parse_dataset(file_bytes, filename)
@@ -388,7 +400,7 @@ class DataCleaningServer(http.server.SimpleHTTPRequestHandler):
 
             # ── Step 1 (UI): Missing Values ──
             stream('progress', {'step': 1, 'progress': 10, 'msg': 'Handling missing values...'})
-            df, missing_fixed, missing_cols = handle_missing_values(df, schema)
+            df, missing_fixed, missing_cols = handle_missing_values(df, schema, logs)
             stream('step_done', {
                 'step': 1,
                 'pills': [f'{missing_fixed} cells filled', f'{missing_cols} columns affected']
@@ -396,7 +408,7 @@ class DataCleaningServer(http.server.SimpleHTTPRequestHandler):
 
             # ── Step 2 (UI): Outlier Detection ──
             stream('progress', {'step': 2, 'progress': 10, 'msg': 'Detecting outliers (IQR)...'})
-            df, outliers, out_cols = detect_outliers(df, schema)
+            df, outliers, out_cols = detect_outliers(df, schema, logs)
             stream('step_done', {
                 'step': 2,
                 'pills': [f'{outliers} outliers capped', 'IQR method applied']
@@ -404,7 +416,7 @@ class DataCleaningServer(http.server.SimpleHTTPRequestHandler):
 
             # ── Step 3 (UI): Type Standardization ──
             stream('progress', {'step': 3, 'progress': 10, 'msg': 'Standardizing data types...'})
-            df, nf, tf, bf, inv = standardize_columns(df, schema)
+            df, nf, tf, bf, inv = standardize_columns(df, schema, logs)
             stream('step_done', {
                 'step': 3,
                 'pills': [f'{tf} text normalized', f'{nf} numbers fixed']
@@ -412,10 +424,10 @@ class DataCleaningServer(http.server.SimpleHTTPRequestHandler):
 
             # ── Step 4 (UI): Business Rule Validation ──
             stream('progress', {'step': 4, 'progress': 10, 'msg': 'Validating business rules...'})
-            df, biz_fixed, biz_details = validate_business_rules(df, schema)
+            df, biz_fixed, biz_details = validate_business_rules(df, schema, logs)
             stream('step_done', {
                 'step': 4,
-                'pills': [f'{len(df)} valid rows', f'{biz_fixed} empty rows removed', '0 inconsistencies']
+                'pills': [f'{len(df)} valid rows', f'{biz_fixed} negative caps', '0 inconsistencies']
             })
 
             # ── Compute analytics on the cleaned data ──
@@ -439,6 +451,7 @@ class DataCleaningServer(http.server.SimpleHTTPRequestHandler):
                 'rows': df_out.values.tolist(),
                 'analytics': analytics,
                 'quality_score': quality,
+                'detailed_logs': logs,
                 'cleaning_summary': {
                     'original_rows': orig_rows,
                     'final_rows': len(df),

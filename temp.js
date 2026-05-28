@@ -165,8 +165,10 @@
       const cfg = pages[id] || { title: id, breadcrumb: 'DataVault / ' + id, btn1: '', btn2: '' };
       document.getElementById('tb-title').textContent = cfg.title;
       document.getElementById('tb-breadcrumb').textContent = cfg.breadcrumb;
-      document.getElementById('tb-secondary-btn').textContent = cfg.btn1;
-      document.getElementById('tb-primary-btn').textContent = cfg.btn2;
+      const tbSecondary = document.getElementById('tb-secondary-btn');
+      if (tbSecondary) tbSecondary.textContent = cfg.btn1;
+      const tbPrimary = document.getElementById('tb-primary-btn');
+      if (tbPrimary) tbPrimary.textContent = cfg.btn2;
       currentPage = id;
 
       if (id === 'analytics') runAnalytics();
@@ -276,6 +278,13 @@
                 file.name + ' (' + formatFileSize(file.size) + ') uploaded successfully!';
               // Parse and preview the file
               parseAndPreview(file.name, e.target.result);
+              
+              // Show in Reports
+              const rawRep = document.getElementById('reports-dynamic-raw-report');
+              if (rawRep) rawRep.style.display = 'flex';
+              const rawName = document.getElementById('dynamic-raw-name');
+              if (rawName) rawName.textContent = file.name;
+              
               // Auto-start cleaning
               setTimeout(() => { autoStartCleaning(); }, 600);
             }, 300);
@@ -684,61 +693,107 @@
 
     async function runCleaningPipeline() {
       if (isCleaning) return;
+      
+      const file = window.rawUploadedFile;
+      if (!file) {
+        alert("Please upload a file first!");
+        return;
+      }
+      
       isCleaning = true;
 
       const subtitle = document.getElementById('cleaning-subtitle');
-      const filename = (window.rawUploadedFile && window.rawUploadedFile.name) ? window.rawUploadedFile.name : 'sales_q1_2024.csv';
+      const filename = file.name;
       if (subtitle) subtitle.innerHTML = 'Automatic preprocessing pipeline — reviewing <b>' + filename + '</b>';
 
       const repCard = document.getElementById('dynamic-clean-report');
       if (repCard) repCard.style.display = 'none';
+      const logsCard = document.getElementById('detailed-logs-card');
+      if (logsCard) logsCard.style.display = 'none';
+      const logsContainer = document.getElementById('detailed-logs-container');
+      if (logsContainer) logsContainer.innerHTML = '';
+      
+      const reportsCard = document.getElementById('reports-dynamic-clean-report');
+      if (reportsCard) reportsCard.style.display = 'none';
+      const dName = document.getElementById('dynamic-report-name');
+      if (dName) dName.textContent = 'Cleaned: ' + filename;
 
       updateQuality(0, 0, 0, 0, 0);
 
       const stepResults = {};
-      const pillsData = [
-        ['342 duplicates removed', '13,938 rows retained'],
-        ['1,204 cells filled', '12 columns affected'],
-        ['87 outliers capped', 'IQR method applied'],
-        ['0 text normalized', '0 numbers fixed'],
-        ['All checks passed', '18 columns validated']
-      ];
-      
-      const qualityProg = [
-        { q: 0, v: 14280, f: 0, rm: 0, c: 18 },
-        { q: 20, v: 13938, f: 0, rm: 342, c: 18 },
-        { q: 40, v: 13938, f: 1204, rm: 342, c: 18 },
-        { q: 60, v: 13938, f: 1291, rm: 342, c: 18 },
-        { q: 80, v: 13938, f: 1291, rm: 342, c: 18 },
-        { q: 88, v: 12247, f: 1549, rm: 484, c: 18 }
-      ];
+      renderSteps(0, stepResults);
 
       try {
-        renderSteps(0, stepResults);
-        await delay(600);
+        const reader = new FileReader();
+        const base64Promise = new Promise((resolve, reject) => {
+          reader.onload = () => resolve(reader.result.split(',')[1]);
+          reader.onerror = reject;
+          reader.readAsDataURL(file);
+        });
+        const base64Data = await base64Promise;
 
-        for (let i = 0; i < STEPS.length; i++) {
-          renderSteps(i, stepResults);
-          
-          if (i === 3) {
-            await animProg(i, 2000);
-          } else {
-            await delay(800);
-          }
-          
-          stepResults[i] = pillsData[i];
-          renderSteps(i + 1, stepResults);
-          
-          const qd = qualityProg[i + 1];
-          updateQuality(qd.q, qd.v, qd.f, qd.rm, qd.c);
+        const response = await fetch('/api/clean', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ filename: file.name, content: base64Data })
+        });
+
+        if (!response.ok) {
+          throw new Error('Server error: ' + response.statusText);
         }
 
-        updateQuality(88, 12247, 1549, 484, 18);
-        if (repCard) repCard.style.display = 'flex';
-        if (subtitle) subtitle.innerHTML = '✅ Data cleaned automatically — 88% quality score';
+        const streamReader = response.body.getReader();
+        const decoder = new TextDecoder('utf-8');
+        let buffer = '';
+
+        while (true) {
+          const { done, value } = await streamReader.read();
+          if (done) break;
+          buffer += decoder.decode(value, { stream: true });
+          const lines = buffer.split('\n');
+          buffer = lines.pop(); // keep remainder
+
+          for (const line of lines) {
+            if (!line.trim()) continue;
+            const msg = JSON.parse(line);
+            
+            if (msg.event === 'progress') {
+              // visually update progress
+              const s = msg.data.step;
+              const bar = document.getElementById('sp-' + s);
+              const txt = document.getElementById('spt-' + s);
+              if (bar) bar.style.width = '100%';
+              if (txt) txt.textContent = msg.data.msg;
+            } else if (msg.event === 'step_done') {
+              const s = msg.data.step;
+              stepResults[s] = msg.data.pills;
+              renderSteps(s + 1, stepResults);
+            } else if (msg.event === 'complete') {
+              const d = msg.data;
+              cleanedData = { headers: d.headers, rows: d.rows, filename: file.name };
+              window._backendAnalytics = d.analytics;
+              window._cleaningSummary = d.cleaning_summary;
+              
+              const s = d.cleaning_summary;
+              updateQuality(d.quality_score, s.final_rows, s.missing_filled + s.invalid_coerced + s.business_rules_fixed + s.outliers_capped, s.duplicates_removed, d.headers.length);
+              
+              if (repCard) repCard.style.display = 'block';
+              if (reportsCard) reportsCard.style.display = 'flex';
+              if (subtitle) subtitle.innerHTML = '✅ Data cleaned automatically — ' + d.quality_score + '% quality score';
+              
+              if (d.detailed_logs && d.detailed_logs.length > 0) {
+                if (logsCard) logsCard.style.display = 'block';
+                if (logsContainer) {
+                  logsContainer.innerHTML = d.detailed_logs.map(log => `<div>${log}</div>`).join('');
+                }
+              }
+            }
+          }
+        }
 
       } catch (err) {
         console.error('Cleaning Pipeline Error:', err);
+        if (subtitle) subtitle.innerHTML = '❌ Error during cleaning: ' + err.message;
       } finally {
         isCleaning = false;
       }
@@ -752,6 +807,11 @@
 
       const { headers, rows, filename } = data;
       document.getElementById('analytics-file-name').textContent = filename;
+      
+      const aRep = document.getElementById('reports-dynamic-analytics-report');
+      if (aRep) aRep.style.display = 'flex';
+      const aName = document.getElementById('dynamic-analytics-name');
+      if (aName) aName.textContent = 'Analysis: ' + filename;
 
       // Use backend analytics if available
       const ba = window._backendAnalytics || null;
@@ -1011,6 +1071,25 @@
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
       a.download = (filename || 'dataset').replace(/\.[^.]+$/, '') + '_cleaned.csv';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+
+    function downloadRawCSV() {
+      if (!uploadedFileData) { alert('Please upload a dataset first!'); return; }
+      const { headers, rows, filename } = uploadedFileData;
+      let csv = headers.map(h => '"' + String(h).replace(/"/g, '""') + '"').join(',') + '\n';
+      rows.forEach(r => {
+        csv += r.map(v => {
+          const s = (v === null || v === undefined) ? '' : String(v);
+          return '"' + s.replace(/"/g, '""') + '"';
+        }).join(',') + '\n';
+      });
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = (filename || 'dataset').replace(/\.[^.]+$/, '') + '_raw.csv';
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);

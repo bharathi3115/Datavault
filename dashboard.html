@@ -725,7 +725,7 @@
 
           <div class="grid g-3" style="margin-bottom:24px;">
                 <!-- DYNAMIC CLEANED DATA REPORT -->
-                <div class="report-card green" id="dynamic-clean-report" style="display:none;border:1px solid var(--emerald-glow);">
+                <div class="report-card green" id="reports-dynamic-clean-report" style="display:none;border:1px solid var(--emerald-glow);">
                   <div class="report-icon green">✨</div>
                   <div>
                     <div class="report-name" id="dynamic-report-name">Cleaned Dataset Export</div>
@@ -1712,6 +1712,8 @@
 
       const repCard = document.getElementById('dynamic-clean-report');
       if (repCard) repCard.style.display = 'none';
+      const reportsCard = document.getElementById('reports-dynamic-clean-report');
+      if (reportsCard) reportsCard.style.display = 'none';
 
       updateQuality(0, 0, 0, 0, 0);
 
@@ -1754,7 +1756,8 @@
         }
 
         updateQuality(88, 12247, 1549, 484, 18);
-        if (repCard) repCard.style.display = 'flex';
+        if (repCard) repCard.style.display = 'block';
+        if (reportsCard) reportsCard.style.display = 'flex';
         if (subtitle) subtitle.innerHTML = '✅ Data cleaned automatically — 88% quality score';
 
       } catch (err) {

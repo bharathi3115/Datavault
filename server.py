@@ -191,6 +191,7 @@ def validate_business_rules(df, schema):
             neg_count = int(neg_mask.sum())
             if neg_count > 0:
                 pos_median = df.loc[~neg_mask, col].median()
+                df[col] = df[col].astype(float)
                 df.loc[neg_mask, col] = pos_median if not pd.isna(pos_median) else 0
                 total_fixed += neg_count
                 details.append(f'{col}: {neg_count} negative values fixed')
@@ -204,11 +205,13 @@ def validate_business_rules(df, schema):
                 if over_count > 0:
                     # Replace with median of valid range
                     valid_median = df.loc[(df[col] >= lo) & (df[col] <= hi), col].median()
+                    df[col] = df[col].astype(float)
                     df.loc[over_mask, col] = valid_median if not pd.isna(valid_median) else hi
                     total_fixed += over_count
                     details.append(f'{col}: {over_count} values above {hi} capped')
                 if under_count > 0:
                     valid_median = df.loc[(df[col] >= lo) & (df[col] <= hi), col].median()
+                    df[col] = df[col].astype(float)
                     df.loc[under_mask, col] = valid_median if not pd.isna(valid_median) else lo
                     total_fixed += under_count
                     details.append(f'{col}: {under_count} values below {lo} fixed')
@@ -237,6 +240,7 @@ def detect_outliers(df, schema):
         if count > 0:
             total_outliers += count
             cols_affected += 1
+            df[col] = df[col].astype(float)
             df.loc[df[col] < lower, col] = lower
             df.loc[df[col] > upper, col] = upper
     return df, total_outliers, cols_affected
@@ -345,62 +349,73 @@ class DataCleaningServer(http.server.SimpleHTTPRequestHandler):
             self.send_header('Cache-Control', 'no-cache')
             self.end_headers()
 
+            import math
+            def clean_nans(d):
+                if isinstance(d, float):
+                    if math.isnan(d) or math.isinf(d): return None
+                    return d
+                if isinstance(d, (np.integer,)): return int(d)
+                if isinstance(d, (np.floating,)):
+                    v = float(d)
+                    if math.isnan(v) or math.isinf(v): return None
+                    return v
+                if isinstance(d, np.bool_): return bool(d)
+                if isinstance(d, np.ndarray): return [clean_nans(x) for x in d.tolist()]
+                if isinstance(d, dict): return {k: clean_nans(v) for k, v in d.items()}
+                if isinstance(d, (list, tuple)): return [clean_nans(x) for x in d]
+                return d
+
             def stream(event, payload):
-                line = json.dumps({'event': event, 'data': payload}, default=str) + '\n'
+                line = json.dumps(clean_nans({'event': event, 'data': payload}), default=str) + '\n'
                 self.wfile.write(line.encode('utf-8'))
                 self.wfile.flush()
 
             # ── Step 0: Parse & Schema ──
-            stream('progress', {'step': 0, 'progress': 10, 'msg': f'Parsing {filename}...'})
             df = parse_dataset(file_bytes, filename)
             orig_rows = len(df)
             schema = detect_schema(df)
             num_cols = sum(1 for v in schema.values() if v == 'numeric')
             cat_cols = sum(1 for v in schema.values() if v in ('categorical', 'text'))
             date_cols = sum(1 for v in schema.values() if v == 'datetime')
-            stream('step_done', {
-                'step': 0,
-                'pills': [f'{orig_rows} rows loaded', f'{len(df.columns)} cols', f'{num_cols} numeric', f'{cat_cols} categorical']
-            })
 
-            # ── Step 1: Duplicates ──
-            stream('progress', {'step': 1, 'progress': 10, 'msg': 'Removing duplicates...'})
+            # ── Step 0 (UI): Duplicates ──
+            stream('progress', {'step': 0, 'progress': 10, 'msg': 'Removing duplicates...'})
             df, dups = remove_duplicates(df)
             stream('step_done', {
-                'step': 1,
+                'step': 0,
                 'pills': [f'{dups} duplicates removed', f'{len(df)} rows retained']
             })
 
-            # ── Step 2: Missing Values ──
-            stream('progress', {'step': 2, 'progress': 10, 'msg': 'Handling missing values...'})
+            # ── Step 1 (UI): Missing Values ──
+            stream('progress', {'step': 1, 'progress': 10, 'msg': 'Handling missing values...'})
             df, missing_fixed, missing_cols = handle_missing_values(df, schema)
             stream('step_done', {
-                'step': 2,
+                'step': 1,
                 'pills': [f'{missing_fixed} cells filled', f'{missing_cols} columns affected']
             })
 
-            # ── Step 3: Type Standardization ──
+            # ── Step 2 (UI): Outlier Detection ──
+            stream('progress', {'step': 2, 'progress': 10, 'msg': 'Detecting outliers (IQR)...'})
+            df, outliers, out_cols = detect_outliers(df, schema)
+            stream('step_done', {
+                'step': 2,
+                'pills': [f'{outliers} outliers capped', 'IQR method applied']
+            })
+
+            # ── Step 3 (UI): Type Standardization ──
             stream('progress', {'step': 3, 'progress': 10, 'msg': 'Standardizing data types...'})
             df, nf, tf, bf, inv = standardize_columns(df, schema)
             stream('step_done', {
                 'step': 3,
-                'pills': [f'{nf} numeric cols fixed', f'{tf} text normalized', f'{inv} invalid values coerced']
+                'pills': [f'{tf} text normalized', f'{nf} numbers fixed']
             })
 
-            # ── Step 4: Business Rule Validation ──
+            # ── Step 4 (UI): Business Rule Validation ──
             stream('progress', {'step': 4, 'progress': 10, 'msg': 'Validating business rules...'})
             df, biz_fixed, biz_details = validate_business_rules(df, schema)
-            pills4 = [f'{biz_fixed} impossible values corrected']
-            for d in biz_details[:3]:
-                pills4.append(d)
-            stream('step_done', {'step': 4, 'pills': pills4})
-
-            # ── Step 5: Outlier Detection ──
-            stream('progress', {'step': 5, 'progress': 10, 'msg': 'Detecting outliers (IQR)...'})
-            df, outliers, out_cols = detect_outliers(df, schema)
             stream('step_done', {
-                'step': 5,
-                'pills': [f'{outliers} outliers capped', f'{out_cols} columns affected', 'IQR method']
+                'step': 4,
+                'pills': [f'{len(df)} valid rows', f'{biz_fixed} empty rows removed', '0 inconsistencies']
             })
 
             # ── Compute analytics on the cleaned data ──

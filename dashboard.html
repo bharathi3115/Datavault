@@ -733,6 +733,24 @@
           </div>
 
           <div class="grid g-3" style="margin-bottom:24px;">
+                <!-- DYNAMIC CLEANED DATA REPORT -->
+                <div class="report-card green" id="reports-dynamic-clean-report" style="display:none;border:1px solid var(--emerald-glow);">
+                  <div class="report-icon green">✨</div>
+                  <div>
+                    <div class="report-name" id="dynamic-report-name">Cleaned Dataset Export</div>
+                    <div class="report-desc">Fully processed and validated dataset ready for download.</div>
+                  </div>
+                  <div class="report-meta">
+                    <span class="report-tag">CSV</span>
+                    <span class="report-tag" id="dynamic-report-time">Just Now</span>
+                    <span class="report-tag" style="background:var(--emerald-glow);color:#fff;">READY</span>
+                  </div>
+                  <div class="report-actions">
+                    <button class="btn primary sm" onclick="downloadCleanCSV()">⬇ Download CSV</button>
+                    <button class="btn outline sm" onclick="navTo('analytics')">👁 Analytics</button>
+                  </div>
+                </div>
+
                 <!-- DYNAMIC RAW DATA REPORT -->
                 <div class="report-card blue" id="reports-dynamic-raw-report" style="display:none;border:1px solid var(--blue-glow);">
                   <div class="report-icon blue">📁</div>
@@ -766,24 +784,6 @@
                   <div class="report-actions">
                     <button class="btn primary sm" onclick="downloadAnalyticsReport()">⬇ Download PDF</button>
                     <button class="btn outline sm" onclick="navTo('analytics')">👁 View</button>
-                  </div>
-                </div>
-
-                <!-- DYNAMIC CLEANED DATA REPORT -->
-                <div class="report-card green" id="reports-dynamic-clean-report" style="display:none;border:1px solid var(--emerald-glow);">
-                  <div class="report-icon green">✨</div>
-                  <div>
-                    <div class="report-name" id="dynamic-report-name">Cleaned Dataset Export</div>
-                    <div class="report-desc">Fully processed and validated dataset ready for download.</div>
-                  </div>
-                  <div class="report-meta">
-                    <span class="report-tag">CSV</span>
-                    <span class="report-tag" id="dynamic-report-time">Just Now</span>
-                    <span class="report-tag" style="background:var(--emerald-glow);color:#fff;">READY</span>
-                  </div>
-                  <div class="report-actions">
-                    <button class="btn primary sm" onclick="downloadCleanCSV()">⬇ Download CSV</button>
-                    <button class="btn outline sm" onclick="navTo('analytics')">👁 Analytics</button>
                   </div>
                 </div>
 

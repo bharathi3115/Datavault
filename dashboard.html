@@ -54,8 +54,11 @@
 
         <div class="admin-only">
           <div class="sb-section">System</div>
-          <div class="sb-item" data-page="users">
-            <span class="sb-icon">&#128101;</span> Users
+          <div class="sb-item" data-page="user_track">
+            <span class="sb-icon">👣</span> User Track
+          </div>
+          <div class="sb-item" data-page="user_feedback">
+            <span class="sb-icon">💬</span> User Feedbacks
           </div>
         </div>
       </nav>
@@ -927,11 +930,12 @@
 
 
         <!-- ── USERS ── -->
-        <div id="pg-users" class="fade-in" style="display:none;">
+      <!-- USER TRACKING PAGE -->
+        <div id="pg-user_track" class="fade-in" style="display:none;">
           <div class="section-head">
             <div>
-              <h2>User Management</h2>
-              <p>Manage platform users, roles and permissions.</p>
+              <h2>User Tracking</h2>
+              <p>Monitor real-time user activity, logins, data uploads, and feature usage across the platform.</p>
             </div><button class="tb-btn primary">+ Invite User</button>
           </div>
           <div class="grid g-4" style="margin-bottom:20px;">
@@ -1052,11 +1056,164 @@
           </div>
         </div>
 
+        <!-- USER FEEDBACK PAGE -->
+        <div id="pg-user_feedback" class="fade-in" style="display:none;">
+          <div class="section-head">
+            <div>
+              <h2>User Feedbacks</h2>
+              <p>View and manage bug reports, feature requests, and general feedback submitted by users.</p>
+            </div><button class="tb-btn primary">Mark All Read</button>
+          </div>
 
+          <!-- Feedback Stats -->
+          <div class="grid g-4" style="margin-bottom:20px;">
+            <div class="stat-card c">
+              <div class="stat-icon">💬</div>
+              <div class="stat-label">Total Feedbacks</div>
+              <div class="stat-val">47</div>
+              <div class="stat-change up">↑ 8 this week</div>
+            </div>
+            <div class="stat-card e">
+              <div class="stat-icon">⭐</div>
+              <div class="stat-label">Avg. Rating</div>
+              <div class="stat-val">4.3</div>
+              <div class="stat-change up">↑ 0.2</div>
+            </div>
+            <div class="stat-card v">
+              <div class="stat-icon">🐛</div>
+              <div class="stat-label">Bug Reports</div>
+              <div class="stat-val">5</div>
+              <div class="stat-change amber">2 Open</div>
+            </div>
+            <div class="stat-card a">
+              <div class="stat-icon">💡</div>
+              <div class="stat-label">Feature Requests</div>
+              <div class="stat-val">12</div>
+              <div class="stat-change neutral">Under Review</div>
+            </div>
+          </div>
 
-      </div><!-- /content -->
-    </div><!-- /main-area -->
-  </div><!-- /page-app -->
+          <!-- Feedback Table -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Recent Feedbacks</div><input class="form-input" placeholder="Search feedbacks…"
+                style="width:220px;padding:7px 12px;font-size:13px;" />
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>User</th>
+                  <th>Type</th>
+                  <th>Message</th>
+                  <th>Rating</th>
+                  <th>Date</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <div style="display:flex;align-items:center;gap:10px;">
+                      <div class="sb-avatar" style="width:30px;height:30px;font-size:11px;background:linear-gradient(135deg,var(--emerald),#6ee7b7);">RK</div>
+                      <div>
+                        <div style="font-weight:600;">Ravi Kumar</div>
+                        <div style="font-size:11px;color:var(--muted)">ravi@org.com</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td><span class="badge done">General</span></td>
+                  <td style="max-width:280px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">The data cleaning pipeline is amazing! Saved me hours of manual work.</td>
+                  <td>⭐⭐⭐⭐⭐</td>
+                  <td>Today</td>
+                  <td><span class="badge done"><span class="badge-dot"></span>Read</span></td>
+                </tr>
+                <tr>
+                  <td>
+                    <div style="display:flex;align-items:center;gap:10px;">
+                      <div class="sb-avatar" style="width:30px;height:30px;font-size:11px;background:linear-gradient(135deg,var(--violet),#c4b5fd);">MS</div>
+                      <div>
+                        <div style="font-weight:600;">Meera Sharma</div>
+                        <div style="font-size:11px;color:var(--muted)">meera@org.com</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td><span class="badge proc">Bug Report</span></td>
+                  <td style="max-width:280px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">CSV export sometimes shows NaN values in the Total Spent column.</td>
+                  <td>⭐⭐⭐</td>
+                  <td>Yesterday</td>
+                  <td><span class="badge err"><span class="badge-dot"></span>Open</span></td>
+                </tr>
+                <tr>
+                  <td>
+                    <div style="display:flex;align-items:center;gap:10px;">
+                      <div class="sb-avatar" style="width:30px;height:30px;font-size:11px;background:linear-gradient(135deg,var(--amber),#fde68a);">AP</div>
+                      <div>
+                        <div style="font-weight:600;">Arjun P.</div>
+                        <div style="font-size:11px;color:var(--muted)">arjun@org.com</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td><span class="badge info">Feature</span></td>
+                  <td style="max-width:280px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Would love to see a scheduled auto-cleaning feature for recurring datasets.</td>
+                  <td>⭐⭐⭐⭐</td>
+                  <td>2d ago</td>
+                  <td><span class="badge done"><span class="badge-dot"></span>Reviewed</span></td>
+                </tr>
+                <tr>
+                  <td>
+                    <div style="display:flex;align-items:center;gap:10px;">
+                      <div class="sb-avatar" style="width:30px;height:30px;font-size:11px;background:linear-gradient(135deg,#f472b6,#ec4899);">PD</div>
+                      <div>
+                        <div style="font-weight:600;">Priya D.</div>
+                        <div style="font-size:11px;color:var(--muted)">priya@org.com</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td><span class="badge done">General</span></td>
+                  <td style="max-width:280px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">The analytics dashboard is very intuitive. Great UI design overall!</td>
+                  <td>⭐⭐⭐⭐⭐</td>
+                  <td>3d ago</td>
+                  <td><span class="badge done"><span class="badge-dot"></span>Read</span></td>
+                </tr>
+                <tr>
+                  <td>
+                    <div style="display:flex;align-items:center;gap:10px;">
+                      <div class="sb-avatar" style="width:30px;height:30px;font-size:11px;background:linear-gradient(135deg,#60a5fa,#3b82f6);">SK</div>
+                      <div>
+                        <div style="font-weight:600;">Suresh K.</div>
+                        <div style="font-size:11px;color:var(--muted)">suresh@org.com</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td><span class="badge proc">Bug Report</span></td>
+                  <td style="max-width:280px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Upload page freezes when trying to upload files larger than 50MB.</td>
+                  <td>⭐⭐</td>
+                  <td>4d ago</td>
+                  <td><span class="badge err"><span class="badge-dot"></span>Open</span></td>
+                </tr>
+                <tr>
+                  <td>
+                    <div style="display:flex;align-items:center;gap:10px;">
+                      <div class="sb-avatar" style="width:30px;height:30px;font-size:11px;background:linear-gradient(135deg,#34d399,#10b981);">NR</div>
+                      <div>
+                        <div style="font-weight:600;">Neha R.</div>
+                        <div style="font-size:11px;color:var(--muted)">neha@org.com</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td><span class="badge info">Feature</span></td>
+                  <td style="max-width:280px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Please add dark mode toggle for the reports page and PDF export options.</td>
+                  <td>⭐⭐⭐⭐</td>
+                  <td>5d ago</td>
+                  <td><span class="badge done"><span class="badge-dot"></span>Reviewed</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div> <!-- END PAGE CONTENT (scrollable area) -->
+    </div> <!-- END MAIN CONTENT AREA -->
+  </div> <!-- END APP WRAPPER -->
 
   <!-- ═══════════════════════════════════════════
      JAVASCRIPT
@@ -1210,6 +1367,8 @@
       analytics: { title: 'Analytics', breadcrumb: 'DataVault / Analytics', btn1: 'Export Charts', btn2: 'Refresh Data' },
       reports: { title: 'Reports', breadcrumb: 'DataVault / Reports', btn1: 'Schedule Report', btn2: '+ New Report' },
       users: { title: 'User Management', breadcrumb: 'DataVault / Users', btn1: 'Roles & Permissions', btn2: '+ Invite User' },
+      user_track: { title: 'User Tracking', breadcrumb: 'DataVault / User Track', btn1: 'Export Logs', btn2: 'Refresh Activity' },
+      user_feedback: { title: 'User Feedbacks', breadcrumb: 'DataVault / Feedbacks', btn1: 'Export Feedback', btn2: 'Mark All Read' }
     };
 
     let currentPage = 'dashboard';

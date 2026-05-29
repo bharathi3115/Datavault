@@ -3935,3 +3935,180 @@ body:not(.light-theme) .soft-field span[onclick*="togglePwd"] {
   right: 12px !important;
 }
 
+/* ═══════════════════════════════════════════
+   ADMIN PAGES — DISTINCT THEME
+═══════════════════════════════════════════ */
+
+/* Admin page background — deep indigo gradient */
+#pg-user_track,
+#pg-user_feedback {
+  position: relative;
+}
+
+#pg-user_track::before,
+#pg-user_feedback::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(ellipse at 15% 10%, rgba(139, 92, 246, 0.12) 0%, transparent 55%),
+    radial-gradient(ellipse at 85% 80%, rgba(99, 102, 241, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(88, 28, 135, 0.06) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+  border-radius: 8px;
+}
+
+#pg-user_track > *,
+#pg-user_feedback > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Admin section header — purple accent underline */
+#pg-user_track .section-head h2,
+#pg-user_feedback .section-head h2 {
+  background: linear-gradient(135deg, #c084fc, #818cf8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Admin stat cards — indigo glow borders */
+#pg-user_track .stat-card,
+#pg-user_feedback .stat-card {
+  border: 1px solid rgba(139, 92, 246, 0.25) !important;
+  background: rgba(15, 10, 40, 0.6) !important;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.06), inset 0 1px 0 rgba(139, 92, 246, 0.08);
+}
+
+#pg-user_track .stat-card:hover,
+#pg-user_feedback .stat-card:hover {
+  border-color: rgba(139, 92, 246, 0.45) !important;
+  box-shadow: 0 0 30px rgba(139, 92, 246, 0.12), inset 0 1px 0 rgba(139, 92, 246, 0.12);
+  transform: translateY(-2px);
+  transition: all 0.3s ease;
+}
+
+/* Admin stat values — purple tint */
+#pg-user_track .stat-val,
+#pg-user_feedback .stat-val {
+  color: #c4b5fd !important;
+}
+
+/* Admin cards — deeper surface */
+#pg-user_track .card,
+#pg-user_feedback .card {
+  background: rgba(13, 10, 30, 0.65) !important;
+  border: 1px solid rgba(139, 92, 246, 0.15) !important;
+  backdrop-filter: blur(14px);
+  box-shadow: 0 8px 32px rgba(88, 28, 135, 0.08);
+}
+
+/* Admin table header — muted purple */
+#pg-user_track table thead th,
+#pg-user_feedback table thead th {
+  color: #a78bfa;
+  border-bottom-color: rgba(139, 92, 246, 0.2) !important;
+  font-size: 11px;
+  letter-spacing: 0.8px;
+}
+
+/* Admin table rows — subtle hover */
+#pg-user_track table tbody tr,
+#pg-user_feedback table tbody tr {
+  border-bottom-color: rgba(139, 92, 246, 0.08) !important;
+  transition: background 0.2s ease;
+}
+
+#pg-user_track table tbody tr:hover,
+#pg-user_feedback table tbody tr:hover {
+  background: rgba(139, 92, 246, 0.06) !important;
+}
+
+/* Admin primary button — purple gradient */
+#pg-user_track .tb-btn.primary,
+#pg-user_feedback .tb-btn.primary {
+  background: linear-gradient(135deg, #8b5cf6, #6366f1) !important;
+  color: #fff !important;
+  box-shadow: 0 4px 16px rgba(139, 92, 246, 0.3);
+}
+
+#pg-user_track .tb-btn.primary:hover,
+#pg-user_feedback .tb-btn.primary:hover {
+  box-shadow: 0 6px 24px rgba(139, 92, 246, 0.45);
+  transform: translateY(-1px);
+}
+
+/* Admin search input — purple focus */
+#pg-user_track .form-input:focus,
+#pg-user_feedback .form-input:focus {
+  border-color: #8b5cf6 !important;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15) !important;
+}
+
+/* Admin card title bar accent */
+#pg-user_track .card-title,
+#pg-user_feedback .card-title {
+  color: #ddd6fe;
+}
+
+/* Star ratings glow in feedback */
+#pg-user_feedback table tbody td:nth-child(4) {
+  text-shadow: 0 0 8px rgba(251, 191, 36, 0.4);
+}
+
+/* Admin stat card top-bar colors override to indigo/purple palette */
+#pg-user_track .stat-card.c::before,
+#pg-user_feedback .stat-card.c::before {
+  background: linear-gradient(90deg, #8b5cf6, #a78bfa) !important;
+}
+
+#pg-user_track .stat-card.e::before,
+#pg-user_feedback .stat-card.e::before {
+  background: linear-gradient(90deg, #6366f1, #818cf8) !important;
+}
+
+#pg-user_track .stat-card.v::before,
+#pg-user_feedback .stat-card.v::before {
+  background: linear-gradient(90deg, #7c3aed, #a855f7) !important;
+}
+
+#pg-user_track .stat-card.a::before,
+#pg-user_feedback .stat-card.a::before {
+  background: linear-gradient(90deg, #a855f7, #c084fc) !important;
+}
+
+/* ── Light theme overrides for admin pages ── */
+.light-theme #pg-user_track::before,
+.light-theme #pg-user_feedback::before {
+  background: 
+    radial-gradient(ellipse at 15% 10%, rgba(139, 92, 246, 0.06) 0%, transparent 55%),
+    radial-gradient(ellipse at 85% 80%, rgba(99, 102, 241, 0.04) 0%, transparent 50%);
+}
+
+.light-theme #pg-user_track .stat-card,
+.light-theme #pg-user_feedback .stat-card {
+  background: rgba(255, 255, 255, 0.85) !important;
+  border-color: rgba(139, 92, 246, 0.15) !important;
+}
+
+.light-theme #pg-user_track .card,
+.light-theme #pg-user_feedback .card {
+  background: rgba(255, 255, 255, 0.9) !important;
+  border-color: rgba(139, 92, 246, 0.12) !important;
+}
+
+.light-theme #pg-user_track .stat-val,
+.light-theme #pg-user_feedback .stat-val {
+  color: #6d28d9 !important;
+}
+
+.light-theme #pg-user_track .section-head h2,
+.light-theme #pg-user_feedback .section-head h2 {
+  background: linear-gradient(135deg, #7c3aed, #4f46e5);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}

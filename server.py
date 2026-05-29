@@ -113,10 +113,10 @@ def handle_missing_values(df, schema, logs):
             df[col] = df[col].fillna(method='ffill').fillna(method='bfill')
             logs.append(f"[{col}] Filled {null_count} missing dates using forward/backward fill")
         else:
-            mode_vals = df[col].mode()
-            fill_val = mode_vals.iloc[0] if not mode_vals.empty else 'Unknown'
+            # For text and categorical fields, use 'Unknown' to avoid fabricating data
+            fill_val = 'Unknown'
             df[col] = df[col].fillna(fill_val)
-            logs.append(f"[{col}] Filled {null_count} missing text values with mode: '{fill_val}'")
+            logs.append(f"[{col}] Filled {null_count} missing text values with '{fill_val}'")
     return df, total_fixed, cols_affected
 
 
@@ -254,6 +254,54 @@ def detect_outliers(df, schema, logs):
             df.loc[df[col] > upper, col] = upper
             logs.append(f"[{col}] Capped {count} outliers to range [{lower:.2f}, {upper:.2f}]")
     return df, total_outliers, cols_affected
+
+
+def apply_dataset_specific_rules(df, schema, logs):
+    """Apply specific business derivations for retail datasets."""
+    total_fixed = 0
+    if 'Total Spent' in df.columns and 'Price Per Unit' in df.columns and 'Quantity' in df.columns:
+        # Convert to numeric safely
+        df['Total Spent'] = pd.to_numeric(df['Total Spent'], errors='coerce')
+        df['Price Per Unit'] = pd.to_numeric(df['Price Per Unit'], errors='coerce')
+        df['Quantity'] = pd.to_numeric(df['Quantity'], errors='coerce')
+
+        # 1. Derive Quantity
+        mask_q = df['Quantity'].isna() & df['Total Spent'].notna() & df['Price Per Unit'].notna() & (df['Price Per Unit'] != 0)
+        q_count = mask_q.sum()
+        if q_count > 0:
+            df.loc[mask_q, 'Quantity'] = df.loc[mask_q, 'Total Spent'] / df.loc[mask_q, 'Price Per Unit']
+            total_fixed += q_count
+            logs.append(f"[Quantity] Derived {q_count} missing values using Total Spent / Price Per Unit")
+
+        # 2. Derive Price
+        mask_p = df['Price Per Unit'].isna() & df['Total Spent'].notna() & df['Quantity'].notna() & (df['Quantity'] != 0)
+        p_count = mask_p.sum()
+        if p_count > 0:
+            df.loc[mask_p, 'Price Per Unit'] = df.loc[mask_p, 'Total Spent'] / df.loc[mask_p, 'Quantity']
+            total_fixed += p_count
+            logs.append(f"[Price Per Unit] Derived {p_count} missing values using Total Spent / Quantity")
+
+        # 3. Derive/Validate Total Spent
+        mask_t = df['Price Per Unit'].notna() & df['Quantity'].notna()
+        # Find rows where Total Spent is nan OR where it doesn't match the math
+        expected_total = df.loc[mask_t, 'Price Per Unit'] * df.loc[mask_t, 'Quantity']
+        mismatch_mask = mask_t & ((df['Total Spent'].isna()) | (abs(df['Total Spent'] - expected_total) > 0.01))
+        t_count = mismatch_mask.sum()
+        if t_count > 0:
+            df.loc[mismatch_mask, 'Total Spent'] = expected_total[mismatch_mask]
+            total_fixed += t_count
+            logs.append(f"[Total Spent] Calculated/Fixed {t_count} values to exactly equal Price Per Unit * Quantity")
+
+    if 'Discount Applied' in df.columns:
+        null_discount = df['Discount Applied'].isna()
+        d_count = null_discount.sum()
+        if d_count > 0:
+            df.loc[null_discount, 'Discount Applied'] = False
+            total_fixed += d_count
+            logs.append(f"[Discount Applied] Imputed {d_count} missing values as False")
+            
+    return df, total_fixed
+
 
 
 def compute_analytics(df, schema):
@@ -397,44 +445,59 @@ class DataCleaningServer(http.server.SimpleHTTPRequestHandler):
                 'step': 0,
                 'pills': [f'{dups} duplicates removed', f'{len(df)} rows retained']
             })
-
-            # ── Step 1 (UI): Missing Values ──
-            stream('progress', {'step': 1, 'progress': 10, 'msg': 'Handling missing values...'})
-            df, missing_fixed, missing_cols = handle_missing_values(df, schema, logs)
+            
+            # ── Step 1 (UI): Type Standardization ──
+            stream('progress', {'step': 1, 'progress': 10, 'msg': 'Standardizing data types...'})
+            df, nf, tf, bf, inv = standardize_columns(df, schema, logs)
             stream('step_done', {
                 'step': 1,
+                'pills': [f'{tf} text normalized', f'{nf} numbers fixed']
+            })
+            
+            # ── Dataset Specific Business Rules (Retail Derivations) ──
+            df, specific_fixes = apply_dataset_specific_rules(df, schema, logs)
+
+            # ── Step 2 (UI): Missing Values ──
+            stream('progress', {'step': 2, 'progress': 10, 'msg': 'Handling missing values...'})
+            df, missing_fixed, missing_cols = handle_missing_values(df, schema, logs)
+            stream('step_done', {
+                'step': 2,
                 'pills': [f'{missing_fixed} cells filled', f'{missing_cols} columns affected']
             })
 
-            # ── Step 2 (UI): Outlier Detection ──
-            stream('progress', {'step': 2, 'progress': 10, 'msg': 'Detecting outliers (IQR)...'})
+            # ── Step 3 (UI): Outlier Detection ──
+            stream('progress', {'step': 3, 'progress': 10, 'msg': 'Detecting outliers (IQR)...'})
             df, outliers, out_cols = detect_outliers(df, schema, logs)
             stream('step_done', {
-                'step': 2,
-                'pills': [f'{outliers} outliers capped', 'IQR method applied']
-            })
-
-            # ── Step 3 (UI): Type Standardization ──
-            stream('progress', {'step': 3, 'progress': 10, 'msg': 'Standardizing data types...'})
-            df, nf, tf, bf, inv = standardize_columns(df, schema, logs)
-            stream('step_done', {
                 'step': 3,
-                'pills': [f'{tf} text normalized', f'{nf} numbers fixed']
+                'pills': [f'{outliers} outliers capped', 'IQR method applied']
             })
 
             # ── Step 4 (UI): Business Rule Validation ──
             stream('progress', {'step': 4, 'progress': 10, 'msg': 'Validating business rules...'})
             df, biz_fixed, biz_details = validate_business_rules(df, schema, logs)
+            
+            # ── FINAL POST-IMPUTATION MATH VALIDATION ──
+            final_math_fixes = 0
+            if 'Total Spent' in df.columns and 'Price Per Unit' in df.columns and 'Quantity' in df.columns:
+                expected_total = df['Price Per Unit'] * df['Quantity']
+                mismatch_mask = abs(df['Total Spent'] - expected_total) > 0.01
+                t_count = mismatch_mask.sum()
+                if t_count > 0:
+                    df.loc[mismatch_mask, 'Total Spent'] = expected_total[mismatch_mask]
+                    final_math_fixes += t_count
+                    logs.append(f"[Validation] Force-recalculated {t_count} Total Spent values to equal Price * Quantity after imputation")
+
             stream('step_done', {
                 'step': 4,
-                'pills': [f'{len(df)} valid rows', f'{biz_fixed} negative caps', '0 inconsistencies']
+                'pills': [f'{len(df)} valid rows', f'{biz_fixed + final_math_fixes} final validations', '0 inconsistencies']
             })
 
             # ── Compute analytics on the cleaned data ──
             analytics = compute_analytics(df, schema)
 
             # ── Quality score ──
-            total_issues = dups + missing_fixed + inv + biz_fixed + outliers
+            total_issues = dups + missing_fixed + inv + biz_fixed + outliers + specific_fixes + final_math_fixes
             total_cells = orig_rows * len(df.columns)
             quality = max(0, min(100, round(100 - (total_issues / max(total_cells, 1)) * 100)))
 

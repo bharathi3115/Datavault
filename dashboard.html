@@ -8,7 +8,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Montserrat:wght@600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
     rel="stylesheet" />
-  <link rel="stylesheet" href="style.css?v=2.2">
+  <link rel="stylesheet" href="style.css?v=2.7">
   <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
 
 </head>
@@ -62,11 +62,11 @@
           <div class="sb-item" data-page="dataset_monitoring">
             <span class="sb-icon">🗄️</span> Dataset Monitoring
           </div>
-          <div class="sb-item" data-page="user_track">
-            <span class="sb-icon">👣</span> User Track
+          <div class="sb-item" data-page="cleaning_performance">
+            <span class="sb-icon">✨</span> Cleaning Performance
           </div>
-          <div class="sb-item" data-page="user_feedback">
-            <span class="sb-icon">💬</span> User Feedbacks
+          <div class="sb-item" data-page="feedback_overview">
+            <span class="sb-icon">💡</span> Feedback Overview
           </div>
         </div>
       </nav>
@@ -119,252 +119,63 @@
 
         <!-- ── DASHBOARD ── -->
         <div id="pg-dashboard" class="fade-in">
-          <div class="section-head" style="margin-bottom:22px;">
+          <!-- Welcome Section -->
+          <div class="section-head" style="margin-bottom:32px;">
             <div>
-              <h2 id="dashboard-greeting">Good morning 👋</h2>
-              <p>Here's what's happening with your data platform today.</p>
+              <h2 id="dashboard-greeting" style="font-size:26px;font-weight:700;background:linear-gradient(90deg,#fff,#94a3b8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Good Afternoon 👋 Welcome back, Admin</h2>
+              <p style="color:var(--muted);font-size:15px;margin-top:6px;">DataVault Analytics Platform • Executive Overview</p>
             </div>
-            <span class="section-tag">Live</span>
-          </div>
-
-          <!-- STATS -->
-          <div class="grid g-4" style="margin-bottom:20px;">
-            <div class="stat-card c">
-              <div class="stat-icon">📂</div>
-              <div class="stat-label">Total Datasets</div>
-              <div class="stat-val">1,248</div>
-              <div class="stat-change up">↑ 12.4% this month</div>
-            </div>
-            <div class="stat-card e">
-              <div class="stat-icon">✅</div>
-              <div class="stat-label">Records Processed</div>
-              <div class="stat-val">98.6K</div>
-              <div class="stat-change up">↑ 8.1% this week</div>
-            </div>
-            <div class="stat-card v">
-              <div class="stat-icon">📈</div>
-              <div class="stat-label">Reports Generated</div>
-              <div class="stat-val">342</div>
-              <div class="stat-change up">↑ 5.7% this week</div>
-            </div>
-            <div class="stat-card a">
-              <div class="stat-icon">👥</div>
-              <div class="stat-label">Active Users</div>
-              <div class="stat-val">64</div>
-              <div class="stat-change down">↓ 2.1% today</div>
+            <div style="display:flex;gap:12px;align-items:center;">
+              <div class="badge done" style="padding:8px 14px;font-size:13px;"><span class="badge-dot" style="background:var(--emerald);box-shadow:0 0 8px var(--emerald);"></span>System Online</div>
+              <button class="tb-btn outline" onclick="navTo('upload')">☁️ Upload Dataset</button>
+              <button class="tb-btn outline" onclick="navTo('users')">👥 Add User</button>
+              <button class="tb-btn primary" onclick="navTo('reports')">📈 Generate Report</button>
             </div>
           </div>
 
-          <!-- CHART + DONUT -->
-          <div class="grid g-2-1" style="margin-bottom:20px;">
-            <div class="card">
-              <div class="card-header">
-                <div class="card-title">Weekly Processing Activity</div>
-                <span class="card-action">View details →</span>
-              </div>
-              <div style="background:var(--surface2);border-radius:10px;overflow:hidden;">
-                <div class="bar-chart">
-                  <div class="bar-grp">
-                    <div class="bar b1" style="height:55%"></div>
-                    <div class="bar b2" style="height:40%"></div>
-                  </div>
-                  <div class="bar-grp">
-                    <div class="bar b1" style="height:78%"></div>
-                    <div class="bar b2" style="height:62%"></div>
-                  </div>
-                  <div class="bar-grp">
-                    <div class="bar b1" style="height:48%"></div>
-                    <div class="bar b2" style="height:38%"></div>
-                  </div>
-                  <div class="bar-grp">
-                    <div class="bar b1" style="height:92%"></div>
-                    <div class="bar b2" style="height:80%"></div>
-                  </div>
-                  <div class="bar-grp">
-                    <div class="bar b1" style="height:68%"></div>
-                    <div class="bar b2" style="height:55%"></div>
-                  </div>
-                  <div class="bar-grp">
-                    <div class="bar b1" style="height:84%"></div>
-                    <div class="bar b2" style="height:70%"></div>
-                  </div>
-                  <div class="bar-grp">
-                    <div class="bar b1" style="height:100%"></div>
-                    <div class="bar b2" style="height:88%"></div>
-                  </div>
-                </div>
-                <div class="chart-xlabels">
-                  <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
-                </div>
-              </div>
-              <div class="kpi-strip">
-                <div class="kpi">
-                  <div class="kpi-label">Avg Quality</div>
-                  <div class="kpi-val">94.2%</div>
-                  <div class="kpi-sub up">↑ 2.1%</div>
-                </div>
-                <div class="kpi">
-                  <div class="kpi-label">Missing Fixed</div>
-                  <div class="kpi-val">18.4K</div>
-                  <div class="kpi-sub neutral">This week</div>
-                </div>
-                <div class="kpi">
-                  <div class="kpi-label">Duplicates</div>
-                  <div class="kpi-val">3,221</div>
-                  <div class="kpi-sub neutral">Removed</div>
-                </div>
+          <!-- 4 Compact Module Cards -->
+          <div class="grid g-4" style="margin-bottom:40px;">
+            
+            <!-- Card 1: User Management -->
+            <div class="card hover-glow" onclick="navTo('users')" style="cursor:pointer;padding:20px;display:flex;align-items:center;gap:16px;border:1px solid rgba(56,189,248,0.2);background:linear-gradient(135deg,rgba(56,189,248,0.05),var(--surface1));">
+              <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,rgba(56,189,248,0.2),rgba(2,132,199,0.2));display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">👥</div>
+              <div>
+                <div style="font-size:11px;font-weight:600;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">User Management</div>
+                <div style="font-size:24px;font-weight:700;color:var(--text);line-height:1;">1,248</div>
+                <div style="font-size:12px;color:var(--emerald);margin-top:6px;display:flex;align-items:center;gap:4px;">↑ +34 This Week</div>
               </div>
             </div>
-            <div class="card">
-              <div class="card-header">
-                <div class="card-title">Dataset Formats</div>
-              </div>
-              <div class="donut-wrap" style="flex-direction:column;align-items:center;gap:16px;">
-                <svg class="donut-svg" viewBox="0 0 36 36">
-                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="var(--surface3)" stroke-width="3.8" />
-                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="#38bdf8" stroke-width="3.8"
-                    stroke-dasharray="52 48" stroke-dashoffset="25" stroke-linecap="round" />
-                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="#a78bfa" stroke-width="3.8"
-                    stroke-dasharray="24 76" stroke-dashoffset="-27" stroke-linecap="round" />
-                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="#34d399" stroke-width="3.8"
-                    stroke-dasharray="16 84" stroke-dashoffset="-51" stroke-linecap="round" />
-                  <circle cx="18" cy="18" r="15.9" fill="none" stroke="#fbbf24" stroke-width="3.8"
-                    stroke-dasharray="8 92" stroke-dashoffset="-67" stroke-linecap="round" />
-                </svg>
-                <div class="donut-legend" style="width:100%;">
-                  <div class="dl-item">
-                    <div class="dl-dot" style="background:#38bdf8"></div>
-                    <div class="dl-label">CSV</div>
-                    <div class="dl-val">52%</div>
-                  </div>
-                  <div class="dl-item">
-                    <div class="dl-dot" style="background:#a78bfa"></div>
-                    <div class="dl-label">XLSX</div>
-                    <div class="dl-val">24%</div>
-                  </div>
-                  <div class="dl-item">
-                    <div class="dl-dot" style="background:#34d399"></div>
-                    <div class="dl-label">JSON</div>
-                    <div class="dl-val">16%</div>
-                  </div>
-                  <div class="dl-item">
-                    <div class="dl-dot" style="background:#fbbf24"></div>
-                    <div class="dl-label">Other</div>
-                    <div class="dl-val">8%</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
 
-          <!-- RECENT + ACTIVITY -->
-          <div class="grid g-2-1">
-            <div class="card">
-              <div class="card-header">
-                <div class="card-title">Recent Datasets</div>
-                <span class="card-action" onclick="navTo('upload')">View all →</span>
-              </div>
-              <div class="tbl-wrap">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>File</th>
-                      <th>Records</th>
-                      <th>Status</th>
-                      <th>Quality</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td><span class="file-row-icon">📄</span><b>sales_q1_2024.csv</b></td>
-                      <td style="color:var(--muted2)">14,280</td>
-                      <td><span class="badge done"><span class="badge-dot"></span>Done</span></td>
-                      <td>
-                        <div class="prog" style="width:80px">
-                          <div class="prog-fill" style="width:94%"></div>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><span class="file-row-icon">📊</span><b>inventory.xlsx</b></td>
-                      <td style="color:var(--muted2)">8,540</td>
-                      <td><span class="badge proc"><span class="badge-dot"></span>Processing</span></td>
-                      <td>
-                        <div class="prog" style="width:80px">
-                          <div class="prog-fill" style="width:62%"></div>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><span class="file-row-icon">📋</span><b>customer_logs.json</b></td>
-                      <td style="color:var(--muted2)">32,100</td>
-                      <td><span class="badge done"><span class="badge-dot"></span>Done</span></td>
-                      <td>
-                        <div class="prog" style="width:80px">
-                          <div class="prog-fill green" style="width:88%"></div>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><span class="file-row-icon">⚠️</span><b>hr_old.csv</b></td>
-                      <td style="color:var(--muted2)">4,200</td>
-                      <td><span class="badge err"><span class="badge-dot"></span>Error</span></td>
-                      <td>
-                        <div class="prog" style="width:80px">
-                          <div class="prog-fill red" style="width:23%"></div>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+            <!-- Card 2: Dataset Monitoring -->
+            <div class="card hover-glow" onclick="navTo('datasets')" style="cursor:pointer;padding:20px;display:flex;align-items:center;gap:16px;border:1px solid rgba(167,139,250,0.2);background:linear-gradient(135deg,rgba(167,139,250,0.05),var(--surface1));">
+              <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,rgba(167,139,250,0.2),rgba(124,58,237,0.2));display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">📂</div>
+              <div>
+                <div style="font-size:11px;font-weight:600;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">Dataset Monitoring</div>
+                <div style="font-size:24px;font-weight:700;color:var(--text);line-height:1;">4,892</div>
+                <div style="font-size:12px;color:var(--muted);margin-top:6px;">124 Today</div>
               </div>
             </div>
-            <div class="card">
-              <div class="card-header">
-                <div class="card-title">Recent Activity</div>
-              </div>
-              <div class="activity-list">
-                <div class="act-item">
-                  <div class="act-dot-col">
-                    <div class="act-dot" style="background:var(--emerald)"></div>
-                    <div class="act-line"></div>
-                  </div>
-                  <div>
-                    <div class="act-txt"><b>sales_q1.csv</b> processed — 94% quality</div>
-                    <div class="act-time">2 min ago</div>
-                  </div>
-                </div>
-                <div class="act-item">
-                  <div class="act-dot-col">
-                    <div class="act-dot" style="background:var(--cyan)"></div>
-                    <div class="act-line"></div>
-                  </div>
-                  <div>
-                    <div class="act-txt"><b>Ravi K.</b> uploaded inventory.xlsx</div>
-                    <div class="act-time">5 hrs ago</div>
-                  </div>
-                </div>
-                <div class="act-item">
-                  <div class="act-dot-col">
-                    <div class="act-dot" style="background:var(--violet)"></div>
-                    <div class="act-line"></div>
-                  </div>
-                  <div>
-                    <div class="act-txt"><b>Meera S.</b> downloaded Q1 report PDF</div>
-                    <div class="act-time">1 day ago</div>
-                  </div>
-                </div>
-                <div class="act-item">
-                  <div class="act-dot-col">
-                    <div class="act-dot" style="background:var(--rose)"></div>
-                  </div>
-                  <div>
-                    <div class="act-txt"><b>Admin</b> blocked unauthorized access attempt</div>
-                    <div class="act-time">2 days ago</div>
-                  </div>
-                </div>
+
+            <!-- Card 3: Cleaning Performance -->
+            <div class="card hover-glow" onclick="navTo('cleaning')" style="cursor:pointer;padding:20px;display:flex;align-items:center;gap:16px;border:1px solid rgba(16,185,129,0.2);background:linear-gradient(135deg,rgba(16,185,129,0.05),var(--surface1));">
+              <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,rgba(16,185,129,0.2),rgba(5,150,105,0.2));display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">✨</div>
+              <div>
+                <div style="font-size:11px;font-weight:600;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">Cleaning Performance</div>
+                <div style="font-size:24px;font-weight:700;color:var(--text);line-height:1;">94.2%</div>
+                <div style="font-size:12px;color:var(--muted);margin-top:6px;">Success Rate</div>
               </div>
             </div>
+
+            <!-- Card 4: Feedback Overview -->
+            <div class="card hover-glow" onclick="navTo('feedback')" style="cursor:pointer;padding:20px;display:flex;align-items:center;gap:16px;border:1px solid rgba(245,158,11,0.2);background:linear-gradient(135deg,rgba(245,158,11,0.05),var(--surface1));">
+              <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,rgba(245,158,11,0.2),rgba(217,119,6,0.2));display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">💬</div>
+              <div>
+                <div style="font-size:11px;font-weight:600;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">Feedback Overview</div>
+                <div style="font-size:24px;font-weight:700;color:var(--text);line-height:1;display:flex;align-items:center;gap:6px;">4.3 <span style="font-size:16px;">⭐</span></div>
+                <div style="font-size:12px;color:var(--rose);margin-top:6px;">8 Unread</div>
+              </div>
+            </div>
+
           </div>
         </div>
 
@@ -1230,171 +1041,239 @@
           </div>
         </div>
 
-      <!-- USER TRACKING PAGE -->
-        <div id="pg-user_track" class="fade-in" style="display:none;">
+        <!-- DATA CLEANING PERFORMANCE PAGE -->
+        <div id="pg-cleaning_performance" class="fade-in" style="display:none;">
           <div class="section-head">
             <div>
-              <h2>User Tracking</h2>
-              <p>Monitor real-time user activity, logins, data uploads, and feature usage across the platform.</p>
-            </div><button class="tb-btn primary">+ Invite User</button>
+              <h2>Data Cleaning Performance</h2>
+              <p>Analyze the effectiveness, automation success rates, and quality improvements of the platform's cleaning engine.</p>
+            </div><button class="tb-btn primary">✨ Run Cleaning Engine</button>
           </div>
-          <div class="grid g-4" style="margin-bottom:20px;">
-            <div class="stat-card c">
-              <div class="stat-icon">👥</div>
-              <div class="stat-label">Total Users</div>
-              <div class="stat-val">64</div>
-              <div class="stat-change up">↑ 4 this month</div>
+
+          <!-- ── METRIC CARDS ── -->
+          <div class="grid g-4" style="margin-bottom:24px;">
+
+            <!-- Card 1: Missing Values Fixed -->
+            <div class="admin-metric-card">
+              <div class="admin-metric-header">
+                <div class="admin-metric-icon" style="background:linear-gradient(135deg,#06b6d4,#0891b2);">
+                  <svg width="20" height="20" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="9" y1="9" x2="15" y2="15"/><line x1="15" y1="9" x2="9" y2="15"/></svg>
+                </div>
+                <div class="admin-metric-trend up">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 8L6 4L10 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                  +12%
+                </div>
+              </div>
+              <div class="admin-metric-value">18.4K</div>
+              <div class="admin-metric-label">Missing Values Fixed</div>
+              <div class="admin-metric-sub">
+                <span style="color:#22d3ee;">Auto-imputed</span> across datasets
+              </div>
             </div>
-            <div class="stat-card e">
-              <div class="stat-icon">✅</div>
-              <div class="stat-label">Active Now</div>
-              <div class="stat-val">18</div>
-              <div class="stat-change neutral">Online</div>
+
+            <!-- Card 2: Duplicates Removed -->
+            <div class="admin-metric-card">
+              <div class="admin-metric-header">
+                <div class="admin-metric-icon" style="background:linear-gradient(135deg,#10b981,#059669);">
+                  <svg width="20" height="20" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>
+                </div>
+                <div class="admin-metric-trend up">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 8L6 4L10 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                  +4.1%
+                </div>
+              </div>
+              <div class="admin-metric-value">3,221</div>
+              <div class="admin-metric-label">Duplicates Removed</div>
+              <div class="admin-metric-sub">
+                <span style="color:#34d399;">Row-level</span> exact matches
+              </div>
             </div>
-            <div class="stat-card v">
-              <div class="stat-icon">🔑</div>
-              <div class="stat-label">Admins</div>
-              <div class="stat-val">3</div>
-              <div class="stat-change neutral">Superusers</div>
+
+            <!-- Card 3: Outliers Detected -->
+            <div class="admin-metric-card">
+              <div class="admin-metric-header">
+                <div class="admin-metric-icon" style="background:linear-gradient(135deg,#f59e0b,#d97706);">
+                  <svg width="20" height="20" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                </div>
+                <div class="admin-metric-trend neutral" style="color:#fbbf24;">
+                  Anomaly Flag
+                </div>
+              </div>
+              <div class="admin-metric-value">1,847</div>
+              <div class="admin-metric-label">Outliers Detected</div>
+              <div class="admin-metric-sub" style="color:var(--text);">
+                Using IQR & Z-Score methods
+              </div>
             </div>
-            <div class="stat-card a">
-              <div class="stat-icon">⏳</div>
-              <div class="stat-label">Pending Invites</div>
-              <div class="stat-val">7</div>
-              <div class="stat-change amber">Awaiting</div>
+
+            <!-- Card 4: Cleaning Success Rate -->
+            <div class="admin-metric-card">
+              <div class="admin-metric-header">
+                <div class="admin-metric-icon" style="background:linear-gradient(135deg,#22c55e,#16a34a);">
+                  <svg width="20" height="20" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                </div>
+                <div class="admin-metric-trend up" style="color:#4ade80;">
+                  Optimal
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;gap:16px;">
+                <div style="flex:1;">
+                  <div class="admin-metric-value" style="font-size:28px;">94.2%</div>
+                  <div class="admin-metric-label">Cleaning Success</div>
+                </div>
+                <div style="position:relative;width:52px;height:52px;flex-shrink:0;">
+                  <svg viewBox="0 0 36 36" style="width:52px;height:52px;transform:rotate(-90deg);">
+                    <circle cx="18" cy="18" r="15.9" fill="none" stroke="rgba(34,197,94,0.15)" stroke-width="3.5"/>
+                    <circle cx="18" cy="18" r="15.9" fill="none" stroke="#22c55e" stroke-width="3.5" stroke-dasharray="94.2, 5.8" stroke-linecap="round" style="filter:drop-shadow(0 0 4px rgba(34,197,94,0.5));"/>
+                  </svg>
+                </div>
+              </div>
             </div>
           </div>
-          <div class="card">
-            <div class="card-header">
-              <div class="card-title">All Users</div><input class="form-input" placeholder="Search users…"
-                style="width:220px;padding:7px 12px;font-size:13px;" />
+
+          <!-- ── CHARTS ROW ── -->
+          <div class="grid g-3">
+            <!-- Donut Chart -->
+            <div class="card" style="padding:24px; display:flex; flex-direction:column;">
+              <div class="card-header" style="margin-bottom:16px;">
+                <div>
+                  <div class="card-title">Cleaning Operations Distribution</div>
+                  <div style="font-size:12px;color:var(--muted);margin-top:2px;">Percentage breakdown of data issues resolved</div>
+                </div>
+              </div>
+              <div style="flex:1; display:flex; justify-content:center; align-items:center; position:relative; min-height:220px;">
+                <canvas id="admin-cleaning-donut" width="220" height="220"></canvas>
+                <div style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; pointer-events:none;">
+                  <span style="font-size:24px; font-weight:700; color:var(--text);">23K+</span>
+                  <span style="font-size:11px; color:var(--muted2);">Total Operations</span>
+                </div>
+              </div>
+              <!-- Legend for Donut -->
+              <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:20px; font-size:12px;">
+                <div style="display:flex; align-items:center; gap:6px;"><span style="width:10px;height:10px;border-radius:2px;background:#06b6d4;"></span> Missing Values (42%)</div>
+                <div style="display:flex; align-items:center; gap:6px;"><span style="width:10px;height:10px;border-radius:2px;background:#10b981;"></span> Duplicates (25%)</div>
+                <div style="display:flex; align-items:center; gap:6px;"><span style="width:10px;height:10px;border-radius:2px;background:#f59e0b;"></span> Outliers (18%)</div>
+                <div style="display:flex; align-items:center; gap:6px;"><span style="width:10px;height:10px;border-radius:2px;background:#8b5cf6;"></span> Formatting (15%)</div>
+              </div>
             </div>
-            <table>
-              <thead>
-                <tr>
-                  <th>User</th>
-                  <th>Role</th>
-                  <th>Last Active</th>
-                  <th>Datasets</th>
-                  <th>Status</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>
-                    <div style="display:flex;align-items:center;gap:10px;">
-                      <div class="sb-avatar" style="width:30px;height:30px;font-size:11px;">BO</div>
-                      <div>
-                        <div style="font-weight:600;">Bharathi O.</div>
-                        <div style="font-size:11px;color:var(--muted)">bharathi@org.com</div>
-                      </div>
-                    </div>
-                  </td>
-                  <td><span class="badge info">Admin</span></td>
-                  <td>Now</td>
-                  <td>48</td>
-                  <td><span class="badge done"><span class="badge-dot"></span>Active</span></td>
-                  <td><span class="icon-btn">✏️</span><span class="icon-btn">🔑</span></td>
-                </tr>
-                <tr>
-                  <td>
-                    <div style="display:flex;align-items:center;gap:10px;">
-                      <div class="sb-avatar"
-                        style="width:30px;height:30px;font-size:11px;background:linear-gradient(135deg,var(--emerald),#6ee7b7);">
-                        RK</div>
-                      <div>
-                        <div style="font-weight:600;">Ravi Kumar</div>
-                        <div style="font-size:11px;color:var(--muted)">ravi@org.com</div>
-                      </div>
-                    </div>
-                  </td>
-                  <td><span class="badge done">Analyst</span></td>
-                  <td>5h ago</td>
-                  <td>12</td>
-                  <td><span class="badge done"><span class="badge-dot"></span>Active</span></td>
-                  <td><span class="icon-btn">✏️</span><span class="icon-btn">🗑</span></td>
-                </tr>
-                <tr>
-                  <td>
-                    <div style="display:flex;align-items:center;gap:10px;">
-                      <div class="sb-avatar"
-                        style="width:30px;height:30px;font-size:11px;background:linear-gradient(135deg,var(--violet),#c4b5fd);">
-                        MS</div>
-                      <div>
-                        <div style="font-weight:600;">Meera Sharma</div>
-                        <div style="font-size:11px;color:var(--muted)">meera@org.com</div>
-                      </div>
-                    </div>
-                  </td>
-                  <td><span class="badge proc">Viewer</span></td>
-                  <td>1d ago</td>
-                  <td>3</td>
-                  <td><span class="badge done"><span class="badge-dot"></span>Active</span></td>
-                  <td><span class="icon-btn">✏️</span><span class="icon-btn">🗑</span></td>
-                </tr>
-                <tr>
-                  <td>
-                    <div style="display:flex;align-items:center;gap:10px;">
-                      <div class="sb-avatar"
-                        style="width:30px;height:30px;font-size:11px;background:linear-gradient(135deg,var(--amber),#fde68a);">
-                        AP</div>
-                      <div>
-                        <div style="font-weight:600;">Arjun P.</div>
-                        <div style="font-size:11px;color:var(--muted)">arjun@org.com</div>
-                      </div>
-                    </div>
-                  </td>
-                  <td><span class="badge done">Analyst</span></td>
-                  <td>3d ago</td>
-                  <td>7</td>
-                  <td><span class="badge err"><span class="badge-dot"></span>Suspended</span></td>
-                  <td><span class="icon-btn">✏️</span><span class="icon-btn">🔓</span></td>
-                </tr>
-              </tbody>
-            </table>
+            
+            <!-- Quality Trend Line Chart -->
+            <div class="card" style="grid-column: span 2; padding:24px;">
+              <div class="card-header" style="margin-bottom:16px;">
+                <div>
+                  <div class="card-title">Data Quality Improvement Trend</div>
+                  <div style="font-size:12px;color:var(--muted);margin-top:2px;">Quality score before vs after automated cleaning operations (Last 6 Months)</div>
+                </div>
+                <div style="display:flex;gap:8px;">
+                  <span style="display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--muted2);padding:4px 10px;background:var(--surface2);border-radius:6px;border:1px solid var(--border);">
+                    <span style="width:8px;height:8px;background:#22c55e;border-radius:50%;display:inline-block;"></span> After Cleaning
+                  </span>
+                  <span style="display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--muted2);padding:4px 10px;background:var(--surface2);border-radius:6px;border:1px solid var(--border);">
+                    <span style="width:8px;height:8px;background:var(--muted);border-radius:50%;display:inline-block;"></span> Before Cleaning
+                  </span>
+                </div>
+              </div>
+              <canvas id="admin-quality-chart" height="240" style="width:100%;"></canvas>
+            </div>
           </div>
         </div>
 
-        <!-- USER FEEDBACK PAGE -->
-        <div id="pg-user_feedback" class="fade-in" style="display:none;">
+        <!-- FEEDBACK OVERVIEW PAGE -->
+        <div id="pg-feedback_overview" class="fade-in" style="display:none;">
           <div class="section-head">
             <div>
-              <h2>User Feedbacks</h2>
-              <p>View and manage bug reports, feature requests, and general feedback submitted by users.</p>
-            </div><button class="tb-btn primary">Mark All Read</button>
+              <h2>Feedback Overview</h2>
+              <p>Quick summary of user feedback, platform issues, and customer satisfaction metrics.</p>
+            </div><button class="tb-btn primary">📥 Export Summary</button>
           </div>
 
-          <!-- Feedback Stats -->
-          <div class="grid g-4" style="margin-bottom:20px;">
-            <div class="stat-card c">
-              <div class="stat-icon">💬</div>
-              <div class="stat-label">Total Feedbacks</div>
-              <div class="stat-val">47</div>
-              <div class="stat-change up">↑ 8 this week</div>
+          <!-- 3 Metric Cards -->
+          <div class="grid" style="grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom:24px;">
+            <!-- Average Rating -->
+            <div class="admin-metric-card">
+              <div class="admin-metric-header">
+                <div class="admin-metric-icon" style="background:linear-gradient(135deg,#f59e0b,#d97706);">
+                  <svg width="20" height="20" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </div>
+                <div class="admin-metric-trend up">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 8L6 4L10 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                  +0.2
+                </div>
+              </div>
+              <div class="admin-metric-value">4.3 <span style="font-size:18px;color:#f59e0b;">⭐</span></div>
+              <div class="admin-metric-label">Average Rating</div>
+              <div class="admin-metric-sub">Customer satisfaction score</div>
             </div>
-            <div class="stat-card e">
-              <div class="stat-icon">⭐</div>
-              <div class="stat-label">Avg. Rating</div>
-              <div class="stat-val">4.3</div>
-              <div class="stat-change up">↑ 0.2</div>
+
+            <!-- Total Feedback -->
+            <div class="admin-metric-card">
+              <div class="admin-metric-header">
+                <div class="admin-metric-icon" style="background:linear-gradient(135deg,#3b82f6,#2563eb);">
+                  <svg width="20" height="20" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+                </div>
+                <div class="admin-metric-trend up">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 8L6 4L10 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                  +15%
+                </div>
+              </div>
+              <div class="admin-metric-value">1,248</div>
+              <div class="admin-metric-label">Total Feedback</div>
+              <div class="admin-metric-sub">Reviews and reports collected</div>
             </div>
-            <div class="stat-card v">
-              <div class="stat-icon">🐛</div>
-              <div class="stat-label">Bug Reports</div>
-              <div class="stat-val">5</div>
-              <div class="stat-change amber">2 Open</div>
+
+            <!-- Open Bugs -->
+            <div class="admin-metric-card">
+              <div class="admin-metric-header">
+                <div class="admin-metric-icon" style="background:linear-gradient(135deg,#ef4444,#dc2626);">
+                  <svg width="20" height="20" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                </div>
+                <div class="admin-metric-trend down" style="color:#ef4444;">
+                  Critical
+                </div>
+              </div>
+              <div class="admin-metric-value">5</div>
+              <div class="admin-metric-label">Open Bugs</div>
+              <div class="admin-metric-sub">Unresolved system issues</div>
             </div>
-            <div class="stat-card a">
-              <div class="stat-icon">💡</div>
-              <div class="stat-label">Feature Requests</div>
-              <div class="stat-val">12</div>
-              <div class="stat-change neutral">Under Review</div>
+          </div>
+
+          <!-- Insights Panel -->
+          <div class="card" style="padding:24px;">
+            <div class="card-header" style="margin-bottom:24px;">
+              <div>
+                <div class="card-title">Feedback Insights</div>
+                <div style="font-size:12px;color:var(--muted);margin-top:2px;">Sentiment distribution and trending categories</div>
+              </div>
+            </div>
+
+            <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 40px; align-items:center;">
+              <div>
+                <div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px;">
+                  <span style="color:#22c55e;font-weight:600;">Positive (78%)</span>
+                  <span style="color:#ef4444;font-weight:600;">Negative (22%)</span>
+                </div>
+                <div style="width:100%;height:8px;background:var(--surface2);border-radius:4px;overflow:hidden;display:flex;">
+                  <div style="width:78%;height:100%;background:linear-gradient(90deg,#22c55e,#16a34a);"></div>
+                  <div style="width:22%;height:100%;background:linear-gradient(90deg,#ef4444,#dc2626);"></div>
+                </div>
+
+                <div style="margin-top:24px;">
+                  <div style="font-size:12px;color:var(--muted);margin-bottom:8px;">Most Common Category</div>
+                  <div style="display:inline-block;padding:6px 12px;background:rgba(59,130,246,0.1);color:#3b82f6;border:1px solid rgba(59,130,246,0.2);border-radius:6px;font-size:13px;font-weight:500;">
+                    UI/UX Enhancements
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div style="font-size:12px;color:var(--muted);margin-bottom:8px;">Recent Sentiment Trend (Last 14 Days)</div>
+                <canvas id="admin-feedback-sparkline" style="width:100%;height:80px;"></canvas>
+              </div>
             </div>
           </div>
 
           <!-- Feedback Table -->
-          <div class="card">
+          <div class="card" style="margin-top:24px;">
             <div class="card-header">
               <div class="card-title">Recent Feedbacks</div><input class="form-input" placeholder="Search feedbacks…"
                 style="width:220px;padding:7px 12px;font-size:13px;" />
@@ -1511,6 +1390,8 @@
             </table>
           </div>
         </div>
+
+
       </div> <!-- END PAGE CONTENT (scrollable area) -->
     </div> <!-- END MAIN CONTENT AREA -->
   </div> <!-- END APP WRAPPER -->
@@ -1671,8 +1552,8 @@
       reports: { title: 'Reports', breadcrumb: 'DataVault / Reports', btn1: 'Schedule Report', btn2: '+ New Report' },
       users: { title: 'User Management', breadcrumb: 'DataVault / Users', btn1: 'Roles & Permissions', btn2: '+ Invite User' },
       dataset_monitoring: { title: 'Dataset Monitoring', breadcrumb: 'DataVault / Dataset Monitoring', btn1: 'Storage Details', btn2: '+ Setup Alert' },
-      user_track: { title: 'User Tracking', breadcrumb: 'DataVault / User Track', btn1: 'Export Logs', btn2: 'Refresh Activity' },
-      user_feedback: { title: 'User Feedbacks', breadcrumb: 'DataVault / Feedbacks', btn1: 'Export Feedback', btn2: 'Mark All Read' }
+      cleaning_performance: { title: 'Data Cleaning Performance', breadcrumb: 'DataVault / Cleaning Performance', btn1: 'Export Report', btn2: 'View Algorithms' },
+      feedback_overview: { title: 'Feedback Overview', breadcrumb: 'DataVault / Feedback Overview', btn1: 'Manage Categories', btn2: 'Export Logs' }
     };
 
     let currentPage = 'dashboard';
@@ -1707,6 +1588,12 @@
       }
       if (id === 'dataset_monitoring') {
         setTimeout(drawDatasetMonitoringCharts, 100);
+      }
+      if (id === 'cleaning_performance') {
+        setTimeout(drawCleaningPerformanceCharts, 300);
+      }
+      if (id === 'feedback_overview') {
+        setTimeout(drawFeedbackOverviewCharts, 300);
       }
     }
 
@@ -3028,6 +2915,215 @@
       datasetChartDrawn = true;
     }
 
+    /* ── DATA CLEANING PERFORMANCE CHARTS ── */
+    function drawCleaningPerformanceCharts() {
+      try {
+        const dpr = window.devicePixelRatio || 1;
+        const isLight = document.body.classList.contains('light-theme');
+        const textColor = isLight ? '#64748b' : '#94a3b8';
+        const gridColor = isLight ? 'rgba(0,0,0,0.05)' : 'rgba(255,255,255,0.05)';
+
+        // 1. Donut Chart (Cleaning Operations)
+        const donutCanvas = document.getElementById('admin-cleaning-donut');
+        if (donutCanvas) {
+          const dCtx = donutCanvas.getContext('2d');
+          const dW = 220, dH = 220;
+          donutCanvas.width = dW * dpr;
+          donutCanvas.height = dH * dpr;
+          dCtx.scale(dpr, dpr);
+          dCtx.clearRect(0, 0, dW, dH);
+
+          const cx = dW / 2, cy = dH / 2;
+          const outerR = 90, innerR = 65;
+          const segments = [
+            { val: 0.42, color: '#06b6d4' },
+            { val: 0.25, color: '#10b981' },
+            { val: 0.18, color: '#f59e0b' },
+            { val: 0.15, color: '#8b5cf6' }
+          ];
+
+          let startAngle = -Math.PI / 2;
+          segments.forEach(seg => {
+            const sliceAngle = seg.val * 2 * Math.PI;
+            dCtx.beginPath();
+            dCtx.arc(cx, cy, outerR, startAngle, startAngle + sliceAngle);
+            dCtx.arc(cx, cy, innerR, startAngle + sliceAngle, startAngle, true);
+            dCtx.closePath();
+            dCtx.fillStyle = seg.color;
+            dCtx.fill();
+            
+            dCtx.lineWidth = 3;
+            dCtx.strokeStyle = isLight ? '#ffffff' : '#0d1117';
+            dCtx.stroke();
+
+            startAngle += sliceAngle;
+          });
+        }
+
+      // 2. Trend Line Chart (Data Quality Improvement)
+      const trendCanvas = document.getElementById('admin-quality-chart');
+      if (trendCanvas) {
+        const tCtx = trendCanvas.getContext('2d');
+        const rect = trendCanvas.getBoundingClientRect();
+        const W = rect.width, H = 240;
+        trendCanvas.width = W * dpr;
+        trendCanvas.height = H * dpr;
+        tCtx.scale(dpr, dpr);
+        tCtx.clearRect(0, 0, W, H);
+
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
+        const beforeQuality = [62, 65, 61, 68, 64, 70];
+        const afterQuality = [94, 96, 95, 97, 98, 98.5];
+
+        const padL = 40, padR = 20, padT = 30, padB = 40;
+        const chartW = W - padL - padR, chartH = H - padT - padB;
+
+        // Grid
+        tCtx.beginPath();
+        tCtx.lineWidth = 1;
+        tCtx.strokeStyle = gridColor;
+        for (let i = 0; i <= 4; i++) {
+          let y = padT + (i / 4) * chartH;
+          tCtx.moveTo(padL, y);
+          tCtx.lineTo(padL + chartW, y);
+          tCtx.fillStyle = textColor;
+          tCtx.font = '11px sans-serif';
+          tCtx.textAlign = 'right';
+          tCtx.textBaseline = 'middle';
+          let val = Math.round(100 - (i / 4) * 100);
+          tCtx.fillText(val + '%', padL - 10, y);
+        }
+        tCtx.stroke();
+
+        // X-axis labels
+        tCtx.fillStyle = textColor;
+        tCtx.textAlign = 'center';
+        tCtx.textBaseline = 'top';
+        months.forEach((m, i) => {
+          const x = padL + (i / (months.length - 1)) * chartW;
+          tCtx.fillText(m, x, padT + chartH + 12);
+        });
+
+        // Helper to draw a line
+        const drawLine = (data, color, width, isDashed = false) => {
+          tCtx.beginPath();
+          tCtx.strokeStyle = color;
+          tCtx.lineWidth = width;
+          if (isDashed) tCtx.setLineDash([5, 5]);
+          else tCtx.setLineDash([]);
+          
+          const pts = data.map((v, i) => ({
+            x: padL + (i / (data.length - 1)) * chartW,
+            y: padT + chartH - (v / 100) * chartH
+          }));
+
+          tCtx.moveTo(pts[0].x, pts[0].y);
+          for (let i = 1; i < pts.length; i++) {
+            const cp = (pts[i].x - pts[i-1].x) * 0.4;
+            tCtx.bezierCurveTo(pts[i-1].x + cp, pts[i-1].y, pts[i].x - cp, pts[i].y, pts[i].x, pts[i].y);
+          }
+          tCtx.stroke();
+          tCtx.setLineDash([]); // reset
+
+          // Draw points
+          pts.forEach(p => {
+            tCtx.beginPath();
+            tCtx.arc(p.x, p.y, 4, 0, Math.PI * 2);
+            tCtx.fillStyle = isLight ? '#fff' : '#1e293b';
+            tCtx.fill();
+            tCtx.lineWidth = 2;
+            tCtx.stroke();
+          });
+        };
+
+        // Draw Before (Dashed line)
+        drawLine(beforeQuality, textColor, 2, true);
+        // Draw After (Solid Green line)
+        drawLine(afterQuality, '#22c55e', 3, false);
+
+        // Fill below After line
+        const afterPts = afterQuality.map((v, i) => ({
+          x: padL + (i / (afterQuality.length - 1)) * chartW,
+          y: padT + chartH - (v / 100) * chartH
+        }));
+        const grad = tCtx.createLinearGradient(0, padT, 0, padT + chartH);
+        grad.addColorStop(0, 'rgba(34, 197, 94, 0.2)');
+        grad.addColorStop(1, 'rgba(34, 197, 94, 0)');
+        
+        tCtx.beginPath();
+        tCtx.moveTo(afterPts[0].x, afterPts[0].y);
+        for (let i = 1; i < afterPts.length; i++) {
+          const cp = (afterPts[i].x - afterPts[i-1].x) * 0.4;
+          tCtx.bezierCurveTo(afterPts[i-1].x + cp, afterPts[i-1].y, afterPts[i].x - cp, afterPts[i].y, afterPts[i].x, afterPts[i].y);
+        }
+        tCtx.lineTo(padL + chartW, padT + chartH);
+        tCtx.lineTo(padL, padT + chartH);
+        tCtx.fillStyle = grad;
+        tCtx.fill();
+      }
+      } catch (e) {
+        console.error("Error drawing cleaning performance charts:", e);
+      }
+    }
+
+    /* ── FEEDBACK OVERVIEW CHARTS ── */
+    function drawFeedbackOverviewCharts() {
+      try {
+        const dpr = window.devicePixelRatio || 1;
+        const sparkCanvas = document.getElementById('admin-feedback-sparkline');
+        if (!sparkCanvas) return;
+
+        const sCtx = sparkCanvas.getContext('2d');
+        const rect = sparkCanvas.getBoundingClientRect();
+        const W = rect.width, H = 80;
+        
+        if (W === 0) return; // Prevent zero-width draw
+
+        sparkCanvas.width = W * dpr;
+        sparkCanvas.height = H * dpr;
+        sCtx.scale(dpr, dpr);
+        sCtx.clearRect(0, 0, W, H);
+
+        const data = [45, 52, 48, 60, 58, 65, 62, 70, 75, 72, 80, 85, 82, 88];
+        const min = Math.min(...data) - 10;
+        const max = Math.max(...data) + 10;
+        const range = max - min;
+
+        const grad = sCtx.createLinearGradient(0, 0, 0, H);
+        grad.addColorStop(0, 'rgba(34, 197, 94, 0.4)');
+        grad.addColorStop(1, 'rgba(34, 197, 94, 0)');
+
+        const pts = data.map((v, i) => ({
+          x: (i / (data.length - 1)) * W,
+          y: H - ((v - min) / range) * H
+        }));
+
+        sCtx.beginPath();
+        sCtx.moveTo(pts[0].x, pts[0].y);
+        for (let i = 1; i < pts.length; i++) {
+          const cp = (pts[i].x - pts[i-1].x) * 0.4;
+          sCtx.bezierCurveTo(pts[i-1].x + cp, pts[i-1].y, pts[i].x - cp, pts[i].y, pts[i].x, pts[i].y);
+        }
+
+        sCtx.lineTo(W, H);
+        sCtx.lineTo(0, H);
+        sCtx.fillStyle = grad;
+        sCtx.fill();
+
+        sCtx.beginPath();
+        sCtx.moveTo(pts[0].x, pts[0].y);
+        for (let i = 1; i < pts.length; i++) {
+          const cp = (pts[i].x - pts[i-1].x) * 0.4;
+          sCtx.bezierCurveTo(pts[i-1].x + cp, pts[i-1].y, pts[i].x - cp, pts[i].y, pts[i].x, pts[i].y);
+        }
+        sCtx.strokeStyle = '#22c55e';
+        sCtx.lineWidth = 3;
+        sCtx.stroke();
+      } catch(e) {
+        console.error("Error drawing feedback overview charts:", e);
+      }
+    }
+
     // Auto-restore saved theme on load
     (function() {
       const savedTheme = localStorage.getItem('theme') || 'dark';
@@ -3035,6 +3131,8 @@
         setTheme(savedTheme);
       });
     })();
+    // Removed canvas drawing functions for minimalist layout
+
   </script>
 
   <!-- URL UPLOAD MODAL -->

@@ -151,6 +151,7 @@
       analytics: { title: 'Analytics', breadcrumb: 'DataVault / Analytics', btn1: 'Export Charts', btn2: 'Refresh Data' },
       reports: { title: 'Reports', breadcrumb: 'DataVault / Reports', btn1: 'Schedule Report', btn2: '+ New Report' },
       users: { title: 'User Management', breadcrumb: 'DataVault / Users', btn1: 'Roles & Permissions', btn2: '+ Invite User' },
+      dataset_monitoring: { title: 'Dataset Monitoring', breadcrumb: 'DataVault / Dataset Monitoring', btn1: 'Storage Details', btn2: '+ Setup Alert' },
       user_track: { title: 'User Tracking', breadcrumb: 'DataVault / User Track', btn1: 'Export Logs', btn2: 'Refresh Activity' },
       user_feedback: { title: 'User Feedbacks', breadcrumb: 'DataVault / Feedbacks', btn1: 'Export Feedback', btn2: 'Mark All Read' }
     };
@@ -184,6 +185,9 @@
       }
       if (id === 'user_management') {
         setTimeout(drawAdminGrowthChart, 100);
+      }
+      if (id === 'dataset_monitoring') {
+        setTimeout(drawDatasetMonitoringCharts, 100);
       }
     }
 
@@ -1416,6 +1420,93 @@
       if (uploadedFileData) {
         if (currentPage === 'analytics') runAnalytics();
       }
+    }
+
+    // Auto-restore saved theme on load
+    /* ── ADMIN DATASET MONITORING CHART ── */
+    let datasetChartDrawn = false;
+    function drawDatasetMonitoringCharts() {
+      const canvas = document.getElementById('admin-dataset-chart');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const dpr = window.devicePixelRatio || 1;
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width * dpr;
+      canvas.height = 240 * dpr;
+      ctx.scale(dpr, dpr);
+      const W = rect.width, H = 240;
+
+      const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+      const uploadVol = [115, 142, 128, 165, 130, 85, 95];
+
+      const padL = 40, padR = 20, padT = 30, padB = 40;
+      const chartW = W - padL - padR;
+      const chartH = H - padT - padB;
+
+      ctx.clearRect(0, 0, W, H);
+      
+      const maxVal = Math.max(...uploadVol) * 1.2;
+      const isLight = document.body.classList.contains('light-theme');
+      const gridColor = isLight ? 'rgba(0,0,0,0.05)' : 'rgba(255,255,255,0.05)';
+      const textColor = isLight ? '#64748b' : '#94a3b8';
+
+      // Grid lines
+      ctx.beginPath();
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = gridColor;
+      for (let i = 0; i <= 4; i++) {
+        let y = padT + (i / 4) * chartH;
+        ctx.moveTo(padL, y);
+        ctx.lineTo(padL + chartW, y);
+        
+        ctx.fillStyle = textColor;
+        ctx.font = '11px sans-serif';
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'middle';
+        let val = Math.round(maxVal - (i / 4) * maxVal);
+        ctx.fillText(val, padL - 10, y);
+      }
+      ctx.stroke();
+
+      // Rounded Bars
+      const barW = 24;
+      days.forEach((day, i) => {
+        let x = padL + (i + 0.5) * (chartW / days.length);
+        let h = (uploadVol[i] / maxVal) * chartH;
+        let y = padT + chartH - h;
+
+        const barGrd = ctx.createLinearGradient(0, y, 0, padT + chartH);
+        barGrd.addColorStop(0, '#38bdf8');
+        barGrd.addColorStop(1, '#0284c7');
+
+        ctx.fillStyle = barGrd;
+        
+        // Draw rounded top bar
+        ctx.beginPath();
+        const r = 6;
+        ctx.moveTo(x - barW/2, padT + chartH);
+        ctx.lineTo(x - barW/2, y + r);
+        ctx.quadraticCurveTo(x - barW/2, y, x - barW/2 + r, y);
+        ctx.lineTo(x + barW/2 - r, y);
+        ctx.quadraticCurveTo(x + barW/2, y, x + barW/2, y + r);
+        ctx.lineTo(x + barW/2, padT + chartH);
+        ctx.fill();
+
+        // X-axis labels
+        ctx.fillStyle = textColor;
+        ctx.font = '11px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+        ctx.fillText(day, x, padT + chartH + 12);
+        
+        // Tooltip values above bars
+        ctx.fillStyle = isLight ? '#334155' : '#fff';
+        ctx.font = 'bold 11px sans-serif';
+        ctx.textBaseline = 'bottom';
+        ctx.fillText(uploadVol[i], x, y - 6);
+      });
+
+      datasetChartDrawn = true;
     }
 
     // Auto-restore saved theme on load

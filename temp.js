@@ -1,4 +1,5 @@
 
+
     var STEPS = [
       { t: 'Duplicate Row Removal', d: 'Identifying and removing identical rows based on all columns.' },
       { t: 'Missing Value Handling', d: 'Filling numeric columns with median, categorical with mode.' },
@@ -10,12 +11,15 @@
     document.addEventListener('DOMContentLoaded', () => {
       const role = localStorage.getItem('userRole') || 'user';
       const adminElements = document.querySelectorAll('.admin-only');
+      const userElements = document.querySelectorAll('.user-only');
       const roleLabel = document.querySelector('.sb-user-role');
       if (role === 'admin') {
         adminElements.forEach(el => el.style.display = '');
+        userElements.forEach(el => el.style.display = 'none');
         if (roleLabel) roleLabel.textContent = 'Admin · Free Plan';
       } else {
         adminElements.forEach(el => el.style.display = 'none');
+        userElements.forEach(el => el.style.display = '');
         if (roleLabel) roleLabel.textContent = 'User · Free Plan';
       }
 
@@ -147,6 +151,8 @@
       analytics: { title: 'Analytics', breadcrumb: 'DataVault / Analytics', btn1: 'Export Charts', btn2: 'Refresh Data' },
       reports: { title: 'Reports', breadcrumb: 'DataVault / Reports', btn1: 'Schedule Report', btn2: '+ New Report' },
       users: { title: 'User Management', breadcrumb: 'DataVault / Users', btn1: 'Roles & Permissions', btn2: '+ Invite User' },
+      user_track: { title: 'User Tracking', breadcrumb: 'DataVault / User Track', btn1: 'Export Logs', btn2: 'Refresh Activity' },
+      user_feedback: { title: 'User Feedbacks', breadcrumb: 'DataVault / Feedbacks', btn1: 'Export Feedback', btn2: 'Mark All Read' }
     };
 
     let currentPage = 'dashboard';
@@ -176,6 +182,130 @@
         isCleaning = false;
         runCleaningPipeline();
       }
+      if (id === 'user_management') {
+        setTimeout(drawAdminGrowthChart, 100);
+      }
+    }
+
+    /* ── ADMIN GROWTH CHART ── */
+    let adminChartDrawn = false;
+    function drawAdminGrowthChart() {
+      const canvas = document.getElementById('admin-growth-chart');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const dpr = window.devicePixelRatio || 1;
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width * dpr;
+      canvas.height = 220 * dpr;
+      ctx.scale(dpr, dpr);
+      const W = rect.width, H = 220;
+
+      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
+      const totalUsers = [820, 910, 980, 1060, 1150, 1248];
+      const newUsers = [45, 38, 52, 42, 56, 34];
+
+      const padL = 50, padR = 20, padT = 20, padB = 40;
+      const chartW = W - padL - padR;
+      const chartH = H - padT - padB;
+
+      ctx.clearRect(0, 0, W, H);
+
+      const maxVal = 1400;
+      const gridLines = [0, 200, 400, 600, 800, 1000, 1200, 1400];
+      ctx.strokeStyle = 'rgba(139, 92, 246, 0.08)';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([4, 4]);
+      gridLines.forEach(v => {
+        const y = padT + chartH - (v / maxVal) * chartH;
+        ctx.beginPath();
+        ctx.moveTo(padL, y);
+        ctx.lineTo(W - padR, y);
+        ctx.stroke();
+        ctx.fillStyle = '#64748b';
+        ctx.font = '11px Outfit, sans-serif';
+        ctx.textAlign = 'right';
+        ctx.fillText(v.toLocaleString(), padL - 8, y + 4);
+      });
+      ctx.setLineDash([]);
+
+      ctx.textAlign = 'center';
+      ctx.fillStyle = '#94a3b8';
+      ctx.font = '12px Outfit, sans-serif';
+      months.forEach((m, i) => {
+        const x = padL + (i / (months.length - 1)) * chartW;
+        ctx.fillText(m, x, H - 10);
+      });
+
+      const totalPts = totalUsers.map((v, i) => ({
+        x: padL + (i / (months.length - 1)) * chartW,
+        y: padT + chartH - (v / maxVal) * chartH
+      }));
+
+      const grad = ctx.createLinearGradient(0, padT, 0, padT + chartH);
+      grad.addColorStop(0, 'rgba(139, 92, 246, 0.2)');
+      grad.addColorStop(1, 'rgba(139, 92, 246, 0)');
+      ctx.beginPath();
+      ctx.moveTo(totalPts[0].x, totalPts[0].y);
+      for (let i = 1; i < totalPts.length; i++) {
+        const cp = (totalPts[i].x - totalPts[i-1].x) * 0.4;
+        ctx.bezierCurveTo(totalPts[i-1].x + cp, totalPts[i-1].y, totalPts[i].x - cp, totalPts[i].y, totalPts[i].x, totalPts[i].y);
+      }
+      ctx.lineTo(totalPts[totalPts.length-1].x, padT + chartH);
+      ctx.lineTo(totalPts[0].x, padT + chartH);
+      ctx.closePath();
+      ctx.fillStyle = grad;
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.moveTo(totalPts[0].x, totalPts[0].y);
+      for (let i = 1; i < totalPts.length; i++) {
+        const cp = (totalPts[i].x - totalPts[i-1].x) * 0.4;
+        ctx.bezierCurveTo(totalPts[i-1].x + cp, totalPts[i-1].y, totalPts[i].x - cp, totalPts[i].y, totalPts[i].x, totalPts[i].y);
+      }
+      ctx.strokeStyle = '#8b5cf6';
+      ctx.lineWidth = 2.5;
+      ctx.shadowColor = 'rgba(139, 92, 246, 0.4)';
+      ctx.shadowBlur = 8;
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+
+      totalPts.forEach(p => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
+        ctx.fillStyle = '#8b5cf6';
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(13, 10, 30, 0.8)';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+      });
+
+      const barW = 18;
+      const maxNew = 80;
+      newUsers.forEach((v, i) => {
+        const x = padL + (i / (months.length - 1)) * chartW;
+        const barH = (v / maxNew) * (chartH * 0.3);
+        const y = padT + chartH - barH;
+        const barGrad = ctx.createLinearGradient(0, y, 0, padT + chartH);
+        barGrad.addColorStop(0, 'rgba(6, 182, 212, 0.7)');
+        barGrad.addColorStop(1, 'rgba(6, 182, 212, 0.15)');
+        ctx.fillStyle = barGrad;
+        ctx.beginPath();
+        const r = 3;
+        ctx.moveTo(x - barW/2 + r, y);
+        ctx.arcTo(x + barW/2, y, x + barW/2, padT + chartH, r);
+        ctx.lineTo(x + barW/2, padT + chartH);
+        ctx.lineTo(x - barW/2, padT + chartH);
+        ctx.arcTo(x - barW/2, y, x - barW/2 + r, y, r);
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.fillStyle = '#06b6d4';
+        ctx.font = '10px Outfit, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(v, x, y - 6);
+      });
+
+      adminChartDrawn = true;
     }
 
     document.querySelectorAll('.sb-item').forEach(item => {

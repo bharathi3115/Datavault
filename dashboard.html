@@ -8,7 +8,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Montserrat:wght@600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
     rel="stylesheet" />
-  <link rel="stylesheet" href="style.css?v=2.0">
+  <link rel="stylesheet" href="style.css?v=2.1">
   <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
 
 </head>
@@ -39,21 +39,26 @@
         <div class="sb-item active" data-page="dashboard">
           <span class="sb-icon">📊</span> Dashboard
         </div>
-        <div class="sb-item" data-page="upload">
-          <span class="sb-icon">☁️</span> Upload Dataset
-        </div>
-        <div class="sb-item" data-page="cleaning">
-          <span class="sb-icon">🧹</span> Data Cleaning
-        </div>
-        <div class="sb-item" data-page="analytics">
-          <span class="sb-icon">📈</span> Analytics
-        </div>
-        <div class="sb-item" data-page="reports">
-          <span class="sb-icon">📋</span> Reports
+        <div class="user-only">
+          <div class="sb-item" data-page="upload">
+            <span class="sb-icon">☁️</span> Upload Dataset
+          </div>
+          <div class="sb-item" data-page="cleaning">
+            <span class="sb-icon">🧹</span> Data Cleaning
+          </div>
+          <div class="sb-item" data-page="analytics">
+            <span class="sb-icon">📈</span> Analytics
+          </div>
+          <div class="sb-item" data-page="reports">
+            <span class="sb-icon">📋</span> Reports
+          </div>
         </div>
 
         <div class="admin-only">
           <div class="sb-section">System</div>
+          <div class="sb-item" data-page="user_management">
+            <span class="sb-icon">👑</span> User Management
+          </div>
           <div class="sb-item" data-page="user_track">
             <span class="sb-icon">👣</span> User Track
           </div>
@@ -930,6 +935,154 @@
 
 
         <!-- ── USERS ── -->
+      
+        <!-- USER MANAGEMENT OVERVIEW PAGE -->
+        <div id="pg-user_management" class="fade-in" style="display:none;">
+          <div class="section-head">
+            <div>
+              <h2>User Management</h2>
+              <p>Platform-wide user insights, growth analytics, and subscription metrics.</p>
+            </div><button class="tb-btn primary" onclick="navTo('user_track')">👥 View All Users</button>
+          </div>
+
+          <!-- ── PREMIUM STAT CARDS ── -->
+          <div class="grid g-4" style="margin-bottom:24px;">
+
+            <!-- Card 1: Total Users -->
+            <div class="admin-metric-card">
+              <div class="admin-metric-header">
+                <div class="admin-metric-icon" style="background:linear-gradient(135deg,#8b5cf6,#6366f1);">
+                  <svg width="20" height="20" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                </div>
+                <div class="admin-metric-trend up">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 8L6 4L10 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                  +2.8%
+                </div>
+              </div>
+              <div class="admin-metric-value">1,248</div>
+              <div class="admin-metric-label">Total Users</div>
+              <div class="admin-metric-sub">
+                <span style="color:#a78bfa;">+34</span> new users this week
+              </div>
+              <div class="admin-sparkline">
+                <svg viewBox="0 0 120 32" preserveAspectRatio="none">
+                  <defs><linearGradient id="spark1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#8b5cf6" stop-opacity="0.3"/><stop offset="100%" stop-color="#8b5cf6" stop-opacity="0"/></linearGradient></defs>
+                  <path d="M0,28 L20,24 L40,20 L60,18 L80,12 L100,8 L120,4" fill="none" stroke="#8b5cf6" stroke-width="2"/>
+                  <path d="M0,28 L20,24 L40,20 L60,18 L80,12 L100,8 L120,4 L120,32 L0,32Z" fill="url(#spark1)"/>
+                </svg>
+              </div>
+            </div>
+
+            <!-- Card 2: New Users -->
+            <div class="admin-metric-card">
+              <div class="admin-metric-header">
+                <div class="admin-metric-icon" style="background:linear-gradient(135deg,#06b6d4,#0891b2);">
+                  <svg width="20" height="20" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+                </div>
+                <div class="admin-metric-trend up">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 8L6 4L10 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                  +12.5%
+                </div>
+              </div>
+              <div class="admin-metric-value">34</div>
+              <div class="admin-metric-label">New Users This Week</div>
+              <div class="admin-metric-sub">
+                vs <span style="color:var(--muted2);">28</span> last week
+              </div>
+              <div style="display:flex;align-items:flex-end;gap:4px;height:32px;margin-top:12px;">
+                <div style="flex:1;background:rgba(6,182,212,0.2);border-radius:3px 3px 0 0;height:40%;"></div>
+                <div style="flex:1;background:rgba(6,182,212,0.25);border-radius:3px 3px 0 0;height:55%;"></div>
+                <div style="flex:1;background:rgba(6,182,212,0.3);border-radius:3px 3px 0 0;height:45%;"></div>
+                <div style="flex:1;background:rgba(6,182,212,0.35);border-radius:3px 3px 0 0;height:70%;"></div>
+                <div style="flex:1;background:rgba(6,182,212,0.4);border-radius:3px 3px 0 0;height:60%;"></div>
+                <div style="flex:1;background:rgba(6,182,212,0.5);border-radius:3px 3px 0 0;height:85%;"></div>
+                <div style="flex:1;background:linear-gradient(180deg,#06b6d4,#0891b2);border-radius:3px 3px 0 0;height:100%;box-shadow:0 0 8px rgba(6,182,212,0.4);"></div>
+              </div>
+            </div>
+
+            <!-- Card 3: Active vs Inactive -->
+            <div class="admin-metric-card">
+              <div class="admin-metric-header">
+                <div class="admin-metric-icon" style="background:linear-gradient(135deg,#10b981,#059669);">
+                  <svg width="20" height="20" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                </div>
+                <div class="admin-metric-trend neutral" style="color:var(--muted2);">
+                  69.2% active
+                </div>
+              </div>
+              <div style="display:flex;align-items:baseline;gap:10px;">
+                <div class="admin-metric-value" style="font-size:28px;">864</div>
+                <span style="color:var(--muted);font-size:14px;">/ 1,248</span>
+              </div>
+              <div class="admin-metric-label">Active vs Inactive Users</div>
+              <div style="margin-top:14px;">
+                <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:6px;">
+                  <span style="color:#34d399;">● Active <strong>864</strong></span>
+                  <span style="color:#f87171;">● Inactive <strong>384</strong></span>
+                </div>
+                <div style="width:100%;height:8px;background:rgba(248,113,113,0.2);border-radius:10px;overflow:hidden;">
+                  <div style="width:69.2%;height:100%;background:linear-gradient(90deg,#10b981,#34d399);border-radius:10px;box-shadow:0 0 10px rgba(16,185,129,0.4);transition:width 1.5s ease;"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 4: Subscriptions -->
+            <div class="admin-metric-card">
+              <div class="admin-metric-header">
+                <div class="admin-metric-icon" style="background:linear-gradient(135deg,#f59e0b,#d97706);">
+                  <svg width="20" height="20" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                </div>
+                <div class="admin-metric-trend neutral" style="color:var(--muted2);">
+                  25.6% premium
+                </div>
+              </div>
+              <div class="admin-metric-value" style="font-size:28px;">1,248</div>
+              <div class="admin-metric-label">Subscription Breakdown</div>
+              <div style="display:flex;align-items:center;gap:16px;margin-top:12px;">
+                <div style="position:relative;width:52px;height:52px;flex-shrink:0;">
+                  <svg viewBox="0 0 36 36" style="width:52px;height:52px;transform:rotate(-90deg);">
+                    <circle cx="18" cy="18" r="15.9" fill="none" stroke="rgba(245,158,11,0.15)" stroke-width="3.5"/>
+                    <circle cx="18" cy="18" r="15.9" fill="none" stroke="#f59e0b" stroke-width="3.5" stroke-dasharray="25.6, 74.4" stroke-linecap="round" style="filter:drop-shadow(0 0 4px rgba(245,158,11,0.5));"/>
+                    <circle cx="18" cy="18" r="15.9" fill="none" stroke="#8b5cf6" stroke-width="3.5" stroke-dasharray="74.4, 25.6" stroke-dashoffset="-25.6" stroke-linecap="round" style="opacity:0.5;"/>
+                  </svg>
+                  <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:var(--text);">
+                    2 Plans
+                  </div>
+                </div>
+                <div style="flex:1;font-size:12px;">
+                  <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+                    <span style="color:#a78bfa;">● Free</span>
+                    <strong style="color:var(--text);">928</strong>
+                  </div>
+                  <div style="display:flex;justify-content:space-between;">
+                    <span style="color:#fbbf24;">★ Premium</span>
+                    <strong style="color:var(--text);">320</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── USER GROWTH TREND CHART ── -->
+          <div class="card" style="margin-bottom:24px;padding:24px;">
+            <div class="card-header" style="margin-bottom:16px;">
+              <div>
+                <div class="card-title">User Growth Trend</div>
+                <div style="font-size:12px;color:var(--muted);margin-top:2px;">Monthly platform user registrations · Jan – Jun 2026</div>
+              </div>
+              <div style="display:flex;gap:8px;">
+                <span style="display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--muted2);padding:4px 10px;background:var(--surface2);border-radius:6px;border:1px solid var(--border);">
+                  <span style="width:8px;height:8px;background:#8b5cf6;border-radius:50%;display:inline-block;"></span> Total Users
+                </span>
+                <span style="display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--muted2);padding:4px 10px;background:var(--surface2);border-radius:6px;border:1px solid var(--border);">
+                  <span style="width:8px;height:8px;background:#06b6d4;border-radius:50%;display:inline-block;"></span> New Users
+                </span>
+              </div>
+            </div>
+            <canvas id="admin-growth-chart" height="220" style="width:100%;"></canvas>
+          </div>
+        </div>
+
       <!-- USER TRACKING PAGE -->
         <div id="pg-user_track" class="fade-in" style="display:none;">
           <div class="section-head">
@@ -1230,12 +1383,15 @@
     document.addEventListener('DOMContentLoaded', () => {
       const role = localStorage.getItem('userRole') || 'user';
       const adminElements = document.querySelectorAll('.admin-only');
+      const userElements = document.querySelectorAll('.user-only');
       const roleLabel = document.querySelector('.sb-user-role');
       if (role === 'admin') {
         adminElements.forEach(el => el.style.display = '');
+        userElements.forEach(el => el.style.display = 'none');
         if (roleLabel) roleLabel.textContent = 'Admin · Free Plan';
       } else {
         adminElements.forEach(el => el.style.display = 'none');
+        userElements.forEach(el => el.style.display = '');
         if (roleLabel) roleLabel.textContent = 'User · Free Plan';
       }
 
@@ -1398,6 +1554,130 @@
         isCleaning = false;
         runCleaningPipeline();
       }
+      if (id === 'user_management') {
+        setTimeout(drawAdminGrowthChart, 100);
+      }
+    }
+
+    /* ── ADMIN GROWTH CHART ── */
+    let adminChartDrawn = false;
+    function drawAdminGrowthChart() {
+      const canvas = document.getElementById('admin-growth-chart');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const dpr = window.devicePixelRatio || 1;
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width * dpr;
+      canvas.height = 220 * dpr;
+      ctx.scale(dpr, dpr);
+      const W = rect.width, H = 220;
+
+      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
+      const totalUsers = [820, 910, 980, 1060, 1150, 1248];
+      const newUsers = [45, 38, 52, 42, 56, 34];
+
+      const padL = 50, padR = 20, padT = 20, padB = 40;
+      const chartW = W - padL - padR;
+      const chartH = H - padT - padB;
+
+      ctx.clearRect(0, 0, W, H);
+
+      const maxVal = 1400;
+      const gridLines = [0, 200, 400, 600, 800, 1000, 1200, 1400];
+      ctx.strokeStyle = 'rgba(139, 92, 246, 0.08)';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([4, 4]);
+      gridLines.forEach(v => {
+        const y = padT + chartH - (v / maxVal) * chartH;
+        ctx.beginPath();
+        ctx.moveTo(padL, y);
+        ctx.lineTo(W - padR, y);
+        ctx.stroke();
+        ctx.fillStyle = '#64748b';
+        ctx.font = '11px Outfit, sans-serif';
+        ctx.textAlign = 'right';
+        ctx.fillText(v.toLocaleString(), padL - 8, y + 4);
+      });
+      ctx.setLineDash([]);
+
+      ctx.textAlign = 'center';
+      ctx.fillStyle = '#94a3b8';
+      ctx.font = '12px Outfit, sans-serif';
+      months.forEach((m, i) => {
+        const x = padL + (i / (months.length - 1)) * chartW;
+        ctx.fillText(m, x, H - 10);
+      });
+
+      const totalPts = totalUsers.map((v, i) => ({
+        x: padL + (i / (months.length - 1)) * chartW,
+        y: padT + chartH - (v / maxVal) * chartH
+      }));
+
+      const grad = ctx.createLinearGradient(0, padT, 0, padT + chartH);
+      grad.addColorStop(0, 'rgba(139, 92, 246, 0.2)');
+      grad.addColorStop(1, 'rgba(139, 92, 246, 0)');
+      ctx.beginPath();
+      ctx.moveTo(totalPts[0].x, totalPts[0].y);
+      for (let i = 1; i < totalPts.length; i++) {
+        const cp = (totalPts[i].x - totalPts[i-1].x) * 0.4;
+        ctx.bezierCurveTo(totalPts[i-1].x + cp, totalPts[i-1].y, totalPts[i].x - cp, totalPts[i].y, totalPts[i].x, totalPts[i].y);
+      }
+      ctx.lineTo(totalPts[totalPts.length-1].x, padT + chartH);
+      ctx.lineTo(totalPts[0].x, padT + chartH);
+      ctx.closePath();
+      ctx.fillStyle = grad;
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.moveTo(totalPts[0].x, totalPts[0].y);
+      for (let i = 1; i < totalPts.length; i++) {
+        const cp = (totalPts[i].x - totalPts[i-1].x) * 0.4;
+        ctx.bezierCurveTo(totalPts[i-1].x + cp, totalPts[i-1].y, totalPts[i].x - cp, totalPts[i].y, totalPts[i].x, totalPts[i].y);
+      }
+      ctx.strokeStyle = '#8b5cf6';
+      ctx.lineWidth = 2.5;
+      ctx.shadowColor = 'rgba(139, 92, 246, 0.4)';
+      ctx.shadowBlur = 8;
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+
+      totalPts.forEach(p => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
+        ctx.fillStyle = '#8b5cf6';
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(13, 10, 30, 0.8)';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+      });
+
+      const barW = 18;
+      const maxNew = 80;
+      newUsers.forEach((v, i) => {
+        const x = padL + (i / (months.length - 1)) * chartW;
+        const barH = (v / maxNew) * (chartH * 0.3);
+        const y = padT + chartH - barH;
+        const barGrad = ctx.createLinearGradient(0, y, 0, padT + chartH);
+        barGrad.addColorStop(0, 'rgba(6, 182, 212, 0.7)');
+        barGrad.addColorStop(1, 'rgba(6, 182, 212, 0.15)');
+        ctx.fillStyle = barGrad;
+        ctx.beginPath();
+        const r = 3;
+        ctx.moveTo(x - barW/2 + r, y);
+        ctx.arcTo(x + barW/2, y, x + barW/2, padT + chartH, r);
+        ctx.lineTo(x + barW/2, padT + chartH);
+        ctx.lineTo(x - barW/2, padT + chartH);
+        ctx.arcTo(x - barW/2, y, x - barW/2 + r, y, r);
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.fillStyle = '#06b6d4';
+        ctx.font = '10px Outfit, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(v, x, y - 6);
+      });
+
+      adminChartDrawn = true;
     }
 
     document.querySelectorAll('.sb-item').forEach(item => {

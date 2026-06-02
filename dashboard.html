@@ -118,64 +118,167 @@
       <div class="content">
 
         <!-- ── DASHBOARD ── -->
+        <!-- ── DASHBOARD ── -->
         <div id="pg-dashboard" class="fade-in">
-          <!-- Welcome Section -->
-          <div class="section-head" style="margin-bottom:32px;">
-            <div>
-              <h2 id="dashboard-greeting" style="font-size:26px;font-weight:700;background:linear-gradient(90deg,#fff,#94a3b8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Good Afternoon 👋 Welcome back, Admin</h2>
-              <p style="color:var(--muted);font-size:15px;margin-top:6px;">DataVault Analytics Platform • Executive Overview</p>
+          
+          <!-- ADMIN DASHBOARD -->
+          <div class="admin-only">
+            <!-- Welcome Section -->
+            <div class="section-head" style="margin-bottom:32px;">
+              <div>
+                <h2 id="dashboard-greeting" style="font-size:26px;font-weight:700;background:linear-gradient(90deg,#fff,#94a3b8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Good Afternoon 👋 Welcome back, Admin</h2>
+                <p style="color:var(--muted);font-size:15px;margin-top:6px;">DataVault Analytics Platform • Executive Overview</p>
+              </div>
+              <div style="display:flex;gap:12px;align-items:center;">
+                <div class="badge done" style="padding:8px 14px;font-size:13px;"><span class="badge-dot" style="background:var(--emerald);box-shadow:0 0 8px var(--emerald);"></span>System Online</div>
+                <button class="tb-btn outline" onclick="navTo('upload')">☁️ Upload Dataset</button>
+                <button class="tb-btn outline" onclick="navTo('users')">👥 Add User</button>
+                <button class="tb-btn primary" onclick="navTo('reports')">📈 Generate Report</button>
+              </div>
             </div>
-            <div style="display:flex;gap:12px;align-items:center;">
-              <div class="badge done" style="padding:8px 14px;font-size:13px;"><span class="badge-dot" style="background:var(--emerald);box-shadow:0 0 8px var(--emerald);"></span>System Online</div>
-              <button class="tb-btn outline" onclick="navTo('upload')">☁️ Upload Dataset</button>
-              <button class="tb-btn outline" onclick="navTo('users')">👥 Add User</button>
-              <button class="tb-btn primary" onclick="navTo('reports')">📈 Generate Report</button>
+
+            <!-- 4 Compact Module Cards -->
+            <div class="grid g-4" style="margin-bottom:40px;">
+              
+              <!-- Card 1: User Management -->
+              <div class="card hover-glow" onclick="navTo('users')" style="cursor:pointer;padding:20px;display:flex;align-items:center;gap:16px;border:1px solid rgba(56,189,248,0.2);background:linear-gradient(135deg,rgba(56,189,248,0.05),var(--surface1));">
+                <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,rgba(56,189,248,0.2),rgba(2,132,199,0.2));display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">👥</div>
+                <div>
+                  <div style="font-size:11px;font-weight:600;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">User Management</div>
+                  <div style="font-size:24px;font-weight:700;color:var(--text);line-height:1;">1,248</div>
+                  <div style="font-size:12px;color:var(--emerald);margin-top:6px;display:flex;align-items:center;gap:4px;">↑ +34 This Week</div>
+                </div>
+              </div>
+
+              <!-- Card 2: Dataset Monitoring -->
+              <div class="card hover-glow" onclick="navTo('datasets')" style="cursor:pointer;padding:20px;display:flex;align-items:center;gap:16px;border:1px solid rgba(167,139,250,0.2);background:linear-gradient(135deg,rgba(167,139,250,0.05),var(--surface1));">
+                <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,rgba(167,139,250,0.2),rgba(124,58,237,0.2));display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">📂</div>
+                <div>
+                  <div style="font-size:11px;font-weight:600;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">Dataset Monitoring</div>
+                  <div style="font-size:24px;font-weight:700;color:var(--text);line-height:1;">4,892</div>
+                  <div style="font-size:12px;color:var(--muted);margin-top:6px;">124 Today</div>
+                </div>
+              </div>
+
+              <!-- Card 3: Cleaning Performance -->
+              <div class="card hover-glow" onclick="navTo('cleaning')" style="cursor:pointer;padding:20px;display:flex;align-items:center;gap:16px;border:1px solid rgba(16,185,129,0.2);background:linear-gradient(135deg,rgba(16,185,129,0.05),var(--surface1));">
+                <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,rgba(16,185,129,0.2),rgba(5,150,105,0.2));display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">✨</div>
+                <div>
+                  <div style="font-size:11px;font-weight:600;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">Cleaning Performance</div>
+                  <div style="font-size:24px;font-weight:700;color:var(--text);line-height:1;">94.2%</div>
+                  <div style="font-size:12px;color:var(--muted);margin-top:6px;">Success Rate</div>
+                </div>
+              </div>
+
+              <!-- Card 4: Feedback Overview -->
+              <div class="card hover-glow" onclick="navTo('feedback')" style="cursor:pointer;padding:20px;display:flex;align-items:center;gap:16px;border:1px solid rgba(245,158,11,0.2);background:linear-gradient(135deg,rgba(245,158,11,0.05),var(--surface1));">
+                <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,rgba(245,158,11,0.2),rgba(217,119,6,0.2));display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">💬</div>
+                <div>
+                  <div style="font-size:11px;font-weight:600;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">Feedback Overview</div>
+                  <div style="font-size:24px;font-weight:700;color:var(--text);line-height:1;display:flex;align-items:center;gap:6px;">4.3 <span style="font-size:16px;">⭐</span></div>
+                  <div style="font-size:12px;color:var(--rose);margin-top:6px;">8 Unread</div>
+                </div>
+              </div>
+
             </div>
           </div>
 
-          <!-- 4 Compact Module Cards -->
-          <div class="grid g-4" style="margin-bottom:40px;">
-            
-            <!-- Card 1: User Management -->
-            <div class="card hover-glow" onclick="navTo('users')" style="cursor:pointer;padding:20px;display:flex;align-items:center;gap:16px;border:1px solid rgba(56,189,248,0.2);background:linear-gradient(135deg,rgba(56,189,248,0.05),var(--surface1));">
-              <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,rgba(56,189,248,0.2),rgba(2,132,199,0.2));display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">👥</div>
+          <!-- USER DASHBOARD -->
+          <div class="user-only" style="display:none;">
+            <!-- Welcome Section -->
+            <div class="section-head" style="margin-bottom:32px;">
               <div>
-                <div style="font-size:11px;font-weight:600;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">User Management</div>
-                <div style="font-size:24px;font-weight:700;color:var(--text);line-height:1;">1,248</div>
-                <div style="font-size:12px;color:var(--emerald);margin-top:6px;display:flex;align-items:center;gap:4px;">↑ +34 This Week</div>
+                <h2 id="user-dashboard-greeting" style="font-size:26px;font-weight:700;background:linear-gradient(90deg,#fff,#94a3b8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Good morning, Bharathi 👋</h2>
+                <p style="color:var(--muted);font-size:15px;margin-top:6px;">Here's what's happening with your data platform today.</p>
+              </div>
+              <div style="display:flex;gap:12px;align-items:center;">
+                <div class="badge" style="padding:6px 14px;font-size:13px;background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.2);color:#38bdf8;border-radius:14px;font-weight:600;"><span class="badge-dot" style="background:#38bdf8;box-shadow:0 0 8px #38bdf8;"></span>Live</div>
               </div>
             </div>
 
-            <!-- Card 2: Dataset Monitoring -->
-            <div class="card hover-glow" onclick="navTo('datasets')" style="cursor:pointer;padding:20px;display:flex;align-items:center;gap:16px;border:1px solid rgba(167,139,250,0.2);background:linear-gradient(135deg,rgba(167,139,250,0.05),var(--surface1));">
-              <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,rgba(167,139,250,0.2),rgba(124,58,237,0.2));display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">📂</div>
-              <div>
-                <div style="font-size:11px;font-weight:600;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">Dataset Monitoring</div>
-                <div style="font-size:24px;font-weight:700;color:var(--text);line-height:1;">4,892</div>
-                <div style="font-size:12px;color:var(--muted);margin-top:6px;">124 Today</div>
+            <!-- Top 4 KPI Cards Grid -->
+            <div class="grid g-4" style="margin-bottom:24px;">
+              <!-- User Card 1 -->
+              <div class="card hover-glow" style="padding:24px;border-top:2px solid #38bdf8;background:linear-gradient(180deg,rgba(56,189,248,0.03),var(--surface1));">
+                <div style="width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;margin-bottom:20px;font-size:18px;">📂</div>
+                <div style="font-size:10px;font-weight:600;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Total Datasets</div>
+                <div style="font-size:32px;font-weight:700;color:var(--text);line-height:1;margin-bottom:12px;">1,248</div>
+                <div style="font-size:12px;color:var(--emerald);">↑ 12.4% this month</div>
+              </div>
+              <!-- User Card 2 -->
+              <div class="card hover-glow" style="padding:24px;border-top:2px solid #10b981;background:linear-gradient(180deg,rgba(16,185,129,0.03),var(--surface1));">
+                <div style="width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;margin-bottom:20px;font-size:18px;">✅</div>
+                <div style="font-size:10px;font-weight:600;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Records Processed</div>
+                <div style="font-size:32px;font-weight:700;color:var(--text);line-height:1;margin-bottom:12px;">98.6K</div>
+                <div style="font-size:12px;color:var(--emerald);">↑ 8.1% this week</div>
+              </div>
+              <!-- User Card 3 -->
+              <div class="card hover-glow" style="padding:24px;border-top:2px solid #a78bfa;background:linear-gradient(180deg,rgba(167,139,250,0.03),var(--surface1));">
+                <div style="width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;margin-bottom:20px;font-size:18px;">📈</div>
+                <div style="font-size:10px;font-weight:600;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Reports Generated</div>
+                <div style="font-size:32px;font-weight:700;color:var(--text);line-height:1;margin-bottom:12px;">342</div>
+                <div style="font-size:12px;color:var(--emerald);">↑ 5.7% this week</div>
+              </div>
+              <!-- User Card 4 -->
+              <div class="card hover-glow" style="padding:24px;border-top:2px solid #f59e0b;background:linear-gradient(180deg,rgba(245,158,11,0.03),var(--surface1));">
+                <div style="width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;margin-bottom:20px;font-size:18px;">👥</div>
+                <div style="font-size:10px;font-weight:600;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Active Users</div>
+                <div style="font-size:32px;font-weight:700;color:var(--text);line-height:1;margin-bottom:12px;">64</div>
+                <div style="font-size:12px;color:var(--rose);">↓ 2.1% today</div>
               </div>
             </div>
 
-            <!-- Card 3: Cleaning Performance -->
-            <div class="card hover-glow" onclick="navTo('cleaning')" style="cursor:pointer;padding:20px;display:flex;align-items:center;gap:16px;border:1px solid rgba(16,185,129,0.2);background:linear-gradient(135deg,rgba(16,185,129,0.05),var(--surface1));">
-              <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,rgba(16,185,129,0.2),rgba(5,150,105,0.2));display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">✨</div>
-              <div>
-                <div style="font-size:11px;font-weight:600;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">Cleaning Performance</div>
-                <div style="font-size:24px;font-weight:700;color:var(--text);line-height:1;">94.2%</div>
-                <div style="font-size:12px;color:var(--muted);margin-top:6px;">Success Rate</div>
+            <!-- Main Content Grid -->
+            <div class="grid" style="grid-template-columns: 2.5fr 1fr; gap:24px; margin-bottom:40px;">
+              <!-- Left Column: Activity Chart & Bottom Cards -->
+              <div style="display:flex;flex-direction:column;gap:24px;">
+                <!-- Weekly Processing Activity Chart -->
+                <div class="card" style="padding:24px;flex:1;">
+                  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+                    <div style="font-size:15px;font-weight:600;color:var(--text);">Weekly Processing Activity</div>
+                    <div style="font-size:12px;color:#38bdf8;cursor:pointer;">View details →</div>
+                  </div>
+                  <div style="position:relative;width:100%;height:180px;background:rgba(255,255,255,0.02);border-radius:12px;padding:20px;box-sizing:border-box;">
+                    <canvas id="user-activity-chart" style="width:100%;height:100%;"></canvas>
+                  </div>
+                </div>
+                
+                <!-- Bottom 3 Compact Cards -->
+                <div class="grid" style="grid-template-columns:repeat(3, 1fr);gap:24px;">
+                  <div class="card" style="padding:20px;">
+                    <div style="font-size:10px;font-weight:600;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Avg Quality</div>
+                    <div style="font-size:24px;font-weight:700;color:var(--text);margin-bottom:4px;">94.2%</div>
+                    <div style="font-size:11px;color:var(--emerald);">↑ 2.1%</div>
+                  </div>
+                  <div class="card" style="padding:20px;">
+                    <div style="font-size:10px;font-weight:600;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Missing Fixed</div>
+                    <div style="font-size:24px;font-weight:700;color:var(--text);margin-bottom:4px;">18.4K</div>
+                    <div style="font-size:11px;color:var(--muted);">This week</div>
+                  </div>
+                  <div class="card" style="padding:20px;">
+                    <div style="font-size:10px;font-weight:600;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Duplicates</div>
+                    <div style="font-size:24px;font-weight:700;color:var(--text);margin-bottom:4px;">3,221</div>
+                    <div style="font-size:11px;color:var(--muted);">Removed</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right Column: Dataset Formats Donut Chart -->
+              <div class="card" style="padding:24px;display:flex;flex-direction:column;">
+                <div style="font-size:15px;font-weight:600;color:var(--text);margin-bottom:30px;">Dataset Formats</div>
+                <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+                  <div style="position:relative;width:160px;height:160px;margin-bottom:40px;">
+                    <canvas id="user-formats-chart" style="width:100%;height:100%;"></canvas>
+                  </div>
+                  <div style="width:100%;display:flex;flex-direction:column;gap:12px;">
+                    <div style="display:flex;justify-content:space-between;font-size:13px;"><div style="display:flex;align-items:center;gap:8px;color:var(--muted);"><span style="width:8px;height:8px;border-radius:50%;background:#38bdf8;"></span> CSV</div><div style="color:var(--text);font-weight:600;">52%</div></div>
+                    <div style="display:flex;justify-content:space-between;font-size:13px;"><div style="display:flex;align-items:center;gap:8px;color:var(--muted);"><span style="width:8px;height:8px;border-radius:50%;background:#a78bfa;"></span> XLSX</div><div style="color:var(--text);font-weight:600;">24%</div></div>
+                    <div style="display:flex;justify-content:space-between;font-size:13px;"><div style="display:flex;align-items:center;gap:8px;color:var(--muted);"><span style="width:8px;height:8px;border-radius:50%;background:#10b981;"></span> JSON</div><div style="color:var(--text);font-weight:600;">16%</div></div>
+                    <div style="display:flex;justify-content:space-between;font-size:13px;"><div style="display:flex;align-items:center;gap:8px;color:var(--muted);"><span style="width:8px;height:8px;border-radius:50%;background:#f59e0b;"></span> Other</div><div style="color:var(--text);font-weight:600;">8%</div></div>
+                  </div>
+                </div>
               </div>
             </div>
-
-            <!-- Card 4: Feedback Overview -->
-            <div class="card hover-glow" onclick="navTo('feedback')" style="cursor:pointer;padding:20px;display:flex;align-items:center;gap:16px;border:1px solid rgba(245,158,11,0.2);background:linear-gradient(135deg,rgba(245,158,11,0.05),var(--surface1));">
-              <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,rgba(245,158,11,0.2),rgba(217,119,6,0.2));display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">💬</div>
-              <div>
-                <div style="font-size:11px;font-weight:600;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">Feedback Overview</div>
-                <div style="font-size:24px;font-weight:700;color:var(--text);line-height:1;display:flex;align-items:center;gap:6px;">4.3 <span style="font-size:16px;">⭐</span></div>
-                <div style="font-size:12px;color:var(--rose);margin-top:6px;">8 Unread</div>
-              </div>
-            </div>
-
           </div>
         </div>
 
@@ -1425,7 +1528,8 @@
 
       // Dynamic Greeting
       const greetingEl = document.getElementById('dashboard-greeting');
-      if (greetingEl) {
+      const userGreetingEl = document.getElementById('user-dashboard-greeting');
+      if (greetingEl || userGreetingEl) {
         const hour = new Date().getHours();
         let greeting = 'Good morning';
         if (hour >= 12 && hour < 17) {
@@ -1435,7 +1539,18 @@
         } else if (hour >= 22 || hour < 5) {
           greeting = 'Good night';
         }
-        greetingEl.innerHTML = `${greeting} 👋`;
+        if (greetingEl) {
+           greetingEl.style.background = 'none';
+           greetingEl.style.webkitTextFillColor = 'initial';
+           greetingEl.style.webkitBackgroundClip = 'initial';
+           greetingEl.innerHTML = `<span style="background:linear-gradient(90deg,#fff,#94a3b8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">${greeting}</span> 👋 <span style="background:linear-gradient(90deg,#fff,#94a3b8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Welcome back, Admin</span>`;
+        }
+        if (userGreetingEl) {
+           userGreetingEl.style.background = 'none';
+           userGreetingEl.style.webkitTextFillColor = 'initial';
+           userGreetingEl.style.webkitBackgroundClip = 'initial';
+           userGreetingEl.innerHTML = `<span style="background:linear-gradient(90deg,#fff,#94a3b8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">${greeting}, Bharathi</span> <span style="display: inline-block; transform-origin: 70% 70%; animation: wave 2s infinite; font-size: 0.9em;">👋</span>`;
+        }
       }
     });
 
@@ -3131,7 +3246,293 @@
         setTheme(savedTheme);
       });
     })();
+    // Add user charts function
+    let userDashboardChartsDrawn = false;
+    let userChartsAnimFrame = null;
+    
+    function drawUserDashboardCharts() {
+      if(userDashboardChartsDrawn) return;
+      const role = localStorage.getItem('userRole');
+      if(role === 'admin') return;
+
+      try {
+        const activityCanvas = document.getElementById('user-activity-chart');
+        const formatCanvas = document.getElementById('user-formats-chart');
+        if (!activityCanvas || !formatCanvas) return;
+        
+        // Force display block to help browser calculate dimensions
+        activityCanvas.style.display = 'block';
+        formatCanvas.style.display = 'block';
+
+        const actW = activityCanvas.offsetWidth || activityCanvas.parentElement.clientWidth - 40;
+        const actH = activityCanvas.offsetHeight || activityCanvas.parentElement.clientHeight - 40;
+        const fmtW = formatCanvas.offsetWidth || formatCanvas.parentElement.clientWidth;
+        const fmtH = formatCanvas.offsetHeight || formatCanvas.parentElement.clientHeight;
+        
+        if (actW <= 0 || actH <= 0 || fmtW <= 0 || fmtH <= 0) {
+          setTimeout(drawUserDashboardCharts, 100);
+          return;
+        }
+        
+        userDashboardChartsDrawn = true;
+        if (userChartsAnimFrame) cancelAnimationFrame(userChartsAnimFrame);
+
+        const dpr = window.devicePixelRatio || 1;
+        activityCanvas.width = actW * dpr;
+        activityCanvas.height = actH * dpr;
+        formatCanvas.width = fmtW * dpr;
+        formatCanvas.height = fmtH * dpr;
+        
+        const actCtx = activityCanvas.getContext('2d');
+        const fmtCtx = formatCanvas.getContext('2d');
+        actCtx.scale(dpr, dpr);
+        fmtCtx.scale(dpr, dpr);
+        
+        const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+        const values = [45, 62, 85, 55, 92, 40, 75]; // realistic values
+        const data = [
+          {val: 52, color: '#38bdf8', label: 'CSV'},
+          {val: 24, color: '#a78bfa', label: 'XLSX'},
+          {val: 16, color: '#10b981', label: 'JSON'},
+          {val: 8,  color: '#f59e0b', label: 'Other'}
+        ];
+        
+        let startTime = null;
+        const duration = 1200;
+        
+        // Interactive State
+        let hoverX = -1, hoverY = -1;
+        let hoveredBar = -1;
+        let hoveredArc = -1;
+        
+        const draw = (timestamp) => {
+          try {
+            if (!startTime) startTime = timestamp;
+            const progress = Math.min((timestamp - startTime) / duration, 1);
+            const ease = 1 - Math.pow(1 - progress, 3); // cubic ease out
+            
+            actCtx.clearRect(0, 0, actW, actH);
+            fmtCtx.clearRect(0, 0, fmtW, fmtH);
+            
+            // --- Draw Activity Bar Chart ---
+            const barW = Math.max(1, (actW / days.length) * 0.6);
+            const gap = (actW / days.length) * 0.4;
+            
+            // Draw grid lines
+            actCtx.strokeStyle = 'rgba(255,255,255,0.05)';
+            actCtx.lineWidth = 1;
+            for(let i=1; i<=4; i++) {
+               let yLine = Math.max(0, (actH - 40) * (i/4));
+               actCtx.beginPath();
+               actCtx.moveTo(0, yLine);
+               actCtx.lineTo(actW, yLine);
+               actCtx.stroke();
+            }
+            
+            for(let i=0; i<days.length; i++) {
+              const x = i * (barW + gap) + gap/2;
+              const targetH = Math.max(0, (values[i] / 100) * (actH - 40));
+              const h = Math.max(0, targetH * ease);
+              const y = Math.max(0, actH - 30 - h);
+              
+              const isHovered = (hoveredBar === i && progress === 1);
+              
+              actCtx.save();
+              const grad = actCtx.createLinearGradient(0, y, 0, Math.max(1, actH - 30));
+              if (isHovered) {
+                 grad.addColorStop(0, '#bae6fd');
+                 grad.addColorStop(1, '#38bdf8');
+                 actCtx.shadowColor = '#38bdf8';
+                 actCtx.shadowBlur = 15;
+              } else {
+                 grad.addColorStop(0, '#38bdf8');
+                 grad.addColorStop(1, '#0284c7');
+              }
+              actCtx.fillStyle = grad;
+              
+              actCtx.beginPath();
+              if (actCtx.roundRect) {
+                actCtx.roundRect(x, y, barW, h, [6, 6, 0, 0]);
+              } else {
+                actCtx.rect(x, y, barW, h);
+              }
+              actCtx.fill();
+              actCtx.restore();
+              
+              // Hover Tooltip
+              if (isHovered) {
+                 actCtx.fillStyle = '#fff';
+                 actCtx.font = 'bold 12px Outfit';
+                 actCtx.textAlign = 'center';
+                 actCtx.fillText(values[i] + 'K', x + barW/2, y - 10);
+              }
+              
+              actCtx.fillStyle = '#64748b';
+              actCtx.font = '11px Outfit, sans-serif';
+              actCtx.textAlign = 'center';
+              actCtx.fillText(days[i], x + barW/2, actH - 5);
+            }
+            
+            // --- Draw Format Donut Chart ---
+            const cx = fmtW / 2;
+            const cy = fmtH / 2;
+            const radius = Math.max(1, Math.min(cx, cy) - 20);
+            
+            let startAngle = -Math.PI / 2;
+            for(let i=0; i<data.length; i++) {
+              const d = data[i];
+              const sliceAngle = Math.max(0, (d.val / 100) * 2 * Math.PI * ease);
+              
+              const isHovered = (hoveredArc === i && progress === 1);
+              
+              fmtCtx.save();
+              fmtCtx.beginPath();
+              fmtCtx.arc(cx, cy, radius, startAngle, startAngle + sliceAngle);
+              fmtCtx.lineWidth = isHovered ? 20 : 16;
+              fmtCtx.strokeStyle = d.color;
+              if (isHovered) {
+                 fmtCtx.shadowColor = d.color;
+                 fmtCtx.shadowBlur = 12;
+              }
+              fmtCtx.stroke();
+              fmtCtx.restore();
+              
+              startAngle += sliceAngle;
+            }
+            
+            // Center text on donut
+            if (progress === 1 && hoveredArc >= 0) {
+               fmtCtx.fillStyle = '#fff';
+               fmtCtx.font = 'bold 18px Outfit';
+               fmtCtx.textAlign = 'center';
+               fmtCtx.textBaseline = 'middle';
+               fmtCtx.fillText(data[hoveredArc].val + '%', cx, cy - 8);
+               fmtCtx.fillStyle = '#94a3b8';
+               fmtCtx.font = '11px Outfit';
+               fmtCtx.fillText(data[hoveredArc].label, cx, cy + 12);
+            } else if (progress === 1) {
+               fmtCtx.fillStyle = '#fff';
+               fmtCtx.font = 'bold 16px Outfit';
+               fmtCtx.textAlign = 'center';
+               fmtCtx.textBaseline = 'middle';
+               fmtCtx.fillText('100%', cx, cy - 8);
+               fmtCtx.fillStyle = '#94a3b8';
+               fmtCtx.font = '11px Outfit';
+               fmtCtx.fillText('Total', cx, cy + 12);
+            }
+            
+            if (progress < 1) {
+              userChartsAnimFrame = requestAnimationFrame(draw);
+            }
+          } catch (animErr) {
+             console.error("Animation loop error:", animErr);
+             let debugDiv = document.getElementById('debug-error-div');
+             if (!debugDiv) {
+                debugDiv = document.createElement('div');
+                debugDiv.id = 'debug-error-div';
+                debugDiv.style.cssText = 'position:fixed;top:10px;right:10px;background:red;color:white;padding:10px;z-index:9999;max-width:300px;font-size:12px;';
+                document.body.appendChild(debugDiv);
+             }
+             debugDiv.innerText = "Anim Error: " + animErr.message;
+          }
+        };
+        
+        userChartsAnimFrame = requestAnimationFrame(draw);
+        
+        // Event Listeners for Interactivity
+        activityCanvas.onmousemove = (e) => {
+           const rect = activityCanvas.getBoundingClientRect();
+           const mouseX = e.clientX - rect.left;
+           const barW = Math.max(1, (actW / days.length) * 0.6);
+           const gap = (actW / days.length) * 0.4;
+           
+           let newHover = -1;
+           for(let i=0; i<days.length; i++) {
+              const x = i * (barW + gap) + gap/2;
+              if (mouseX >= x && mouseX <= x + barW) {
+                 newHover = i;
+                 break;
+              }
+           }
+           if (newHover !== hoveredBar) {
+              hoveredBar = newHover;
+              activityCanvas.style.cursor = newHover >= 0 ? 'pointer' : 'default';
+              requestAnimationFrame(() => draw(performance.now()));
+           }
+        };
+        activityCanvas.onmouseleave = () => { hoveredBar = -1; requestAnimationFrame(() => draw(performance.now())); };
+        
+        formatCanvas.onmousemove = (e) => {
+           const rect = formatCanvas.getBoundingClientRect();
+           const mouseX = e.clientX - rect.left;
+           const mouseY = e.clientY - rect.top;
+           const cx = fmtW / 2;
+           const cy = fmtH / 2;
+           const dist = Math.sqrt((mouseX-cx)**2 + (mouseY-cy)**2);
+           const radius = Math.max(1, Math.min(cx, cy) - 20);
+           
+           let newHover = -1;
+           if (dist >= radius - 20 && dist <= radius + 20) {
+              let angle = Math.atan2(mouseY - cy, mouseX - cx);
+              if (angle < -Math.PI/2) angle += 2*Math.PI; // normalize to start from top
+              let start = -Math.PI/2;
+              for(let i=0; i<data.length; i++) {
+                 const slice = Math.max(0, (data[i].val / 100) * 2 * Math.PI);
+                 let a = angle;
+                 let s = start;
+                 let eAng = start + slice;
+                 
+                 a = (a + 2*Math.PI) % (2*Math.PI);
+                 s = (s + 2*Math.PI) % (2*Math.PI);
+                 eAng = (eAng + 2*Math.PI) % (2*Math.PI);
+                 
+                 if (s < eAng) {
+                    if (a >= s && a < eAng) { newHover = i; break; }
+                 } else {
+                    if (a >= s || a < eAng) { newHover = i; break; }
+                 }
+                 start += slice;
+              }
+           }
+           
+           if (newHover !== hoveredArc) {
+              hoveredArc = newHover;
+              formatCanvas.style.cursor = newHover >= 0 ? 'pointer' : 'default';
+              requestAnimationFrame(() => draw(performance.now()));
+           }
+        };
+        formatCanvas.onmouseleave = () => { hoveredArc = -1; requestAnimationFrame(() => draw(performance.now())); };
+      } catch (e) {
+        let debugDiv = document.getElementById('debug-error-div');
+        if (!debugDiv) {
+           debugDiv = document.createElement('div');
+           debugDiv.id = 'debug-error-div';
+           debugDiv.style.cssText = 'position:fixed;top:10px;right:10px;background:red;color:white;padding:10px;z-index:9999;max-width:300px;font-size:12px;';
+           document.body.appendChild(debugDiv);
+        }
+        debugDiv.innerText = "Setup Error: " + e.message;
+        console.error("Error drawing user charts:", e);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      if(currentPage === 'dashboard') {
+        setTimeout(drawUserDashboardCharts, 200);
+      }
+    });
+
+    // Custom navTo to trigger draw charts on dashboard load
+    const originalNavTo = window.navTo;
+    window.navTo = function(pageId) {
+      if(originalNavTo) originalNavTo(pageId);
+      if(pageId === 'dashboard') {
+         userDashboardChartsDrawn = false;
+         setTimeout(drawUserDashboardCharts, 200);
+      }
+    }
+    
     // Removed canvas drawing functions for minimalist layout
+
 
   </script>
 

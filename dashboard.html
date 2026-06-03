@@ -861,112 +861,68 @@
           <div class="grid g-3" style="margin-bottom:28px;">
             <div class="card hover-glow" style="padding:20px;border-top:2px solid #38bdf8;background:linear-gradient(180deg,rgba(56,189,248,0.05),var(--surface1));">
               <div style="font-size:10px;font-weight:600;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Total Activities</div>
-              <div id="activity-stat-total" style="font-size:32px;font-weight:700;color:#e2e8f0;">5</div>
+              <div style="font-size:32px;font-weight:700;color:#e2e8f0;">5</div>
             </div>
             <div class="card hover-glow" style="padding:20px;border-top:2px solid #10b981;background:linear-gradient(180deg,rgba(16,185,129,0.05),var(--surface1));">
               <div style="font-size:10px;font-weight:600;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Uploads</div>
-              <div id="activity-stat-uploads" style="font-size:32px;font-weight:700;color:#e2e8f0;">1</div>
+              <div style="font-size:32px;font-weight:700;color:#e2e8f0;">1</div>
             </div>
             <div class="card hover-glow" style="padding:20px;border-top:2px solid #f59e0b;background:linear-gradient(180deg,rgba(245,158,11,0.05),var(--surface1));">
               <div style="font-size:10px;font-weight:600;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Reports Generated</div>
-              <div id="activity-stat-reports" style="font-size:32px;font-weight:700;color:#e2e8f0;">1</div>
+              <div style="font-size:32px;font-weight:700;color:#e2e8f0;">1</div>
             </div>
           </div>
 
-          <!-- Timeline Feed -->
-          <div class="card" style="padding:28px 24px;">
-            <div id="activity-log-feed" style="display:flex;flex-direction:column;gap:0;">
-
-              <!-- Item 1: Downloaded report -->
-              <div class="act-item" style="display:flex;gap:16px;align-items:flex-start;padding:18px 0;border-bottom:1px solid rgba(255,255,255,0.06);">
-                <div style="display:flex;flex-direction:column;align-items:center;gap:0;flex-shrink:0;">
-                  <div style="width:42px;height:42px;border-radius:12px;background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.25);display:flex;align-items:center;justify-content:center;font-size:18px;">⬇️</div>
-                  <div style="width:1px;height:100%;min-height:24px;background:rgba(255,255,255,0.06);margin-top:4px;"></div>
-                </div>
-                <div style="flex:1;padding-bottom:4px;">
-                  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;">
-                    <div style="font-weight:600;font-size:14px;color:#e2e8f0;">Downloaded report</div>
-                    <div style="font-size:11px;color:#64748b;white-space:nowrap;margin-left:16px;">03 Jun 2026, 11:02 AM</div>
-                  </div>
-                  <div style="display:flex;align-items:center;gap:8px;">
-                    <span style="background:rgba(16,185,129,0.15);color:#34d399;border:1px solid rgba(52,211,153,0.3);border-radius:6px;font-size:10px;font-weight:600;padding:3px 8px;letter-spacing:0.3px;">Success</span>
-                    <span style="font-size:11px;color:#64748b;">Reports</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Item 2: Exported cleaned dataset -->
-              <div class="act-item" style="display:flex;gap:16px;align-items:flex-start;padding:18px 0;border-bottom:1px solid rgba(255,255,255,0.06);">
-                <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;">
-                  <div style="width:42px;height:42px;border-radius:12px;background:rgba(167,139,250,0.12);border:1px solid rgba(167,139,250,0.25);display:flex;align-items:center;justify-content:center;font-size:18px;">📤</div>
-                  <div style="width:1px;height:100%;min-height:24px;background:rgba(255,255,255,0.06);margin-top:4px;"></div>
-                </div>
-                <div style="flex:1;padding-bottom:4px;">
-                  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;">
-                    <div style="font-weight:600;font-size:14px;color:#e2e8f0;">Exported cleaned dataset</div>
-                    <div style="font-size:11px;color:#64748b;white-space:nowrap;margin-left:16px;">03 Jun 2026, 10:50 AM</div>
-                  </div>
-                  <div style="display:flex;align-items:center;gap:8px;">
-                    <span style="background:rgba(16,185,129,0.15);color:#34d399;border:1px solid rgba(52,211,153,0.3);border-radius:6px;font-size:10px;font-weight:600;padding:3px 8px;letter-spacing:0.3px;">Success</span>
-                    <span style="font-size:11px;color:#64748b;">Exports</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Item 3: Generated analytics report -->
-              <div class="act-item" style="display:flex;gap:16px;align-items:flex-start;padding:18px 0;border-bottom:1px solid rgba(255,255,255,0.06);">
-                <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;">
-                  <div style="width:42px;height:42px;border-radius:12px;background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.25);display:flex;align-items:center;justify-content:center;font-size:18px;">📈</div>
-                  <div style="width:1px;height:100%;min-height:24px;background:rgba(255,255,255,0.06);margin-top:4px;"></div>
-                </div>
-                <div style="flex:1;padding-bottom:4px;">
-                  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;">
-                    <div style="font-weight:600;font-size:14px;color:#e2e8f0;">Generated analytics report</div>
-                    <div style="font-size:11px;color:#64748b;white-space:nowrap;margin-left:16px;">03 Jun 2026, 10:44 AM</div>
-                  </div>
-                  <div style="display:flex;align-items:center;gap:8px;">
-                    <span style="background:rgba(16,185,129,0.15);color:#34d399;border:1px solid rgba(52,211,153,0.3);border-radius:6px;font-size:10px;font-weight:600;padding:3px 8px;letter-spacing:0.3px;">Success</span>
-                    <span style="font-size:11px;color:#64748b;">Analytics</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Item 4: Started data cleaning -->
-              <div class="act-item" style="display:flex;gap:16px;align-items:flex-start;padding:18px 0;border-bottom:1px solid rgba(255,255,255,0.06);">
-                <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;">
-                  <div style="width:42px;height:42px;border-radius:12px;background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.25);display:flex;align-items:center;justify-content:center;font-size:18px;">🧹</div>
-                  <div style="width:1px;height:100%;min-height:24px;background:rgba(255,255,255,0.06);margin-top:4px;"></div>
-                </div>
-                <div style="flex:1;padding-bottom:4px;">
-                  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;">
-                    <div style="font-weight:600;font-size:14px;color:#e2e8f0;">Started data cleaning on customer_data.csv</div>
-                    <div style="font-size:11px;color:#64748b;white-space:nowrap;margin-left:16px;">03 Jun 2026, 10:42 AM</div>
-                  </div>
-                  <div style="display:flex;align-items:center;gap:8px;">
-                    <span style="background:rgba(16,185,129,0.15);color:#34d399;border:1px solid rgba(52,211,153,0.3);border-radius:6px;font-size:10px;font-weight:600;padding:3px 8px;letter-spacing:0.3px;">Success</span>
-                    <span style="font-size:11px;color:#64748b;">Cleaning Operations</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Item 5: Uploaded customer_data.csv -->
-              <div class="act-item" style="display:flex;gap:16px;align-items:flex-start;padding:18px 0;">
-                <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;">
-                  <div style="width:42px;height:42px;border-radius:12px;background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.25);display:flex;align-items:center;justify-content:center;font-size:18px;">☁️</div>
-                </div>
-                <div style="flex:1;">
-                  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;">
-                    <div style="font-weight:600;font-size:14px;color:#e2e8f0;">Uploaded customer_data.csv</div>
-                    <div style="font-size:11px;color:#64748b;white-space:nowrap;margin-left:16px;">03 Jun 2026, 10:35 AM</div>
-                  </div>
-                  <div style="display:flex;align-items:center;gap:8px;">
-                    <span style="background:rgba(16,185,129,0.15);color:#34d399;border:1px solid rgba(52,211,153,0.3);border-radius:6px;font-size:10px;font-weight:600;padding:3px 8px;letter-spacing:0.3px;">Success</span>
-                    <span style="font-size:11px;color:#64748b;">Uploads</span>
-                  </div>
-                </div>
-              </div>
-
+          <!-- Activity Table -->
+          <div class="card" style="padding:0;overflow:hidden;">
+            <!-- Table Header -->
+            <div style="display:grid;grid-template-columns:1fr 160px 100px 160px;gap:0;padding:12px 24px;border-bottom:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02);">
+              <div style="font-size:10px;font-weight:700;color:#64748b;letter-spacing:1px;text-transform:uppercase;">Action</div>
+              <div style="font-size:10px;font-weight:700;color:#64748b;letter-spacing:1px;text-transform:uppercase;">Type</div>
+              <div style="font-size:10px;font-weight:700;color:#64748b;letter-spacing:1px;text-transform:uppercase;">Status</div>
+              <div style="font-size:10px;font-weight:700;color:#64748b;letter-spacing:1px;text-transform:uppercase;text-align:right;">Date &amp; Time</div>
             </div>
+
+            <!-- Row 1 -->
+            <div style="display:grid;grid-template-columns:1fr 160px 100px 160px;gap:0;padding:16px 24px;border-bottom:1px solid rgba(255,255,255,0.04);transition:background 0.15s;" onmouseover="this.style.background='rgba(255,255,255,0.02)'" onmouseout="this.style.background='transparent'">
+              <div style="font-weight:600;font-size:14px;color:#e2e8f0;display:flex;align-items:center;">Downloaded report</div>
+              <div style="display:flex;align-items:center;"><span style="background:rgba(56,189,248,0.1);color:#38bdf8;border:1px solid rgba(56,189,248,0.25);border-radius:6px;font-size:10px;font-weight:600;padding:3px 10px;">Reports</span></div>
+              <div style="display:flex;align-items:center;"><span style="background:rgba(16,185,129,0.12);color:#34d399;border:1px solid rgba(52,211,153,0.25);border-radius:6px;font-size:10px;font-weight:600;padding:3px 10px;">Success</span></div>
+              <div style="font-size:12px;color:#64748b;text-align:right;display:flex;align-items:center;justify-content:flex-end;">03 Jun 2026, 11:02 AM</div>
+            </div>
+
+            <!-- Row 2 -->
+            <div style="display:grid;grid-template-columns:1fr 160px 100px 160px;gap:0;padding:16px 24px;border-bottom:1px solid rgba(255,255,255,0.04);transition:background 0.15s;" onmouseover="this.style.background='rgba(255,255,255,0.02)'" onmouseout="this.style.background='transparent'">
+              <div style="font-weight:600;font-size:14px;color:#e2e8f0;display:flex;align-items:center;">Exported cleaned dataset</div>
+              <div style="display:flex;align-items:center;"><span style="background:rgba(167,139,250,0.1);color:#a78bfa;border:1px solid rgba(167,139,250,0.25);border-radius:6px;font-size:10px;font-weight:600;padding:3px 10px;">Exports</span></div>
+              <div style="display:flex;align-items:center;"><span style="background:rgba(16,185,129,0.12);color:#34d399;border:1px solid rgba(52,211,153,0.25);border-radius:6px;font-size:10px;font-weight:600;padding:3px 10px;">Success</span></div>
+              <div style="font-size:12px;color:#64748b;text-align:right;display:flex;align-items:center;justify-content:flex-end;">03 Jun 2026, 10:50 AM</div>
+            </div>
+
+            <!-- Row 3 -->
+            <div style="display:grid;grid-template-columns:1fr 160px 100px 160px;gap:0;padding:16px 24px;border-bottom:1px solid rgba(255,255,255,0.04);transition:background 0.15s;" onmouseover="this.style.background='rgba(255,255,255,0.02)'" onmouseout="this.style.background='transparent'">
+              <div style="font-weight:600;font-size:14px;color:#e2e8f0;display:flex;align-items:center;">Generated analytics report</div>
+              <div style="display:flex;align-items:center;"><span style="background:rgba(56,189,248,0.1);color:#38bdf8;border:1px solid rgba(56,189,248,0.25);border-radius:6px;font-size:10px;font-weight:600;padding:3px 10px;">Analytics</span></div>
+              <div style="display:flex;align-items:center;"><span style="background:rgba(16,185,129,0.12);color:#34d399;border:1px solid rgba(52,211,153,0.25);border-radius:6px;font-size:10px;font-weight:600;padding:3px 10px;">Success</span></div>
+              <div style="font-size:12px;color:#64748b;text-align:right;display:flex;align-items:center;justify-content:flex-end;">03 Jun 2026, 10:44 AM</div>
+            </div>
+
+            <!-- Row 4 -->
+            <div style="display:grid;grid-template-columns:1fr 160px 100px 160px;gap:0;padding:16px 24px;border-bottom:1px solid rgba(255,255,255,0.04);transition:background 0.15s;" onmouseover="this.style.background='rgba(255,255,255,0.02)'" onmouseout="this.style.background='transparent'">
+              <div style="font-weight:600;font-size:14px;color:#e2e8f0;display:flex;align-items:center;">Started data cleaning on customer_data.csv</div>
+              <div style="display:flex;align-items:center;"><span style="background:rgba(245,158,11,0.1);color:#f59e0b;border:1px solid rgba(245,158,11,0.25);border-radius:6px;font-size:10px;font-weight:600;padding:3px 10px;">Cleaning</span></div>
+              <div style="display:flex;align-items:center;"><span style="background:rgba(16,185,129,0.12);color:#34d399;border:1px solid rgba(52,211,153,0.25);border-radius:6px;font-size:10px;font-weight:600;padding:3px 10px;">Success</span></div>
+              <div style="font-size:12px;color:#64748b;text-align:right;display:flex;align-items:center;justify-content:flex-end;">03 Jun 2026, 10:42 AM</div>
+            </div>
+
+            <!-- Row 5 -->
+            <div style="display:grid;grid-template-columns:1fr 160px 100px 160px;gap:0;padding:16px 24px;transition:background 0.15s;" onmouseover="this.style.background='rgba(255,255,255,0.02)'" onmouseout="this.style.background='transparent'">
+              <div style="font-weight:600;font-size:14px;color:#e2e8f0;display:flex;align-items:center;">Uploaded customer_data.csv</div>
+              <div style="display:flex;align-items:center;"><span style="background:rgba(16,185,129,0.1);color:#10b981;border:1px solid rgba(16,185,129,0.25);border-radius:6px;font-size:10px;font-weight:600;padding:3px 10px;">Uploads</span></div>
+              <div style="display:flex;align-items:center;"><span style="background:rgba(16,185,129,0.12);color:#34d399;border:1px solid rgba(52,211,153,0.25);border-radius:6px;font-size:10px;font-weight:600;padding:3px 10px;">Success</span></div>
+              <div style="font-size:12px;color:#64748b;text-align:right;display:flex;align-items:center;justify-content:flex-end;">03 Jun 2026, 10:35 AM</div>
+            </div>
+
           </div>
         </div>
 

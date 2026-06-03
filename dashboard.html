@@ -1734,206 +1734,6 @@
     animate();
 
     /* ── PAGE ROUTING ── */
-                      </div>
-                    </div>
-                  </td>
-                  <td><span class="badge proc">Bug Report</span></td>
-                  <td style="max-width:280px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Upload page freezes when trying to upload files larger than 50MB.</td>
-                  <td>⭐⭐</td>
-                  <td>4d ago</td>
-                  <td><span class="badge err"><span class="badge-dot"></span>Open</span></td>
-                </tr>
-                <tr>
-                  <td>
-                    <div style="display:flex;align-items:center;gap:10px;">
-                      <div class="sb-avatar" style="width:30px;height:30px;font-size:11px;background:linear-gradient(135deg,#34d399,#10b981);">NR</div>
-                      <div>
-                        <div style="font-weight:600;">Neha R.</div>
-                        <div style="font-size:11px;color:var(--muted)">neha@org.com</div>
-                      </div>
-                    </div>
-                  </td>
-                  <td><span class="badge info">Feature</span></td>
-                  <td style="max-width:280px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Please add dark mode toggle for the reports page and PDF export options.</td>
-                  <td>⭐⭐⭐⭐</td>
-                  <td>5d ago</td>
-                  <td><span class="badge done"><span class="badge-dot"></span>Reviewed</span></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-
-      </div> <!-- END PAGE CONTENT (scrollable area) -->
-    </div> <!-- END MAIN CONTENT AREA -->
-  </div> <!-- END APP WRAPPER -->
-
-  <!-- ═══════════════════════════════════════════
-     JAVASCRIPT
-═══════════════════════════════════════════ -->
-  <script>
-    var STEPS = [
-      { t: 'Duplicate Row Removal', d: 'Identifying and removing identical rows based on all columns.' },
-      { t: 'Missing Value Handling', d: 'Filling numeric columns with median, categorical with mode.' },
-      { t: 'Outlier Detection', d: 'Z-score method used to cap extreme values in numeric columns.' },
-      { t: 'Data Type Standardization', d: 'Normalizing text case, trimming whitespace, fixing number formats.' },
-      { t: 'Feature Validation', d: 'Cross-validating column relationships and flagging inconsistencies.' }
-    ];
-
-    document.addEventListener('DOMContentLoaded', () => {
-      const role = localStorage.getItem('userRole') || 'user';
-      const adminElements = document.querySelectorAll('.admin-only');
-      const userElements = document.querySelectorAll('.user-only');
-      const roleLabel = document.querySelector('.sb-user-role');
-      if (role === 'admin') {
-        adminElements.forEach(el => el.style.display = '');
-        userElements.forEach(el => el.style.display = 'none');
-        if (roleLabel) roleLabel.textContent = 'Admin · Free Plan';
-      } else {
-        adminElements.forEach(el => el.style.display = 'none');
-        userElements.forEach(el => el.style.display = '');
-        if (roleLabel) roleLabel.textContent = 'User · Free Plan';
-      }
-
-      // Dynamic Greeting
-      const greetingEl = document.getElementById('dashboard-greeting');
-      const userGreetingEl = document.getElementById('user-dashboard-greeting');
-      if (greetingEl || userGreetingEl) {
-        const hour = new Date().getHours();
-        let greeting = 'Good morning';
-        if (hour >= 12 && hour < 17) {
-          greeting = 'Good afternoon';
-        } else if (hour >= 17 && hour < 22) {
-          greeting = 'Good evening';
-        } else if (hour >= 22 || hour < 5) {
-          greeting = 'Good night';
-        }
-        if (greetingEl) {
-           greetingEl.style.background = 'none';
-           greetingEl.style.webkitTextFillColor = 'initial';
-           greetingEl.style.webkitBackgroundClip = 'initial';
-           greetingEl.innerHTML = `<span style="background:linear-gradient(90deg,#fff,#94a3b8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">${greeting}</span> 👋 <span style="background:linear-gradient(90deg,#fff,#94a3b8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Welcome back, Admin</span>`;
-        }
-        if (userGreetingEl) {
-           userGreetingEl.style.background = 'none';
-           userGreetingEl.style.webkitTextFillColor = 'initial';
-           userGreetingEl.style.webkitBackgroundClip = 'initial';
-           userGreetingEl.innerHTML = `<span style="background:linear-gradient(90deg,#fff,#94a3b8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">${greeting}</span> <span style="display: inline-block; transform-origin: 70% 70%; animation: wave 2s infinite; font-size: 0.9em;">👋</span>`;
-        }
-      }
-      
-      // Auto-start charts
-      if (currentPage === 'dashboard') {
-        setTimeout(drawUserDashboardCharts, 250);
-      }
-    });
-
-    /* ── ANIMATED BACKGROUND ── */
-    const canvas = document.getElementById('bg-canvas');
-    const ctx = canvas.getContext('2d');
-    let W, H, particles = [], lines = [];
-
-    function resize() {
-      W = canvas.width = window.innerWidth;
-      H = canvas.height = window.innerHeight;
-    }
-    resize();
-    window.addEventListener('resize', resize);
-
-    class Particle {
-      constructor() { this.reset(); }
-      reset() {
-        this.x = Math.random() * W;
-        this.y = Math.random() * H;
-        this.vx = (Math.random() - 0.5) * 0.35;
-        this.vy = (Math.random() - 0.5) * 0.35;
-        this.r = Math.random() * 1.8 + 0.4;
-        this.alpha = Math.random() * 0.5 + 0.2;
-        const isLight = document.body.classList.contains('light-theme');
-        this.color = isLight 
-          ? (Math.random() > 0.5 ? '#3b82f6' : '#818cf8') 
-          : (Math.random() > 0.5 ? '#38bdf8' : '#a78bfa');
-      }
-      update() {
-        this.x += this.vx; this.y += this.vy;
-        if (this.x < 0 || this.x > W || this.y < 0 || this.y > H) this.reset();
-      }
-      draw() {
-        ctx.save();
-        ctx.globalAlpha = this.alpha;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
-        ctx.fillStyle = this.color;
-        ctx.shadowColor = this.color;
-        ctx.shadowBlur = 8;
-        ctx.fill();
-        ctx.restore();
-      }
-    }
-
-    for (let i = 0; i < 120; i++) particles.push(new Particle());
-
-    function resetAllParticles() {
-      particles.forEach(p => p.reset());
-    }
-
-    function drawGrid() {
-      const isLight = document.body.classList.contains('light-theme');
-      ctx.save();
-      ctx.strokeStyle = isLight ? 'rgba(59, 130, 246, 0.02)' : 'rgba(56,189,248,0.035)';
-      ctx.lineWidth = 0.7;
-      const gs = 60;
-      for (let x = 0; x < W; x += gs) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); }
-      for (let y = 0; y < H; y += gs) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }
-      ctx.restore();
-    }
-
-    function drawConnections() {
-      const isLight = document.body.classList.contains('light-theme');
-      const maxDist = 130;
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const dx = particles[i].x - particles[j].x;
-          const dy = particles[i].y - particles[j].y;
-          const d = Math.sqrt(dx * dx + dy * dy);
-          if (d < maxDist) {
-            ctx.save();
-            ctx.globalAlpha = (1 - d / maxDist) * (isLight ? 0.08 : 0.12);
-            ctx.strokeStyle = isLight ? '#3b82f6' : '#38bdf8';
-            ctx.lineWidth = 0.6;
-            ctx.beginPath();
-            ctx.moveTo(particles[i].x, particles[i].y);
-            ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.stroke();
-            ctx.restore();
-          }
-        }
-      }
-    }
-
-    let gradAngle = 0;
-    function animate() {
-      ctx.clearRect(0, 0, W, H);
-      const isLight = document.body.classList.contains('light-theme');
-      // Subtle radial gradient glow
-      gradAngle += 0.002;
-      const cx = W / 2 + Math.cos(gradAngle) * W * 0.15;
-      const cy = H / 2 + Math.sin(gradAngle) * H * 0.15;
-      const grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, W * 0.55);
-      grd.addColorStop(0, isLight ? 'rgba(59,130,246,0.025)' : 'rgba(56,189,248,0.04)');
-      grd.addColorStop(0.5, isLight ? 'rgba(129,140,248,0.012)' : 'rgba(167,139,250,0.02)');
-      grd.addColorStop(1, 'transparent');
-      ctx.fillStyle = grd;
-      ctx.fillRect(0, 0, W, H);
-      drawGrid();
-      drawConnections();
-      particles.forEach(p => { p.update(); p.draw(); });
-      requestAnimationFrame(animate);
-    }
-    animate();
-
-    /* ── PAGE ROUTING ── */
     const pages = {
       dashboard: { title: 'Dashboard', breadcrumb: 'DataVault / Dashboard', btn1: 'Export Report', btn2: '+ Upload Dataset' },
       upload: { title: 'Upload Dataset', breadcrumb: 'DataVault / Upload', btn1: 'Clear History', btn2: '+ New Upload' },
@@ -1968,12 +1768,6 @@
       const tbPrimary = document.getElementById('tb-primary-btn');
       if (tbPrimary) tbPrimary.textContent = cfg.btn2;
       currentPage = id;
-
-      // Trigger user dashboard charts when navigating to dashboard
-      if (id === 'dashboard') {
-        userDashboardChartsDrawn = false;
-        setTimeout(drawUserDashboardCharts, 250);
-      }
 
       if (id === 'analytics') runAnalytics();
       if (id === 'cleaning') {
@@ -3819,6 +3613,26 @@
         console.error("Error drawing user charts:", e);
       }
     }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      if(currentPage === 'dashboard') {
+        setTimeout(drawUserDashboardCharts, 200);
+      }
+    });
+
+    // Custom navTo to trigger draw charts on dashboard load
+    const originalNavTo = window.navTo;
+    window.navTo = function(pageId) {
+      if(originalNavTo) originalNavTo(pageId);
+      if(pageId === 'dashboard') {
+         userDashboardChartsDrawn = false;
+         setTimeout(drawUserDashboardCharts, 200);
+      }
+    }
+    
+    // Removed canvas drawing functions for minimalist layout
+
+
 
     /* ── ACTIVITY LOG ── */
     function logActivity(type, action, status) {

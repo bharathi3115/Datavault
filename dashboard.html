@@ -129,19 +129,13 @@
                 <h2 id="dashboard-greeting" style="font-size:26px;font-weight:700;background:linear-gradient(90deg,#fff,#94a3b8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Good Afternoon 👋 Welcome back, Admin</h2>
                 <p style="color:var(--muted);font-size:15px;margin-top:6px;">DataVault Analytics Platform • Executive Overview</p>
               </div>
-              <div style="display:flex;gap:12px;align-items:center;">
-                <div class="badge done" style="padding:8px 14px;font-size:13px;"><span class="badge-dot" style="background:var(--emerald);box-shadow:0 0 8px var(--emerald);"></span>System Online</div>
-                <button class="tb-btn outline" onclick="navTo('upload')">☁️ Upload Dataset</button>
-                <button class="tb-btn outline" onclick="navTo('users')">👥 Add User</button>
-                <button class="tb-btn primary" onclick="navTo('reports')">📈 Generate Report</button>
-              </div>
             </div>
 
             <!-- 4 Compact Module Cards -->
             <div class="grid g-4" style="margin-bottom:40px;">
               
               <!-- Card 1: User Management -->
-              <div class="card hover-glow" onclick="navTo('users')" style="cursor:pointer;padding:20px;display:flex;align-items:center;gap:16px;border:1px solid rgba(56,189,248,0.2);background:linear-gradient(135deg,rgba(56,189,248,0.05),var(--surface1));">
+              <div class="card hover-glow" onclick="navTo('user_management')" style="cursor:pointer;padding:20px;display:flex;align-items:center;gap:16px;border:1px solid rgba(56,189,248,0.2);background:linear-gradient(135deg,rgba(56,189,248,0.05),var(--surface1));">
                 <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,rgba(56,189,248,0.2),rgba(2,132,199,0.2));display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">👥</div>
                 <div>
                   <div style="font-size:11px;font-weight:600;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">User Management</div>
@@ -151,7 +145,7 @@
               </div>
 
               <!-- Card 2: Dataset Monitoring -->
-              <div class="card hover-glow" onclick="navTo('datasets')" style="cursor:pointer;padding:20px;display:flex;align-items:center;gap:16px;border:1px solid rgba(167,139,250,0.2);background:linear-gradient(135deg,rgba(167,139,250,0.05),var(--surface1));">
+              <div class="card hover-glow" onclick="navTo('dataset_monitoring')" style="cursor:pointer;padding:20px;display:flex;align-items:center;gap:16px;border:1px solid rgba(167,139,250,0.2);background:linear-gradient(135deg,rgba(167,139,250,0.05),var(--surface1));">
                 <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,rgba(167,139,250,0.2),rgba(124,58,237,0.2));display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">📂</div>
                 <div>
                   <div style="font-size:11px;font-weight:600;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">Dataset Monitoring</div>
@@ -161,7 +155,7 @@
               </div>
 
               <!-- Card 3: Cleaning Performance -->
-              <div class="card hover-glow" onclick="navTo('cleaning')" style="cursor:pointer;padding:20px;display:flex;align-items:center;gap:16px;border:1px solid rgba(16,185,129,0.2);background:linear-gradient(135deg,rgba(16,185,129,0.05),var(--surface1));">
+              <div class="card hover-glow" onclick="navTo('cleaning_performance')" style="cursor:pointer;padding:20px;display:flex;align-items:center;gap:16px;border:1px solid rgba(16,185,129,0.2);background:linear-gradient(135deg,rgba(16,185,129,0.05),var(--surface1));">
                 <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,rgba(16,185,129,0.2),rgba(5,150,105,0.2));display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">✨</div>
                 <div>
                   <div style="font-size:11px;font-weight:600;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">Cleaning Performance</div>
@@ -171,7 +165,7 @@
               </div>
 
               <!-- Card 4: Feedback Overview -->
-              <div class="card hover-glow" onclick="navTo('feedback')" style="cursor:pointer;padding:20px;display:flex;align-items:center;gap:16px;border:1px solid rgba(245,158,11,0.2);background:linear-gradient(135deg,rgba(245,158,11,0.05),var(--surface1));">
+              <div class="card hover-glow" onclick="navTo('feedback_overview')" style="cursor:pointer;padding:20px;display:flex;align-items:center;gap:16px;border:1px solid rgba(245,158,11,0.2);background:linear-gradient(135deg,rgba(245,158,11,0.05),var(--surface1));">
                 <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,rgba(245,158,11,0.2),rgba(217,119,6,0.2));display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">💬</div>
                 <div>
                   <div style="font-size:11px;font-weight:600;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">Feedback Overview</div>
@@ -1665,7 +1659,7 @@
       cleaning: { title: 'Data Cleaning', breadcrumb: 'DataVault / Cleaning', btn1: 'Download Clean CSV', btn2: 'Run Analytics' },
       analytics: { title: 'Analytics', breadcrumb: 'DataVault / Analytics', btn1: 'Export Charts', btn2: 'Refresh Data' },
       reports: { title: 'Reports', breadcrumb: 'DataVault / Reports', btn1: 'Schedule Report', btn2: '+ New Report' },
-      users: { title: 'User Management', breadcrumb: 'DataVault / Users', btn1: 'Roles & Permissions', btn2: '+ Invite User' },
+      user_management: { title: 'User Management', breadcrumb: 'DataVault / User Management', btn1: 'Roles & Permissions', btn2: '+ Invite User' },
       dataset_monitoring: { title: 'Dataset Monitoring', breadcrumb: 'DataVault / Dataset Monitoring', btn1: 'Storage Details', btn2: '+ Setup Alert' },
       cleaning_performance: { title: 'Data Cleaning Performance', breadcrumb: 'DataVault / Cleaning Performance', btn1: 'Export Report', btn2: 'View Algorithms' },
       feedback_overview: { title: 'Feedback Overview', breadcrumb: 'DataVault / Feedback Overview', btn1: 'Manage Categories', btn2: 'Export Logs' }

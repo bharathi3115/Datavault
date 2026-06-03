@@ -52,6 +52,9 @@
           <div class="sb-item" data-page="reports">
             <span class="sb-icon">📋</span> Reports
           </div>
+          <div class="sb-item" data-page="activity_log">
+            <span class="sb-icon">🕒</span> Activity Log
+          </div>
         </div>
 
         <div class="admin-only">
@@ -182,7 +185,7 @@
             <!-- Welcome Section -->
             <div class="section-head" style="margin-bottom:32px;">
               <div>
-                <h2 id="user-dashboard-greeting" style="font-size:26px;font-weight:700;background:linear-gradient(90deg,#fff,#94a3b8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Good morning, Bharathi 👋</h2>
+                <h2 id="user-dashboard-greeting" style="font-size:26px;font-weight:700;background:linear-gradient(90deg,#fff,#94a3b8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Good morning 👋</h2>
                 <p style="color:var(--muted);font-size:15px;margin-top:6px;">Here's what's happening with your data platform today.</p>
               </div>
               <div style="display:flex;gap:12px;align-items:center;">
@@ -844,6 +847,40 @@
         </div>
 
 
+
+        <!-- ── ACTIVITY LOG ── -->
+        <div id="pg-activity_log" class="fade-in" style="display:none;">
+          <div class="section-head">
+            <div>
+              <h2>Activity Log</h2>
+              <p>Chronological history of all your actions on the DataVault platform.</p>
+            </div>
+            <button class="tb-btn primary" onclick="initDummyActivities(true)">+ Load Dummy Data</button>
+          </div>
+          
+          <div class="grid g-3" style="margin-bottom:24px;">
+            <div class="card hover-glow" style="padding:20px;border-top:2px solid #38bdf8;background:linear-gradient(180deg,rgba(56,189,248,0.03),var(--surface1));">
+              <div style="font-size:10px;font-weight:600;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Total Activities</div>
+              <div id="activity-stat-total" style="font-size:32px;font-weight:700;color:var(--text);">0</div>
+            </div>
+            <div class="card hover-glow" style="padding:20px;border-top:2px solid #10b981;background:linear-gradient(180deg,rgba(16,185,129,0.03),var(--surface1));">
+              <div style="font-size:10px;font-weight:600;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Uploads</div>
+              <div id="activity-stat-uploads" style="font-size:32px;font-weight:700;color:var(--text);">0</div>
+            </div>
+            <div class="card hover-glow" style="padding:20px;border-top:2px solid #f59e0b;background:linear-gradient(180deg,rgba(245,158,11,0.03),var(--surface1));">
+              <div style="font-size:10px;font-weight:600;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Reports Generated</div>
+              <div id="activity-stat-reports" style="font-size:32px;font-weight:700;color:var(--text);">0</div>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:10px;margin-bottom:24px;flex-wrap:wrap;">
+            <button class="btn primary sm" onclick="filterActivityLog('all', this)" id="filter-btn-all">All Activities</button>
+          </div>
+
+          <div class="card" style="padding:24px;">
+            <div id="activity-log-feed" style="display:flex;flex-direction:column;gap:16px;"></div>
+          </div>
+        </div>
 
         <!-- ── USERS ── -->
       
@@ -1543,7 +1580,7 @@
            userGreetingEl.style.background = 'none';
            userGreetingEl.style.webkitTextFillColor = 'initial';
            userGreetingEl.style.webkitBackgroundClip = 'initial';
-           userGreetingEl.innerHTML = `<span style="background:linear-gradient(90deg,#fff,#94a3b8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">${greeting}, Bharathi</span> <span style="display: inline-block; transform-origin: 70% 70%; animation: wave 2s infinite; font-size: 0.9em;">👋</span>`;
+           userGreetingEl.innerHTML = `<span style="background:linear-gradient(90deg,#fff,#94a3b8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">${greeting}</span> <span style="display: inline-block; transform-origin: 70% 70%; animation: wave 2s infinite; font-size: 0.9em;">👋</span>`;
         }
       }
     });
@@ -1659,6 +1696,7 @@
       cleaning: { title: 'Data Cleaning', breadcrumb: 'DataVault / Cleaning', btn1: 'Download Clean CSV', btn2: 'Run Analytics' },
       analytics: { title: 'Analytics', breadcrumb: 'DataVault / Analytics', btn1: 'Export Charts', btn2: 'Refresh Data' },
       reports: { title: 'Reports', breadcrumb: 'DataVault / Reports', btn1: 'Schedule Report', btn2: '+ New Report' },
+      activity_log: { title: 'Activity Log', breadcrumb: 'DataVault / Activity Log', btn1: 'Export Log', btn2: 'Clear Log' },
       user_management: { title: 'User Management', breadcrumb: 'DataVault / User Management', btn1: 'Roles & Permissions', btn2: '+ Invite User' },
       dataset_monitoring: { title: 'Dataset Monitoring', breadcrumb: 'DataVault / Dataset Monitoring', btn1: 'Storage Details', btn2: '+ Setup Alert' },
       cleaning_performance: { title: 'Data Cleaning Performance', breadcrumb: 'DataVault / Cleaning Performance', btn1: 'Export Report', btn2: 'View Algorithms' },
@@ -1703,6 +1741,10 @@
       }
       if (id === 'feedback_overview') {
         setTimeout(drawFeedbackOverviewCharts, 300);
+      }
+      if (id === 'activity_log') {
+        initDummyActivities(false);
+        setTimeout(renderActivityLog, 80);
       }
     }
 
@@ -1872,6 +1914,7 @@
     }
 
     function discardUpload() {
+      if (window.rawUploadedFile && typeof logActivity === 'function') logActivity('Uploads', `Deleted dataset ${window.rawUploadedFile.name}`);
       document.getElementById('upload-success').style.display = 'none';
       document.getElementById('file-preview').style.display = 'none';
       document.getElementById('file-input').value = '';
@@ -1879,6 +1922,7 @@
     }
 
     function processFile(file) {
+      if (typeof logActivity === 'function') logActivity('Uploads', `Uploaded customer_data.csv`);
       window.rawUploadedFile = file;
       // Cancel any previous upload in progress
       if (activeReader) { activeReader.abort(); activeReader = null; }
@@ -2262,6 +2306,7 @@
         alert('Please upload a dataset first.');
         return;
       }
+      if (typeof logActivity === 'function') logActivity('Cleaning Operations', `Started data cleaning on customer_data.csv`);
       navTo('cleaning');
       runCleaningPipeline();
     }
@@ -2439,7 +2484,7 @@
             }
           }
         }
-
+        if (typeof logActivity === 'function') logActivity('Cleaning Operations', 'Completed data cleaning');
       } catch (err) {
         console.error('Cleaning Pipeline Error:', err);
         if (subtitle) subtitle.innerHTML = '❌ Error during cleaning: ' + err.message;
@@ -2453,7 +2498,7 @@
       try {
       const data = cleanedData || uploadedFileData;
       if (!data) { alert('Please upload and clean a dataset first!'); return; }
-
+      if (typeof logActivity === 'function') logActivity('Analytics', 'Generated analytics report');
       const { headers, rows, filename } = data;
       document.getElementById('analytics-file-name').textContent = filename;
       
@@ -2708,6 +2753,7 @@
 
     function downloadCleanCSV() {
       if (!cleanedData) { alert('Please clean a dataset first!'); return; }
+      if (typeof logActivity === 'function') logActivity('Exports', 'Exported cleaned dataset');
       const { headers, rows, filename } = cleanedData;
       let csv = headers.map(h => '"' + String(h).replace(/"/g, '""') + '"').join(',') + '\n';
       rows.forEach(r => {
@@ -2727,6 +2773,7 @@
 
     function downloadRawCSV() {
       if (!uploadedFileData) { alert('Please upload a dataset first!'); return; }
+      if (typeof logActivity === 'function') logActivity('Downloads', 'Downloaded raw dataset');
       const { headers, rows, filename } = uploadedFileData;
       let csv = headers.map(h => '"' + String(h).replace(/"/g, '""') + '"').join(',') + '\n';
       rows.forEach(r => {
@@ -2747,6 +2794,7 @@
     function downloadAnalyticsReport() {
       const data = cleanedData || uploadedFileData;
       if (!data) { alert('Please clean a dataset first!'); return; }
+      if (typeof logActivity === 'function') logActivity('Reports', 'Downloaded report');
       const { headers, rows } = data;
       const ba = window._backendAnalytics || null;
       const summary = window._cleaningSummary || {};
@@ -3527,6 +3575,132 @@
     
     // Removed canvas drawing functions for minimalist layout
 
+
+
+    /* ── ACTIVITY LOG ── */
+    function logActivity(type, action, status = 'Success') {
+      let activities = JSON.parse(localStorage.getItem('datavault_user_activities') || '[]');
+      const now = new Date();
+      const m = now.toLocaleString('default', { month: 'short' });
+      const d = String(now.getDate()).padStart(2, '0');
+      const y = now.getFullYear();
+      const fDate = `${d} ${m} ${y}`;
+      const fTime = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+      
+      let icon = '⚡';
+      if (type === 'Uploads') icon = '☁️';
+      if (type === 'Cleaning Operations') icon = '🧹';
+      if (type === 'Analytics') icon = '📈';
+      if (type === 'Reports') icon = '📋';
+      if (type === 'Downloads') icon = '⬇️';
+      if (type === 'Exports') icon = '📤';
+
+      activities.unshift({
+        type, action, status, date: fDate, time: fTime, icon, timestamp: now.getTime()
+      });
+      
+      localStorage.setItem('datavault_user_activities', JSON.stringify(activities));
+      if (currentPage === 'activity_log') renderActivityLog();
+    }
+
+    let currentActivityFilter = 'all';
+
+    function filterActivityLog(type, btnElement) {
+      currentActivityFilter = type;
+      if (btnElement) {
+        btnElement.parentElement.querySelectorAll('.btn').forEach(btn => {
+          btn.classList.remove('primary');
+          btn.classList.add('outline');
+        });
+        btnElement.classList.remove('outline');
+        btnElement.classList.add('primary');
+      }
+      renderActivityLog();
+    }
+
+    function renderActivityLog() {
+      let activities = JSON.parse(localStorage.getItem('datavault_user_activities') || '[]');
+      
+      const elTotal = document.getElementById('activity-stat-total');
+      const elUploads = document.getElementById('activity-stat-uploads');
+      const elReports = document.getElementById('activity-stat-reports');
+      
+      if (elTotal) elTotal.textContent = activities.length;
+      if (elUploads) elUploads.textContent = activities.filter(a => a.type === 'Uploads').length;
+      if (elReports) elReports.textContent = activities.filter(a => a.type === 'Reports').length;
+
+      if (currentActivityFilter !== 'all') {
+        activities = activities.filter(a => a.type === currentActivityFilter);
+      }
+
+      const feed = document.getElementById('activity-log-feed');
+      if (!feed) return;
+      feed.innerHTML = '';
+
+      if (activities.length === 0) {
+        feed.innerHTML = '<div style="text-align:center;padding:40px;color:var(--muted);">No activities found.</div>';
+        return;
+      }
+
+      try {
+        activities.forEach(a => {
+          if (!a || typeof a !== 'object') return;
+          const badgeCls = a.status === 'Success' ? 'done' : 'err';
+          feed.innerHTML += `
+            <div style="display:flex;gap:16px;align-items:flex-start;padding:16px;background:rgba(255,255,255,0.02);border-radius:12px;border:1px solid rgba(255,255,255,0.05);transition:transform 0.2s;">
+              <div style="width:40px;height:40px;border-radius:12px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">
+                ${a.icon || '⚡'}
+              </div>
+              <div style="flex:1;">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+                  <div style="font-weight:600;color:var(--text);font-size:15px;">${a.action || 'Unknown Action'}</div>
+                  <div style="font-size:12px;color:var(--muted);">${a.date || ''}, ${a.time || ''}</div>
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <span class="badge ${badgeCls}" style="font-size:11px;padding:4px 8px;">${a.status || 'Success'}</span>
+                  <span style="font-size:12px;color:var(--muted);">${a.type || 'System'}</span>
+                </div>
+              </div>
+            </div>
+          `;
+        });
+      } catch (err) {
+        feed.innerHTML = `<div style="color:#ef4444;padding:20px;">Render Error: ${err.message}</div>`;
+      }
+    }
+
+    function initDummyActivities(force) {
+      // Canonical dummy dataset — always shown as the base history
+      const dummyData = [
+        { type: 'Reports',             action: 'Downloaded report',                          status: 'Success', date: '03 Jun 2026', time: '11:02 AM', icon: '⬇️' },
+        { type: 'Exports',             action: 'Exported cleaned dataset',                   status: 'Success', date: '03 Jun 2026', time: '10:50 AM', icon: '📤' },
+        { type: 'Analytics',           action: 'Generated analytics report',                 status: 'Success', date: '03 Jun 2026', time: '10:44 AM', icon: '📈' },
+        { type: 'Cleaning Operations', action: 'Started data cleaning on customer_data.csv', status: 'Success', date: '03 Jun 2026', time: '10:42 AM', icon: '🧹' },
+        { type: 'Uploads',             action: 'Uploaded customer_data.csv',                 status: 'Success', date: '03 Jun 2026', time: '10:35 AM', icon: '☁️' }
+      ];
+
+      let stored = localStorage.getItem('datavault_user_activities');
+      let activities = stored ? JSON.parse(stored) : [];
+
+      // Check if dummy data with valid icons is already present
+      const hasValidDummy = activities.some(function(a){ return a && a.icon && a.date === '03 Jun 2026'; });
+
+      if (force || !hasValidDummy) {
+        // Strip out any old stale dummy entries (those without icons or with wrong date)
+        const realActivities = activities.filter(function(a){
+          return a && a.icon && a.date !== '03 Jun 2026';
+        });
+        // Real user actions at top, dummy history at bottom
+        const combined = realActivities.concat(dummyData);
+        localStorage.setItem('datavault_user_activities', JSON.stringify(combined));
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // Always force-reset dummy data so stale entries from previous sessions don't block rendering
+      localStorage.removeItem('datavault_user_activities');
+      initDummyActivities(true);
+    });
 
   </script>
 

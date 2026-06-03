@@ -874,9 +874,9 @@
           </div>
 
           <!-- Activity Table -->
-          <div class="card" style="padding:0;overflow:hidden;">
+          <div class="card" id="activity-log-table" style="padding:0;overflow:hidden;">
             <!-- Table Header -->
-            <div style="display:grid;grid-template-columns:1fr 160px 100px 160px;gap:0;padding:12px 24px;border-bottom:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02);">
+            <div class="act-table-header" style="display:grid;grid-template-columns:1fr 160px 100px 160px;gap:0;padding:12px 24px;border-bottom:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02);">
               <div style="font-size:10px;font-weight:700;color:#64748b;letter-spacing:1px;text-transform:uppercase;">Action</div>
               <div style="font-size:10px;font-weight:700;color:#64748b;letter-spacing:1px;text-transform:uppercase;">Type</div>
               <div style="font-size:10px;font-weight:700;color:#64748b;letter-spacing:1px;text-transform:uppercase;">Status</div>
@@ -1966,8 +1966,8 @@
     }
 
     function processFile(file) {
-      if (typeof logActivity === 'function') logActivity('Uploads', `Uploaded customer_data.csv`);
       window.rawUploadedFile = file;
+      if (typeof logActivity === 'function') logActivity('Uploads', 'Uploaded ' + (file && file.name ? file.name : 'dataset'));
       // Cancel any previous upload in progress
       if (activeReader) { activeReader.abort(); activeReader = null; }
       if (activeInterval) { clearInterval(activeInterval); activeInterval = null; }
@@ -2350,7 +2350,8 @@
         alert('Please upload a dataset first.');
         return;
       }
-      if (typeof logActivity === 'function') logActivity('Cleaning Operations', `Started data cleaning on customer_data.csv`);
+      const fname = (window.rawUploadedFile && window.rawUploadedFile.name) ? window.rawUploadedFile.name : 'dataset';
+      if (typeof logActivity === 'function') logActivity('Cleaning Operations', 'Started data cleaning on ' + fname);
       navTo('cleaning');
       runCleaningPipeline();
     }
@@ -2528,7 +2529,10 @@
             }
           }
         }
-        if (typeof logActivity === 'function') logActivity('Cleaning Operations', 'Completed data cleaning');
+        if (typeof logActivity === 'function') {
+          const _fn4 = (window.rawUploadedFile && window.rawUploadedFile.name) ? window.rawUploadedFile.name : 'dataset';
+          logActivity('Cleaning Operations', 'Completed data cleaning on ' + _fn4);
+        }
       } catch (err) {
         console.error('Cleaning Pipeline Error:', err);
         if (subtitle) subtitle.innerHTML = '❌ Error during cleaning: ' + err.message;
@@ -2542,7 +2546,10 @@
       try {
       const data = cleanedData || uploadedFileData;
       if (!data) { alert('Please upload and clean a dataset first!'); return; }
-      if (typeof logActivity === 'function') logActivity('Analytics', 'Generated analytics report');
+      if (typeof logActivity === 'function') {
+        const _fn = (window.rawUploadedFile && window.rawUploadedFile.name) ? window.rawUploadedFile.name : 'dataset';
+        logActivity('Analytics', 'Generated analytics report for ' + _fn);
+      }
       const { headers, rows, filename } = data;
       document.getElementById('analytics-file-name').textContent = filename;
       
@@ -2797,7 +2804,10 @@
 
     function downloadCleanCSV() {
       if (!cleanedData) { alert('Please clean a dataset first!'); return; }
-      if (typeof logActivity === 'function') logActivity('Exports', 'Exported cleaned dataset');
+      if (typeof logActivity === 'function') {
+        const _fn3 = (window.rawUploadedFile && window.rawUploadedFile.name) ? window.rawUploadedFile.name : 'dataset';
+        logActivity('Exports', 'Exported cleaned ' + _fn3);
+      }
       const { headers, rows, filename } = cleanedData;
       let csv = headers.map(h => '"' + String(h).replace(/"/g, '""') + '"').join(',') + '\n';
       rows.forEach(r => {
@@ -2838,7 +2848,10 @@
     function downloadAnalyticsReport() {
       const data = cleanedData || uploadedFileData;
       if (!data) { alert('Please clean a dataset first!'); return; }
-      if (typeof logActivity === 'function') logActivity('Reports', 'Downloaded report');
+      if (typeof logActivity === 'function') {
+        const _fn2 = (window.rawUploadedFile && window.rawUploadedFile.name) ? window.rawUploadedFile.name : 'dataset';
+        logActivity('Reports', 'Downloaded report for ' + _fn2);
+      }
       const { headers, rows } = data;
       const ba = window._backendAnalytics || null;
       const summary = window._cleaningSummary || {};
@@ -3622,29 +3635,47 @@
 
 
     /* ── ACTIVITY LOG ── */
-    function logActivity(type, action, status = 'Success') {
-      let activities = JSON.parse(localStorage.getItem('datavault_user_activities') || '[]');
+    function logActivity(type, action, status) {
+      status = status || 'Success';
       const now = new Date();
-      const m = now.toLocaleString('default', { month: 'short' });
-      const d = String(now.getDate()).padStart(2, '0');
-      const y = now.getFullYear();
-      const fDate = `${d} ${m} ${y}`;
+      const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+      const fDate = String(now.getDate()).padStart(2,'0') + ' ' + months[now.getMonth()] + ' ' + now.getFullYear();
       const fTime = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-      
-      let icon = '⚡';
-      if (type === 'Uploads') icon = '☁️';
-      if (type === 'Cleaning Operations') icon = '🧹';
-      if (type === 'Analytics') icon = '📈';
-      if (type === 'Reports') icon = '📋';
-      if (type === 'Downloads') icon = '⬇️';
-      if (type === 'Exports') icon = '📤';
+      const dateTime = fDate + ', ' + fTime;
 
-      activities.unshift({
-        type, action, status, date: fDate, time: fTime, icon, timestamp: now.getTime()
-      });
-      
-      localStorage.setItem('datavault_user_activities', JSON.stringify(activities));
-      if (currentPage === 'activity_log') renderActivityLog();
+      // Type badge colors
+      const typeColors = {
+        'Uploads':             { bg: 'rgba(16,185,129,0.1)',  color: '#10b981', border: 'rgba(16,185,129,0.25)'  },
+        'Cleaning Operations': { bg: 'rgba(245,158,11,0.1)', color: '#f59e0b', border: 'rgba(245,158,11,0.25)'  },
+        'Analytics':           { bg: 'rgba(56,189,248,0.1)', color: '#38bdf8', border: 'rgba(56,189,248,0.25)'  },
+        'Reports':             { bg: 'rgba(56,189,248,0.1)', color: '#38bdf8', border: 'rgba(56,189,248,0.25)'  },
+        'Downloads':           { bg: 'rgba(167,139,250,0.1)',color: '#a78bfa', border: 'rgba(167,139,250,0.25)' },
+        'Exports':             { bg: 'rgba(167,139,250,0.1)',color: '#a78bfa', border: 'rgba(167,139,250,0.25)' }
+      };
+      const tc = typeColors[type] || { bg: 'rgba(100,116,139,0.1)', color: '#94a3b8', border: 'rgba(100,116,139,0.25)' };
+
+      // Build the new row
+      const row = document.createElement('div');
+      row.style.cssText = 'display:grid;grid-template-columns:1fr 160px 100px 160px;gap:0;padding:16px 24px;border-top:1px solid rgba(255,255,255,0.04);transition:background 0.15s;';
+      row.onmouseover = function(){ this.style.background='rgba(255,255,255,0.02)'; };
+      row.onmouseout  = function(){ this.style.background='transparent'; };
+      row.innerHTML = `
+        <div style="font-weight:600;font-size:14px;color:#e2e8f0;display:flex;align-items:center;">${action}</div>
+        <div style="display:flex;align-items:center;"><span style="background:${tc.bg};color:${tc.color};border:1px solid ${tc.border};border-radius:6px;font-size:10px;font-weight:600;padding:3px 10px;">${type}</span></div>
+        <div style="display:flex;align-items:center;"><span style="background:rgba(16,185,129,0.12);color:#34d399;border:1px solid rgba(52,211,153,0.25);border-radius:6px;font-size:10px;font-weight:600;padding:3px 10px;">${status}</span></div>
+        <div style="font-size:12px;color:#64748b;text-align:right;display:flex;align-items:center;justify-content:flex-end;">${dateTime}</div>
+      `;
+
+      // Insert at top of the table (after the header row)
+      const table = document.getElementById('activity-log-table');
+      if (table) {
+        const header = table.querySelector('.act-table-header');
+        if (header && header.nextSibling) {
+          table.insertBefore(row, header.nextSibling);
+        } else {
+          table.prepend(row);
+        }
+      }
     }
 
     let currentActivityFilter = 'all';

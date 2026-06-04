@@ -2721,10 +2721,8 @@ td {
 .home-footer {
   border-top: 1.5px solid rgba(59, 130, 246, 0.08);
   padding: 40px 48px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: #ffffff;
+  display: block;
+  background: #000000;
   max-width: 1200px;
   width: 100%;
   margin: 0 auto;
@@ -3573,7 +3571,7 @@ body:not(.light-theme) .btn-cta-home:hover {
 /* Footer Section */
 body:not(.light-theme) .home-footer {
   border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
-  background: transparent !important;
+  background: #000000 !important;
 }
 
 body:not(.light-theme) .footer-copy {

@@ -75,11 +75,51 @@
 ════════════════════════════════ -->
     <script>
     document.addEventListener('DOMContentLoaded', () => {
-      document.getElementById('login-email').addEventListener('keydown', e => {
-        if (e.key === 'Enter') doLogin();
+      const emailInput = document.getElementById('login-email');
+      const passInput = document.getElementById('login-pass');
+      const loginBtn = document.querySelector('.btn-soft-login');
+      const err = document.getElementById('login-error');
+
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+      function validateInput() {
+        const e = emailInput.value.trim();
+        if (e === '') {
+          err.style.display = 'none';
+          if (loginBtn) loginBtn.disabled = true;
+          return false;
+        } else if (!emailRegex.test(e)) {
+          err.style.display = 'block';
+          err.textContent = 'Please enter a valid email address.';
+          if (loginBtn) loginBtn.disabled = true;
+          return false;
+        } else {
+          err.style.display = 'none';
+          if (loginBtn) loginBtn.disabled = false;
+          return true;
+        }
+      }
+
+      emailInput.addEventListener('input', validateInput);
+      validateInput(); // Initial run
+
+      emailInput.addEventListener('keydown', e => {
+        if (e.key === 'Enter') {
+          if (validateInput()) {
+            doLogin();
+          } else {
+            e.preventDefault();
+          }
+        }
       });
-      document.getElementById('login-pass').addEventListener('keydown', e => {
-        if (e.key === 'Enter') doLogin();
+      passInput.addEventListener('keydown', e => {
+        if (e.key === 'Enter') {
+          if (validateInput()) {
+            doLogin();
+          } else {
+            e.preventDefault();
+          }
+        }
       });
     });
 
@@ -87,9 +127,17 @@
       const e = document.getElementById('login-email').value.trim();
       const p = document.getElementById('login-pass').value;
       const err = document.getElementById('login-error');
-      if (!e || !p) {
+
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      if (!emailRegex.test(e)) {
         err.style.display = 'block';
-        err.textContent = 'Please enter your email and password.';
+        err.textContent = 'Please enter a valid email address.';
+        return;
+      }
+
+      if (!p) {
+        err.style.display = 'block';
+        err.textContent = 'Please enter your password.';
         return;
       }
       if (e !== 'admin@datavault.com' || p !== 'password123') {

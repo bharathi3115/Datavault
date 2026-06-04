@@ -3979,6 +3979,7 @@
       const canvas = document.getElementById('user-activity-chart');
       if (canvas && canvas.offsetParent !== null) {
         window.initWeeklyChart();
+        window.initDonutChart();
       }
     }
 
@@ -3988,6 +3989,7 @@
       if (_origNavTo) _origNavTo(id);
       if (id === 'dashboard') {
         setTimeout(window.initWeeklyChart, 300);
+        setTimeout(window.initDonutChart, 350);
       }
     };
 

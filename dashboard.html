@@ -1597,7 +1597,11 @@
     ];
 
     document.addEventListener('DOMContentLoaded', () => {
-      const role = localStorage.getItem('userRole') || 'user';
+      const role = localStorage.getItem('userRole');
+      if (!role) {
+        window.location.href = 'index.html';
+        return;
+      }
       const adminElements = document.querySelectorAll('.admin-only');
       const userElements = document.querySelectorAll('.user-only');
       const roleLabel = document.querySelector('.sb-user-role');

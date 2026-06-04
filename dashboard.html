@@ -3733,12 +3733,9 @@
               fill: true,
               tension: 0.45,
               pointRadius: compact ? 4 : 5,
-              pointHoverRadius: compact ? 6 : 8,
               pointBackgroundColor: '#38bdf8',
               pointBorderColor: '#0f172a',
               pointBorderWidth: 2,
-              pointHoverBackgroundColor: '#bae6fd',
-              pointHoverBorderColor: '#38bdf8',
               yAxisID: 'y'
             },
             {
@@ -3751,7 +3748,6 @@
               tension: 0.45,
               borderDash: [5, 3],
               pointRadius: compact ? 3 : 4,
-              pointHoverRadius: compact ? 5 : 7,
               pointBackgroundColor: '#a78bfa',
               pointBorderColor: '#0f172a',
               pointBorderWidth: 2,
@@ -3763,7 +3759,7 @@
           responsive: true,
           maintainAspectRatio: false,
           animation: { duration: 900, easing: 'easeOutQuart' },
-          interaction: { mode: 'index', intersect: false },
+          events: [], // Disable hover events and popups completely
           plugins: {
             legend: {
               display: !compact,
@@ -3779,30 +3775,7 @@
               }
             },
             tooltip: {
-              backgroundColor: 'rgba(15,23,42,0.95)',
-              borderColor: 'rgba(56,189,248,0.3)',
-              borderWidth: 1,
-              titleColor: '#e2e8f0',
-              bodyColor: '#94a3b8',
-              titleFont: { family: 'Outfit', size: 13, weight: '600' },
-              bodyFont: { family: 'Outfit', size: 12 },
-              padding: 14,
-              cornerRadius: 10,
-              callbacks: {
-                title: (items) => weekDays[items[0].dataIndex] + ' — Last 7 Days',
-                label: (item) => {
-                  if (item.datasetIndex === 0) return '  Records: ' + item.raw.toLocaleString();
-                  return '  Reports: ' + item.raw;
-                },
-                afterBody: (items) => {
-                  const i = items[0].dataIndex;
-                  return [
-                    '  Quality:  ' + weekData.quality[i] + '%',
-                    '  Missing Fixed: ' + weekData.missing[i].toLocaleString(),
-                    '  Duplicates: ' + weekData.dupes[i]
-                  ];
-                }
-              }
+              enabled: false // Disable tooltips explicitly
             }
           },
           scales: {

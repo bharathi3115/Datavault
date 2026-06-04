@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DataVault – Secure Analytics Platform</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Montserrat:wght@600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="style.css?v=2.0">
+  <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+
+</head>
+
+<body>
+
+  <!-- ANIMATED BACKGROUND -->
+  <canvas id="bg-canvas"></canvas>
+  <!-- ════════════════════════════════
+     SAAS HOMEPAGE
+  ════════════════════════════════ -->
+  <div class="page soft-mode active" id="page-login" style="flex-direction: column; gap: 20px; justify-content: center; align-items: center;">
+
+    <!-- Big Premium Logo above the login frame -->
+    <div class="home-logo" style="font-size: 38px; font-weight: 800; gap: 12px; cursor: pointer; transition: transform 0.2s; margin-top: 20px;" 
+         onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"
+         onclick="window.location.href='index.html'">🔐 Data<span>Vault</span></div>
+
+    <div class="login-outer-frame">
+      <!-- Form Side -->
+      <div class="login-left-form">
+
+        <h1 class="login-title-soft">Login</h1>
+        <p id="login-subtitle" style="font-size:13px; color:#94a3b8; margin-bottom: 20px;">Admin Access &mdash; DataVault Dashboard</p>
+
+
+        <div class="soft-field">
+          <label>Email</label>
+          <input type="email" class="soft-input" placeholder="admin@datavault.com" id="login-email">
+        </div>
+
+        <div class="soft-field">
+          <label>Password</label>
+          <input type="password" class="soft-input" placeholder="••••••••" id="login-pass">
+          <span style="position:absolute; right:0; top:35px; cursor:pointer; color:#94a3b8; font-size:14px;" onclick="togglePwd()">👁</span>
+        </div>
+
+        <div id="login-error" style="display:none; color:#fb7185; font-size:12px; margin-bottom:15px;"></div>
+
+        <div class="login-actions-group">
+          <button class="btn-soft-login" onclick="doLogin()">LOGIN</button>
+          <button class="btn-soft-home" onclick="window.location.href='index.html'">Home</button>
+        </div>
+
+        <div style="margin-top: 20px; font-size: 13.5px; text-align: center; color: var(--muted2);">
+          Don't have an account? <span style="color: var(--cyan); cursor: pointer; font-weight: 600;" onclick="window.location.href='user-signup.html'">Sign Up</span>
+        </div>
+      </div>
+
+      <!-- Visual Side -->
+      <div class="login-right-visual">
+        <img src="admin_login_image.png" class="login-illustration-img" alt="Admin Login Illustration">
+        
+        <!-- Abstract elements to mimic the image -->
+        <div class="abstract-blob" style="width:350px; height:350px; top:-120px; right:-120px; opacity:0.35; background:#c7d2fe;"></div>
+        <div class="abstract-blob" style="width:250px; height:250px; bottom:80px; left:-80px; opacity:0.25; background:#818cf8;"></div>
+        <div class="abstract-blob" style="width:100px; height:100px; top:40%; left:-50px; opacity:0.15; background:#6366f1;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════
+     APP SHELL
+  ════════════════════════════════ -->
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const emailInput = document.getElementById('login-email');
+      const passInput = document.getElementById('login-pass');
+      const loginBtn = document.querySelector('.btn-soft-login');
+      const err = document.getElementById('login-error');
+
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+      function validateInput() {
+        const e = emailInput.value.trim();
+        if (e === '') {
+          err.style.display = 'none';
+          if (loginBtn) loginBtn.disabled = true;
+          return false;
+        } else if (!emailRegex.test(e)) {
+          err.style.display = 'block';
+          err.textContent = 'Please enter a valid email address.';
+          if (loginBtn) loginBtn.disabled = true;
+          return false;
+        } else {
+          err.style.display = 'none';
+          if (loginBtn) loginBtn.disabled = false;
+          return true;
+        }
+      }
+
+      emailInput.addEventListener('input', validateInput);
+      validateInput(); // Initial run
+
+      emailInput.addEventListener('keydown', e => {
+        if (e.key === 'Enter') {
+          if (validateInput()) {
+            doLogin();
+          } else {
+            e.preventDefault();
+          }
+        }
+      });
+      passInput.addEventListener('keydown', e => {
+        if (e.key === 'Enter') {
+          if (validateInput()) {
+            doLogin();
+          } else {
+            e.preventDefault();
+          }
+        }
+      });
+    });
+
+    function doLogin() {
+      const e = document.getElementById('login-email').value.trim();
+      const p = document.getElementById('login-pass').value;
+      const err = document.getElementById('login-error');
+
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      if (!emailRegex.test(e)) {
+        err.style.display = 'block';
+        err.textContent = 'Please enter a valid email address.';
+        return;
+      }
+
+      if (!p) {
+        err.style.display = 'block';
+        err.textContent = 'Please enter your password.';
+        return;
+      }
+      // Allow any valid email format and non-empty password
+      localStorage.setItem('userRole', 'admin');
+      window.location.href = 'dashboard.html';
+    }
+
+    function togglePwd() {
+      const p = document.getElementById('login-pass');
+      if (p.type === 'password') {
+        p.type = 'text';
+      } else {
+        p.type = 'password';
+      }
+    }
+  </script>
+</body>
+</html>

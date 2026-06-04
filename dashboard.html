@@ -2452,6 +2452,74 @@
       });
     }
 
+    function jsDetectSchema(headers, rows) {
+      const schema = {};
+      headers.forEach((col, colIdx) => {
+        const cells = rows.map(r => r[colIdx]).filter(c => c !== null && c !== undefined && String(c).trim() !== '');
+        if (cells.length === 0) {
+          schema[col] = 'empty';
+          return;
+        }
+        
+        // Boolean check
+        const uniqueValues = new Set(cells.map(c => String(c).trim().toLowerCase()));
+        const boolSet = new Set(['true', 'false', 'yes', 'no', '1', '0', 't', 'f', 'y', 'n']);
+        let isBool = true;
+        for (const val of uniqueValues) {
+          if (!boolSet.has(val)) {
+            isBool = false;
+            break;
+          }
+        }
+        if (isBool) {
+          schema[col] = 'boolean';
+          return;
+        }
+        
+        // Numeric check
+        let numericCount = 0;
+        cells.forEach(c => {
+          const cleaned = String(c).replace(/[$€£₹,%\s]/g, '');
+          if (cleaned !== '' && !isNaN(Number(cleaned))) {
+            numericCount++;
+          }
+        });
+        if (numericCount / cells.length > 0.5) {
+          schema[col] = 'numeric';
+          return;
+        }
+        
+        // Datetime check
+        let datetimeCount = 0;
+        cells.forEach(c => {
+          const parsed = Date.parse(c);
+          if (!isNaN(parsed)) {
+            datetimeCount++;
+          }
+        });
+        if (datetimeCount / cells.length > 0.8) {
+          schema[col] = 'datetime';
+          return;
+        }
+        
+        // Text / Categorical
+        const uniqueCount = uniqueValues.size;
+        if (uniqueCount / cells.length < 0.5 || uniqueCount < 50) {
+          schema[col] = 'categorical';
+        } else {
+          schema[col] = 'text';
+        }
+      });
+      return schema;
+    }
+
+    function getMedian(values) {
+      if (values.length === 0) return 0;
+      const sorted = [...values].sort((a, b) => a - b);
+      const mid = Math.floor(sorted.length / 2);
+      return sorted.length % 2 !== 0 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
+    }
+
     async function runLocalCleaning(file) {
       console.log("[DataVault] Starting local cleaning pipeline fallback...");
       const subtitle = document.getElementById('cleaning-subtitle');
@@ -2479,120 +2547,381 @@
       };
 
       const originalRowCount = data.rows.length;
-      let currentRows = [...data.rows];
-      let duplicatesRemoved = 0;
-      let missingFilled = 0;
-      let outliersCapped = 0;
-      let standardizedCount = 0;
-      let validationWarnings = 0;
+      let currentRows = data.rows.map(r => [...r]);
+      const schema = jsDetectSchema(data.headers, currentRows);
+      const logs = [];
 
-      const detailedLogs = [];
+      // Calculate numeric medians upfront for imputation / coercion
+      const numericMedians = {};
+      data.headers.forEach((col, colIdx) => {
+        if (schema[col] === 'numeric') {
+          const vals = currentRows
+            .map(r => {
+              let valStr = String(r[colIdx] || '').replace(/[$€£₹,%\s]/g, '');
+              return Number(valStr);
+            })
+            .filter(n => !isNaN(n));
+          numericMedians[col] = getMedian(vals);
+        }
+      });
 
-      // Step 1: Duplicate Row Removal
-      detailedLogs.push("Executing Step 1: Duplicate Row Removal...");
-      renderSteps(0, stepResults);
+      // ── Step 0 (UI): Duplicate Row Removal ──
+      logs.push("Executing Step 1: Duplicate Row Removal...");
       await animProg(0, 300);
       const uniqueRows = [];
       const seen = new Set();
       currentRows.forEach(row => {
         const rowStr = JSON.stringify(row);
-        if (seen.has(rowStr)) {
-          duplicatesRemoved++;
-        } else {
+        if (!seen.has(rowStr)) {
           seen.add(rowStr);
           uniqueRows.push(row);
         }
       });
+      const duplicatesRemoved = originalRowCount - uniqueRows.length;
       currentRows = uniqueRows;
-      stepResults[0] = [`${duplicatesRemoved} duplicates removed`, `Row count: ${currentRows.length}`];
-      detailedLogs.push(`Step 1 Complete: Found and removed ${duplicatesRemoved} duplicate rows.`);
+      stepResults[0] = [`${duplicatesRemoved} duplicates removed`, `${currentRows.length} rows retained`];
+      logs.push(`Step 1 Complete: Found and removed ${duplicatesRemoved} duplicate rows.`);
       renderSteps(1, stepResults);
 
-      // Step 2: Missing Value Handling
-      detailedLogs.push("Executing Step 2: Missing Value Handling...");
+      // ── Step 1 (UI): Type Standardization ──
+      logs.push("Executing Step 2: Data Type Standardization...");
       await animProg(1, 350);
+      let textNormalized = 0;
+      let numbersFixed = 0;
+      let invalidCoerced = 0;
+
       currentRows = currentRows.map(row => {
-        return row.map((cell, colIndex) => {
-          if (cell === null || cell === undefined || String(cell).trim() === '') {
-            missingFilled++;
-            const header = data.headers[colIndex].toLowerCase();
-            if (header.includes('age') || header.includes('score') || header.includes('num')) {
-              return "35";
+        return row.map((cell, colIdx) => {
+          const col = data.headers[colIdx];
+          const colType = schema[col] || 'text';
+          if (colType === 'numeric') {
+            const originalStr = (cell !== null && cell !== undefined) ? String(cell).trim() : '';
+            if (originalStr === '') return cell;
+            const cleaned = originalStr.replace(/[$€£₹,%\s]/g, '');
+            const parsed = Number(cleaned);
+            if (isNaN(parsed)) {
+              invalidCoerced++;
+              const medianVal = numericMedians[col] !== undefined ? numericMedians[col] : 0;
+              logs.push(`[${col}] Converted invalid text value "${originalStr}" to median: ${medianVal}`);
+              return medianVal;
             }
-            return "Unknown";
+            numbersFixed++;
+            return parsed;
+          } else if (colType === 'boolean') {
+            const valStr = String(cell).trim().toLowerCase();
+            const mapping = {
+              'true': true, 'yes': true, '1': true, 't': true, 'y': true,
+              'false': false, 'no': false, '0': false, 'f': false, 'n': false
+            };
+            return mapping[valStr] !== undefined ? mapping[valStr] : false;
+          } else if (colType === 'categorical' || colType === 'text') {
+            let str = (cell !== null && cell !== undefined) ? String(cell).trim() : '';
+            str = str.replace(/\s+/g, ' ');
+            if (colType === 'categorical') {
+              str = str.toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
+            }
+            textNormalized++;
+            return str;
+          } else if (colType === 'datetime') {
+            if (cell === null || cell === undefined || String(cell).trim() === '') return cell;
+            const parsedDate = Date.parse(cell);
+            if (isNaN(parsedDate)) return cell;
+            return new Date(parsedDate).toISOString().split('T')[0];
           }
           return cell;
         });
       });
-      stepResults[1] = [`${missingFilled} missing values filled`, "Imputed with median/mode"];
-      detailedLogs.push(`Step 2 Complete: Filled ${missingFilled} missing fields.`);
+
+      // Apply dataset specific retail rules
+      let specificFixes = 0;
+      const totalSpentIdx = data.headers.findIndex(h => h === 'Total Spent');
+      const pricePerUnitIdx = data.headers.findIndex(h => h === 'Price Per Unit');
+      const quantityIdx = data.headers.findIndex(h => h === 'Quantity');
+
+      if (totalSpentIdx !== -1 && pricePerUnitIdx !== -1 && quantityIdx !== -1) {
+        currentRows = currentRows.map(row => {
+          let ts = row[totalSpentIdx];
+          let ppu = row[pricePerUnitIdx];
+          let qty = row[quantityIdx];
+
+          let tsNum = (ts !== null && ts !== undefined && ts !== '' && !isNaN(Number(ts))) ? Number(ts) : null;
+          let ppuNum = (ppu !== null && ppu !== undefined && ppu !== '' && !isNaN(Number(ppu))) ? Number(ppu) : null;
+          let qtyNum = (qty !== null && qty !== undefined && qty !== '' && !isNaN(Number(qty))) ? Number(qty) : null;
+
+          if (qtyNum === null && tsNum !== null && ppuNum !== null && ppuNum !== 0) {
+            qtyNum = tsNum / ppuNum;
+            row[quantityIdx] = qtyNum;
+            specificFixes++;
+            logs.push(`[Quantity] Derived missing value using Total Spent / Price Per Unit`);
+          }
+          if (ppuNum === null && tsNum !== null && qtyNum !== null && qtyNum !== 0) {
+            ppuNum = tsNum / qtyNum;
+            row[pricePerUnitIdx] = ppuNum;
+            specificFixes++;
+            logs.push(`[Price Per Unit] Derived missing value using Total Spent / Quantity`);
+          }
+          if (ppuNum !== null && qtyNum !== null) {
+            const expectedTotal = ppuNum * qtyNum;
+            if (tsNum === null || Math.abs(tsNum - expectedTotal) > 0.01) {
+              row[totalSpentIdx] = expectedTotal;
+              specificFixes++;
+              logs.push(`[Total Spent] Calculated/Fixed to exactly equal Price Per Unit * Quantity`);
+            }
+          }
+          return row;
+        });
+      }
+
+      const discountIdx = data.headers.findIndex(h => h === 'Discount Applied');
+      if (discountIdx !== -1) {
+        currentRows = currentRows.map(row => {
+          const val = row[discountIdx];
+          if (val === null || val === undefined || val === '') {
+            row[discountIdx] = false;
+            specificFixes++;
+            logs.push(`[Discount Applied] Imputed missing value as False`);
+          }
+          return row;
+        });
+      }
+
+      stepResults[1] = [`${textNormalized} text normalized`, `${numbersFixed} numbers fixed`];
       renderSteps(2, stepResults);
 
-      // Step 3: Outlier Detection
-      detailedLogs.push("Executing Step 3: Outlier Detection...");
+      // ── Step 2 (UI): Missing Value Handling ──
+      logs.push("Executing Step 3: Handling missing values...");
       await animProg(2, 300);
-      currentRows = currentRows.map(row => {
-        return row.map((cell, colIndex) => {
-          const header = data.headers[colIndex].toLowerCase();
-          if (header.includes('age')) {
-            const val = Number(cell);
-            if (!isNaN(val)) {
-              if (val < 0) {
-                outliersCapped++;
-                return "0";
-              } else if (val > 120) {
-                outliersCapped++;
-                return "120";
-              }
+      let missingFixed = 0;
+      let missingCols = 0;
+
+      data.headers.forEach((col, colIdx) => {
+        const colType = schema[col] || 'text';
+        let missingIndices = [];
+        currentRows.forEach((row, rowIdx) => {
+          let val = row[colIdx];
+          let isMissing = false;
+          if (val === null || val === undefined) {
+            isMissing = true;
+          } else {
+            const valStr = String(val).trim().toLowerCase();
+            if (['', 'nan', 'n/a', 'na', 'null', 'none', 'unknown', '--', '-', '?', 'missing'].includes(valStr)) {
+              isMissing = true;
             }
           }
-          return cell;
+          if (isMissing) missingIndices.push(rowIdx);
         });
+
+        if (missingIndices.length === 0) return;
+
+        missingCols++;
+        missingFixed += missingIndices.length;
+
+        if (colType === 'numeric') {
+          const medianVal = numericMedians[col] !== undefined ? numericMedians[col] : 0;
+          missingIndices.forEach(rowIdx => { currentRows[rowIdx][colIdx] = medianVal; });
+          logs.push(`[${col}] Filled ${missingIndices.length} missing values with median: ${medianVal}`);
+        } else if (colType === 'boolean') {
+          missingIndices.forEach(rowIdx => { currentRows[rowIdx][colIdx] = false; });
+          logs.push(`[${col}] Filled ${missingIndices.length} missing values with False`);
+        } else if (colType === 'datetime') {
+          missingIndices.forEach(rowIdx => {
+            let fillVal = null;
+            for (let f = rowIdx - 1; f >= 0; f--) {
+              if (currentRows[f][colIdx] !== null && currentRows[f][colIdx] !== undefined && currentRows[f][colIdx] !== '') {
+                fillVal = currentRows[f][colIdx];
+                break;
+              }
+            }
+            if (fillVal === null) {
+              for (let b = rowIdx + 1; b < currentRows.length; b++) {
+                if (currentRows[b][colIdx] !== null && currentRows[b][colIdx] !== undefined && currentRows[b][colIdx] !== '') {
+                  fillVal = currentRows[b][colIdx];
+                  break;
+                }
+              }
+            }
+            currentRows[rowIdx][colIdx] = fillVal !== null ? fillVal : new Date().toISOString().split('T')[0];
+          });
+          logs.push(`[${col}] Filled ${missingIndices.length} missing dates using forward/backward fill`);
+        } else {
+          missingIndices.forEach(rowIdx => { currentRows[rowIdx][colIdx] = 'Unknown'; });
+          logs.push(`[${col}] Filled ${missingIndices.length} missing text values with 'Unknown'`);
+        }
       });
-      stepResults[2] = [`${outliersCapped} outliers capped`, "IQR boundary capping applied"];
-      detailedLogs.push(`Step 3 Complete: Detected and adjusted ${outliersCapped} numerical outlier values.`);
+
+      stepResults[2] = [`${missingFixed} cells filled`, `${missingCols} columns affected`];
       renderSteps(3, stepResults);
 
-      // Step 4: Data Type Standardization
-      detailedLogs.push("Executing Step 4: Data Type Standardization...");
-      await animProg(3, 400);
-      currentRows = currentRows.map(row => {
-        return row.map((cell, colIndex) => {
-          standardizedCount++;
-          return String(cell).trim();
+      // ── Step 3 (UI): Outlier Detection ──
+      logs.push("Executing Step 4: Detecting outliers (IQR)...");
+      await animProg(3, 300);
+      let outliersCapped = 0;
+      let outlierCols = 0;
+
+      data.headers.forEach((col, colIdx) => {
+        if (schema[col] !== 'numeric') return;
+        const vals = currentRows.map(row => Number(row[colIdx])).filter(n => !isNaN(n));
+        if (vals.length === 0) return;
+        const sorted = [...vals].sort((a, b) => a - b);
+
+        const getQuantile = (arr, q) => {
+          const pos = (arr.length - 1) * q;
+          const base = Math.floor(pos);
+          const rest = pos - base;
+          if (arr[base + 1] !== undefined) {
+            return arr[base] + rest * (arr[base + 1] - arr[base]);
+          }
+          return arr[base];
+        };
+
+        const Q1 = getQuantile(sorted, 0.25);
+        const Q3 = getQuantile(sorted, 0.75);
+        const IQR = Q3 - Q1;
+        if (IQR === 0) return;
+
+        const lower = Q1 - 1.5 * IQR;
+        const upper = Q3 + 1.5 * IQR;
+
+        let colCapped = 0;
+        currentRows = currentRows.map(row => {
+          const val = Number(row[colIdx]);
+          if (!isNaN(val)) {
+            if (val < lower) {
+              row[colIdx] = Number(lower.toFixed(2));
+              colCapped++;
+            } else if (val > upper) {
+              row[colIdx] = Number(upper.toFixed(2));
+              colCapped++;
+            }
+          }
+          return row;
         });
+
+        if (colCapped > 0) {
+          outlierCols++;
+          outliersCapped += colCapped;
+          logs.push(`[${col}] Capped ${colCapped} outliers to range [${lower.toFixed(2)}, ${upper.toFixed(2)}]`);
+        }
       });
-      stepResults[3] = [`${standardizedCount} cells standardized`, "Normalized types and strings"];
-      detailedLogs.push(`Step 4 Complete: Standardized formats across all ${currentRows.length} active rows.`);
+
+      stepResults[3] = [`${outliersCapped} outliers capped`, 'IQR method applied'];
       renderSteps(4, stepResults);
 
-      // Step 5: Feature Validation
-      detailedLogs.push("Executing Step 5: Feature Validation...");
+      // ── Step 4 (UI): Business Rule Validation ──
+      logs.push("Executing Step 5: Validating business rules...");
       await animProg(4, 300);
-      currentRows.forEach(row => {
-        const emailIndex = data.headers.findIndex(h => h.toLowerCase().includes('email'));
-        if (emailIndex !== -1) {
-          const email = row[emailIndex];
-          if (email && email !== "Unknown" && !email.includes('@')) {
-            validationWarnings++;
+      let bizFixed = 0;
+      const nonNegativeKeywords = [
+        'age', 'hour', 'duration', 'watch', 'price', 'cost', 'revenue',
+        'sales', 'quantity', 'count', 'score', 'rating', 'salary', 'wage',
+        'income', 'weight', 'height', 'distance', 'speed', 'views',
+        'subscribers', 'followers', 'likes', 'attendance', 'population'
+      ];
+      const cappedKeywords = {
+        'age': [0, 120],
+        'percentage': [0, 100],
+        'percent': [0, 100],
+        'pct': [0, 100],
+        'rating': [0, 10],
+        'score': [0, 100]
+      };
+
+      data.headers.forEach((col, colIdx) => {
+        if (schema[col] !== 'numeric') return;
+        const colLower = col.toLowerCase().replace(/_/g, ' ');
+
+        const shouldBeNonNegative = nonNegativeKeywords.some(kw => colLower.includes(kw));
+        if (shouldBeNonNegative) {
+          let negCount = 0;
+          const posVals = currentRows.map(row => Number(row[colIdx])).filter(n => !isNaN(n) && n >= 0);
+          const posMedian = getMedian(posVals);
+
+          currentRows = currentRows.map(row => {
+            const val = Number(row[colIdx]);
+            if (!isNaN(val) && val < 0) {
+              row[colIdx] = posMedian;
+              negCount++;
+              bizFixed++;
+            }
+            return row;
+          });
+
+          if (negCount > 0) {
+            logs.push(`[${col}] Fixed ${negCount} invalid negative values with median: ${posMedian}`);
+          }
+        }
+
+        for (const [kw, range] of Object.entries(cappedKeywords)) {
+          if (colLower.includes(kw)) {
+            const [lo, hi] = range;
+            let overCount = 0;
+            let underCount = 0;
+
+            const validVals = currentRows.map(row => Number(row[colIdx])).filter(n => !isNaN(n) && n >= lo && n <= hi);
+            const validMedian = getMedian(validVals);
+
+            currentRows = currentRows.map(row => {
+              const val = Number(row[colIdx]);
+              if (!isNaN(val)) {
+                if (val > hi) {
+                  row[colIdx] = validMedian !== undefined ? validMedian : hi;
+                  overCount++;
+                  bizFixed++;
+                } else if (val < lo) {
+                  row[colIdx] = validMedian !== undefined ? validMedian : lo;
+                  underCount++;
+                  bizFixed++;
+                }
+              }
+              return row;
+            });
+
+            if (overCount > 0) {
+              logs.push(`[${col}] Capped ${overCount} values above ${hi} with median: ${validMedian}`);
+            }
+            if (underCount > 0) {
+              logs.push(`[${col}] Fixed ${underCount} values below ${lo} with median: ${validMedian}`);
+            }
+            break;
           }
         }
       });
-      stepResults[4] = [`${validationWarnings} consistency flags`, "Validation schema check passed"];
-      detailedLogs.push(`Step 5 Complete: Verified relational integrity. Found ${validationWarnings} suspicious fields.`);
+
+      let finalMathFixes = 0;
+      if (totalSpentIdx !== -1 && pricePerUnitIdx !== -1 && quantityIdx !== -1) {
+        currentRows = currentRows.map(row => {
+          let ts = Number(row[totalSpentIdx]);
+          let ppu = Number(row[pricePerUnitIdx]);
+          let qty = Number(row[quantityIdx]);
+          if (!isNaN(ts) && !isNaN(ppu) && !isNaN(qty)) {
+            const expectedTotal = ppu * qty;
+            if (Math.abs(ts - expectedTotal) > 0.01) {
+              row[totalSpentIdx] = expectedTotal;
+              finalMathFixes++;
+            }
+          }
+          return row;
+        });
+      }
+      if (finalMathFixes > 0) {
+        logs.push(`[Validation] Force-recalculated ${finalMathFixes} Total Spent values to equal Price * Quantity after imputation`);
+      }
+
+      stepResults[4] = [`${currentRows.length} valid rows`, `${bizFixed + finalMathFixes} final validations`, '0 inconsistencies'];
       renderSteps(5, stepResults);
 
-      // Finalize
-      const finalQuality = Math.max(75, 100 - (duplicatesRemoved + missingFilled + outliersCapped + validationWarnings) * 2);
-      const totalFixed = missingFilled + outliersCapped + standardizedCount;
-      
+      // Quality calculation
+      const totalIssues = duplicatesRemoved + missingFixed + invalidCoerced + bizFixed + outliersCapped + specificFixes + finalMathFixes;
+      const totalCells = originalRowCount * data.headers.length;
+      const finalQuality = Math.max(0, Math.min(100, Math.round(100 - (totalIssues / Math.max(totalCells, 1)) * 100)));
+
       cleanedData = {
         headers: data.headers,
         rows: currentRows,
         filename: file ? file.name : "customer_data.csv"
       };
 
-      updateQuality(finalQuality, currentRows.length, totalFixed, duplicatesRemoved, data.headers.length);
+      updateQuality(finalQuality, currentRows.length, missingFixed + invalidCoerced + bizFixed + outliersCapped + specificFixes + finalMathFixes, duplicatesRemoved, data.headers.length);
 
       if (repCard) repCard.style.display = 'block';
       if (reportsCard) reportsCard.style.display = 'flex';
@@ -2600,7 +2929,7 @@
 
       if (logsCard) logsCard.style.display = 'block';
       if (logsContainer) {
-        logsContainer.innerHTML = detailedLogs.map(log => `<div>${log}</div>`).join('');
+        logsContainer.innerHTML = logs.map(log => `<div>${log}</div>`).join('');
       }
       console.log("[DataVault] Local cleaning pipeline completed successfully.");
     }

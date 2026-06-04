@@ -2590,46 +2590,59 @@
       let numbersFixed = 0;
       let invalidCoerced = 0;
 
-      currentRows = currentRows.map(row => {
-        return row.map((cell, colIdx) => {
-          const col = data.headers[colIdx];
-          const colType = schema[col] || 'text';
-          if (colType === 'numeric') {
-            const originalStr = (cell !== null && cell !== undefined) ? String(cell).trim() : '';
-            if (originalStr === '') return cell;
+      data.headers.forEach((col, colIdx) => {
+        const colType = schema[col] || 'text';
+        if (colType === 'numeric') {
+          const medianVal = numericMedians[col] !== undefined ? numericMedians[col] : 0;
+          currentRows.forEach(row => {
+            const originalVal = row[colIdx];
+            const originalStr = (originalVal !== null && originalVal !== undefined) ? String(originalVal).trim() : '';
+            const isOriginallyNull = (originalVal === null || originalVal === undefined || originalStr === '' || ['nan', 'n/a', 'na', 'null', 'none', 'unknown', '--', '-', '?', 'missing'].includes(originalStr.toLowerCase()));
+            
             const cleaned = originalStr.replace(/[$€£₹,%\s]/g, '');
             const parsed = Number(cleaned);
-            if (isNaN(parsed)) {
+            
+            if (isOriginallyNull) {
+              row[colIdx] = medianVal; // Filled here, not counted in newly coerced
+            } else if (isNaN(parsed)) {
               invalidCoerced++;
-              const medianVal = numericMedians[col] !== undefined ? numericMedians[col] : 0;
+              row[colIdx] = medianVal;
               logs.push(`[${col}] Converted invalid text value "${originalStr}" to median: ${medianVal}`);
-              return medianVal;
+            } else {
+              row[colIdx] = parsed;
             }
-            numbersFixed++;
-            return parsed;
-          } else if (colType === 'boolean') {
-            const valStr = String(cell).trim().toLowerCase();
+          });
+          numbersFixed++;
+        } else if (colType === 'boolean') {
+          currentRows.forEach(row => {
+            const valStr = String(row[colIdx]).trim().toLowerCase();
             const mapping = {
               'true': true, 'yes': true, '1': true, 't': true, 'y': true,
               'false': false, 'no': false, '0': false, 'f': false, 'n': false
             };
-            return mapping[valStr] !== undefined ? mapping[valStr] : false;
-          } else if (colType === 'categorical' || colType === 'text') {
-            let str = (cell !== null && cell !== undefined) ? String(cell).trim() : '';
+            row[colIdx] = mapping[valStr] !== undefined ? mapping[valStr] : false;
+          });
+          numbersFixed++;
+        } else if (colType === 'categorical' || colType === 'text') {
+          currentRows.forEach(row => {
+            let str = (row[colIdx] !== null && row[colIdx] !== undefined) ? String(row[colIdx]).trim() : '';
             str = str.replace(/\s+/g, ' ');
             if (colType === 'categorical') {
               str = str.toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
             }
-            textNormalized++;
-            return str;
-          } else if (colType === 'datetime') {
-            if (cell === null || cell === undefined || String(cell).trim() === '') return cell;
+            row[colIdx] = str;
+          });
+          textNormalized++;
+        } else if (colType === 'datetime') {
+          currentRows.forEach(row => {
+            const cell = row[colIdx];
+            if (cell === null || cell === undefined || String(cell).trim() === '') return;
             const parsedDate = Date.parse(cell);
-            if (isNaN(parsedDate)) return cell;
-            return new Date(parsedDate).toISOString().split('T')[0];
-          }
-          return cell;
-        });
+            if (isNaN(parsedDate)) return;
+            row[colIdx] = new Date(parsedDate).toISOString().split('T')[0];
+          });
+          textNormalized++;
+        }
       });
 
       // Apply dataset specific retail rules

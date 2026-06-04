@@ -3921,24 +3921,17 @@
   /* ═══ CHART.JS — WEEKLY PROCESSING ACTIVITY ═══ */
   (function() {
 
-    // Realistic 7-day dummy data (Mon→Sun), connected to KPI cards
-    const weekDays = (function() {
-      const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-      const result = [];
-      for (let i = 6; i >= 0; i--) {
-        const d = new Date();
-        d.setDate(d.getDate() - i);
-        result.push(days[d.getDay()]);
-      }
-      return result;
-    })();
+    // Fixed calendar week: always Mon → Sun regardless of today's date
+    const weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
+    // Data aligned to Mon→Sun order. Each index = Mon(0)…Sun(6)
+    // Total records ≈ 98.6K, matching the KPI card
     const weekData = {
-      records:  [11200, 15800, 13400, 18600, 14200, 16900, 8500],   // ~98.6K total
-      quality:  [91.2,  93.8,  92.4,  95.1,  94.6,  96.2,  94.2],
-      reports:  [38,    52,    44,    61,    48,    72,    27],
-      missing:  [2100,  3200,  2600,  3800,  2900,  3200,  600],
-      dupes:    [380,   520,   420,   680,   450,   590,   181]
+      records: [18600, 14200, 16900,  8500, 11200, 15800, 13400],
+      quality: [ 95.1,  94.6,  96.2,  94.2,  91.2,  93.8,  92.4],
+      reports: [   61,    48,    72,    27,    38,    52,    44],
+      missing: [ 3800,  2900,  3200,   600,  2100,  3200,  2600],
+      dupes:   [  680,   450,   590,   181,   380,   520,   420]
     };
 
     let mainChart = null;

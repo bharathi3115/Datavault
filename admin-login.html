@@ -140,11 +140,7 @@
         err.textContent = 'Please enter your password.';
         return;
       }
-      if (e !== 'admin@datavault.com' || p !== 'password123') {
-        err.style.display = 'block';
-        err.textContent = 'Invalid admin email or password. Hint: admin@datavault.com / password123';
-        return;
-      }
+      // Allow any valid email format and non-empty password
       localStorage.setItem('userRole', 'admin');
       window.location.href = 'dashboard.html';
     }

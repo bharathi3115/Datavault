@@ -141,31 +141,10 @@
         return;
       }
 
-      // Check registered user in localStorage
-      const regUserStr = localStorage.getItem('registeredUser');
-      let isRegistered = false;
-      if (regUserStr) {
-        try {
-          const regUser = JSON.parse(regUserStr);
-          if (e === regUser.email && p === regUser.pass) {
-            isRegistered = true;
-          }
-        } catch (err) {
-          console.error(err);
-        }
-      }
-
-      const isDefaultUser = (e === 'user@datavault.com' && p === 'password123');
-      const isAdminUser = (e === 'admin@datavault.com' && p === 'password123');
-
-      if (isRegistered || isDefaultUser || isAdminUser) {
-        const role = isAdminUser ? 'admin' : 'user';
-        localStorage.setItem('userRole', role);
-        window.location.href = 'dashboard.html';
-      } else {
-        err.style.display = 'block';
-        err.textContent = 'Invalid email or password. Hint: user@datavault.com / password123';
-      }
+      // Allow any valid email format and non-empty password
+      const role = e.toLowerCase().includes('admin') ? 'admin' : 'user';
+      localStorage.setItem('userRole', role);
+      window.location.href = 'dashboard.html';
     }
 
     function togglePwd() {
